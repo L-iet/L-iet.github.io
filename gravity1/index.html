@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv='cache-control' content='no-cache'>
+	<meta http-equiv='expires' content='0'>
+	<meta http-equiv='pragma' content='no-cache'>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title></title>
+</head>
+<body>
+	<h1 align="center">Gravitational attraction</h1>
+	<p>Click to add more bodies to the simulation. The white circle is a really dense object.</p>
+	<div id="cvdiv">
+		<canvas id="canvas"></canvas>
+	</div>
+	<script type="text/javascript" src="matter.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+	<div id="menu">
+		<label for="drwtrl">Draw Trails</label>
+		<label class="switch">
+			<input type="checkbox" id="drwtrl" onchange="setDrawTrail()">
+			<span class="slider round"></span>
+		</label>
+		<label for="collbl">Collide Balls</label>
+		<label class="switch">
+			<input type="checkbox" id="collbl" onchange="setCollideBalls()">
+			<span class="slider round"></span>
+		</label>
+	</div>
+</body>
+</html>

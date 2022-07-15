@@ -12,9 +12,8 @@
     <link href="css/templatemo-diagoona.css" rel="stylesheet" />
 
 </head>
-
 <body>
-    <div class="tm-container">        
+    <div class="tm-container">
         <div>
             <div class="tm-row pt-4">
                 <div class="tm-col-left">
@@ -33,8 +32,8 @@
                         </button>
                         <div class="collapse navbar-collapse tm-nav" id="navbar-nav">
                             <ul class="navbar-nav text-uppercase">
-                                <li class="nav-item active">
-                                    <a class="nav-link tm-nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                                <li class="nav-item">
+                                    <a class="nav-link tm-nav-link" href="index.html">Home</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link tm-nav-link" href="about.html">About</a>
@@ -42,8 +41,8 @@
                                 <li class="nav-item">
                                     <a class="nav-link tm-nav-link" href="projects.html">Projects</a>
                                 </li>                            
-                                <li class="nav-item">
-                                    <a class="nav-link tm-nav-link" href="contact.html">Contact</a>
+                                <li class="nav-item active">
+                                    <a class="nav-link tm-nav-link" href="contact.html">Contact <span class="sr-only">(current)</span></a>
                                 </li>
                             </ul>                            
                         </div>                        
@@ -53,13 +52,24 @@
             
             <div class="tm-row">
                 <div class="tm-col-left"></div>
-                <main class="tm-col-right">
-                    <section class="tm-content">
-                        <h2 class="mb-5 tm-content-title">About Me</h2>
-                        <p class="mb-5">I study Natural and Computational Sciences (concentrating in Physics and Software Engineering) at Minerva University, the <b><a href="https://www.wuri.world/%EB%B3%B5%EC%A0%9C-2021-global-top-100">number 1 most innovative university in the world.</a></b></p>
-                        <hr class="mb-5">
-                        <p class="mb-5">I'm interested in math and science, including physics and computer science. I'm always looking for opportunities to learn, and love to find people with similar passions.</p>                        
-                        <a href="about.html" class="btn btn-primary">Continue...</a>
+                <main class="tm-col-right tm-contact-main"> <!-- Content -->
+                    <section class="tm-content tm-contact">
+                        <h2 class="mb-4 tm-content-title">Contact Me</h2>
+                        <p class="mb-85">Feel free to send me a message using this form!</p>
+                        <form id="contact-form" action="http://127.0.0.1:7777/custom" method="POST" enctype="multipart/form-data">
+                            <div class="form-group mb-4">
+                                <input type="text" name="name" class="form-control" placeholder="Name" required="" />
+                            </div>
+                            <div class="form-group mb-4">
+                                <input type="email" name="email" class="form-control" placeholder="Email" required="" />
+                            </div>
+                            <div class="form-group mb-5">
+                                <textarea rows="6" name="message" class="form-control" placeholder="Message..." required=""></textarea>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-big btn-primary">Send It</button>
+                            </div>
+                        </form>
                     </section>
                 </main>
             </div>
@@ -80,8 +90,7 @@
             </div>  
         </div>
 
-        <!-- Diagonal background design -->
-        <div class="tm-bg">
+        <div class="tm-bg"> <!-- Diagonal background design -->
             <div class="tm-bg-left"></div>
             <div class="tm-bg-right"></div>
         </div>

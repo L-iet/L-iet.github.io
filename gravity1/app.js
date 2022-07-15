@@ -312,12 +312,12 @@ Matter.Events.on(engine, "collisionStart", e => {
             const { vAFinal: vAXFinal, vBFinal: vBXFinal } = calcElasticCollision(mA, mB, vAXBefore, vBXBefore);
             const { vAFinal: vAYFinal, vBFinal: vBYFinal } = calcElasticCollision(mA, mB, vAYBefore, vBYBefore);
             if (bodyA.label !== "wall") {
-                let vel = { x: vAXFinal, y: vBXFinal };
+                let vel = { x: vAXFinal, y: vAYFinal };
                 Matter.Body.setVelocity(bodyA, vel);
                 setBallVel(bodyA, vel);
             }
             if (bodyB.label !== "wall") {
-                let vel = { x: vAYFinal, y: vBYFinal };
+                let vel = { x: vBXFinal, y: vBYFinal };
                 Matter.Body.setVelocity(bodyB, vel);
                 setBallVel(bodyB, vel);
             }
