@@ -17,17 +17,20 @@
 	</div>
 	<script type="text/javascript" src="matter.js"></script>
 	<script type="text/javascript" src="app.js"></script>
-	<div id="menu">
+	<span id="menu">
 		<label for="drwtrl">Draw Trails</label>
 		<label class="switch">
 			<input type="checkbox" id="drwtrl" onchange="setDrawTrail()">
 			<span class="slider round"></span>
 		</label>
+		<br>
 		<label for="collbl">Collide Balls</label>
 		<label class="switch">
 			<input type="checkbox" id="collbl" onchange="setCollideBalls()">
 			<span class="slider round"></span>
 		</label>
-	</div>
+		<br>
+		<button class="btn" onclick="clearBalls()">Clear</button>
+	</span>
 </body>
 </html>

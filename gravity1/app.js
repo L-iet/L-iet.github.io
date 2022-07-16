@@ -202,18 +202,6 @@ for(var i = 0; i < 3; i++) {
     addRandomBody();
 }
 
-// var init_dis = new Map(); // will store initial displacement magnitudes
-// //like '1,2' -> 4
-
-// for (var i = balls.length - 1; i >= 0; i--) {
-//     for (var j = balls.length - 1; j >= 0; j--) {
-//         if (balls[i].body != balls[j].body) {
-//             init_dis.set(i.toString() +','+j.toString(), 
-//                     Math.sqrt((balls[i].body.position.x-balls[j].body.position.x)** 2 + (balls[i].body.position.y-balls[j].body.position.y)** 2)
-//                 );
-//         }
-//     }
-// }
 
 
 //https://compiled.ctl.columbia.edu/articles/how-to-simulate-gas-particles-with-matterjs/
@@ -269,6 +257,15 @@ function setBallVel(body, vel) {
     }
 }
 
+function findBallforBody(body) {
+    for (var i = balls.length - 1; i >= 0; i--) {
+        if (body == balls[i].body) {
+            return balls[i]
+        }
+
+    }
+}
+
 function saveBallPos(b) {
     b.pathx.push(b.body.position.x);
     b.pathy.push(b.body.position.y);
@@ -276,6 +273,16 @@ function saveBallPos(b) {
         b.pathx.shift();
         b.pathy.shift();
     }
+}
+
+function clearBalls() {
+    let c1 = balls[0];
+    balls = []
+    balls.push(c1);
+    Composite.clear(engine.world);
+    Engine.clear(engine);
+    Matter.Body.setInertia(c1.body, Infinity);
+    Composite.add(engine.world, [c1.body, leftWall, rightWall, topWall, bottomWall]);
 }
 
 
@@ -307,8 +314,8 @@ Matter.Events.on(engine, "collisionStart", e => {
             const vBXBefore = bodyB.velocity.x;
             const vAYBefore = bodyA.velocity.y;
             const vBYBefore = bodyB.velocity.y;
-            const mA = bodyA.mass
-            const mB = bodyB.mass
+            const mA = findBallforBody(bodyA).mass
+            const mB = findBallforBody(bodyB).mass
             const { vAFinal: vAXFinal, vBFinal: vBXFinal } = calcElasticCollision(mA, mB, vAXBefore, vBXBefore);
             const { vAFinal: vAYFinal, vBFinal: vBYFinal } = calcElasticCollision(mA, mB, vAYBefore, vBYBefore);
             if (bodyA.label !== "wall") {
@@ -334,6 +341,7 @@ const calcElasticCollision = (mA, mB, vAInitial, vBInitial) => ({
 // Run adjustE on each particle every 100 milliseconds.
 let counter = 0;
 Matter.Events.on(engine, 'beforeUpdate', function(e) {
+    if (balls.length > 450) Composite.remove(balls.pop().body);
     if (collballs) {
         for (var i = balls.length - 1; i >= 0; i--) {
             balls[i].body.collisionFilter.group = 2
@@ -368,7 +376,7 @@ Matter.Events.on(render, 'afterRender', function(e) {
     }
 });
 
-addEventListener('mousedown',
+cv.addEventListener('mousedown',
     function (e) {
         setTimeout(function() {
             addBodyAtPos(e.offsetX, e.offsetY);
