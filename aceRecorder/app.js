@@ -483,8 +483,8 @@ $(document).ready(function(){
     function uploadPublic() {
         const xhr = new XMLHttpRequest();
         const url="https://fathomless-stream-52797.herokuapp.com/";
-        // xhr.open("POST", url, true);
-        // xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.open("POST", url, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
         var recordedMedia = currentMediaType === "video" ? document.getElementById("preview") : document.getElementById("prev-aud");
         xhr.send(  JSON.stringify({'filename':Date.now(), 'textRec':keystrokes, 'media': mediaBlob}) );
 
