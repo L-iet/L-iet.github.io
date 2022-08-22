@@ -481,12 +481,16 @@ $(document).ready(function(){
     window.reset = reset;
 
     function uploadPublic() {
-        const xhr = new XMLHttpRequest();
+        // const xhr = new XMLHttpRequest();
         const url="https://fathomless-stream-52797.herokuapp.com/";
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        // xhr.open("POST", url, true);
+        // xhr.setRequestHeader('Content-Type', 'application/json');
         var recordedMedia = currentMediaType === "video" ? document.getElementById("preview") : document.getElementById("prev-aud");
-        xhr.send(  JSON.stringify({'filename':Date.now(), 'textRec':keystrokes, 'media': mediaBlob}) );
+        // xhr.send(  JSON.stringify({'filename':Date.now(), 'textRec':keystrokes, 'media': mediaBlob}) );
+
+        fetch(url, {method: "POST", body: {'filename':Date.now(), 'textRec':keystrokes, 'media': mediaBlob}, headers: {"Content-Type": "application/json"}}
+            ).then(response => console.log(response)
+            ).catch(error => console.log(error));
 
         // xhr.onreadystatechange = (e) => {
         //   console.log(xhr.responseText)
