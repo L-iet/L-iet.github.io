@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ace recorder</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+        <script type="text/javascript" src="./ace-builds/src-min-noconflict/ace.js"></script>
+        <script type="text/javascript" src="./ace-builds/src-min-noconflict/ext-language_tools.js"></script>
+        <script type="text/javascript" src="./ace-builds/src-min-noconflict/ext-settings_menu.js"></script>
+        <script type="text/javascript" src="./ace-builds/src-min-noconflict/ext-statusbar.js"></script>
+        <script type="text/javascript" src="./ace-builds/src-min-noconflict/ext-keybinding_menu.js"></script>
+        <link rel="stylesheet" type="text/css" href="./style.css">
+        <script type="text/javascript" src="./jszip.min.js"></script>
+        <script type="text/javascript" src="./FileSaver.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="editor" id="editor" style="height:550px;"></div>
+                <div id = "recordmenu" class="rowblock">
+                    <div id="mediaTypes">
+                        <input type="radio" id="r-video" name="rec_media" value="video">
+                        <label for="html">Text and Audio/Video</label><br>
+                        <input type="radio" id="r-audio" name="rec_media" value="audio">
+                        <label for="css">Text and Audio</label><br>
+                        <input type="radio" id="r-text" name="rec_media" value="text" checked="checked">
+                        <label for="javascript">Text only</label><br>
+                    </div>
+
+                    <label class="switch">
+                      <input id="rec" type="checkbox" onchange="record()">
+                      <span class="slider round"></span>
+                    </label><br>
+                    <label id="recording-text" for="rec">Record</label>
+                </div>
+                <div id="mic" style="display:none;"><img src="./images/microphone.png" width="40" height="40"></div>
+                <div id="video-feed" class="video-feed" style="display:none; max-width: 300px;">
+                    <video autoplay id="web-cam-container" 
+                        style="background-color: black; max-width: 300px;">
+                        Your browser doesn't support 
+                        the video tag
+                    </video>
+                    <video id="preview" src=""></video>
+                    <audio id="prev-aud" src=""></audio>
+                </div>
+                <div class="slidecontainer" style="width:100%;">
+                    <input type="range" style="width:100%;display:none;" min="0" max="3600000" value="0" class="timeline" id="myRange">
+                </div>
+                <button class="reset-btn" onclick="">Reset</button><br>
+                <div id="play-btn" class="play-btn rowblock"></div>
+                <button class="downl-btn" onclick="downloadRecording()">Download</button>
+            </div>
+            <button id="upload-public" style="display:none;" onclick="uploadPublic()">Upload publicly</button>
+        </div>
+        <script type="text/javascript" src="app.js"></script>
+    </body>
+</html>
