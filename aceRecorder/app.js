@@ -488,7 +488,7 @@ $(document).ready(function(){
         var recordedMedia = currentMediaType === "video" ? document.getElementById("preview") : document.getElementById("prev-aud");
         // xhr.send(  JSON.stringify({'filename':Date.now(), 'textRec':keystrokes, 'media': mediaBlob}) );
 
-        fetch(url, {method: "POST", body: {'filename':Date.now(), 'textRec':keystrokes, 'media': mediaBlob}, headers: {"Content-Type": "application/json"}}
+        fetch(url, {method: "POST", body: {'filename':Date.now(), 'textRec':keystrokes, 'media': mediaBlob}}
             ).then(response => console.log(response)
             ).catch(error => console.log(error));
 
