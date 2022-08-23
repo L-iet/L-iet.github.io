@@ -12,10 +12,12 @@ $(document).ready(function(){
         enableLiveAutocompletion: false
     });
 
+    //TODO: Handle user deny media access
 
     var keystrokes = [];
-    var selections = [];
+    var terminalOuts = [];
     var playbackEvents = [];
+    var terminalEvents = [];
     var curTimestamp = 0; //will hold the current timestamp of the video when a recording exists
     var moveSlider = false;
     var slider = document.getElementById('myRange');
@@ -36,6 +38,11 @@ $(document).ready(function(){
         moveSlider = false;
         setStartTimeandIndex();
     }
+
+    var hideWhenRecording = document.getElementsByClassName('hide-when-rec');
+    var terminalOutput = document.getElementById("out");
+    var terminalError = document.getElementById("err");
+
     var startTime = 0;
     var startind = 0;
     var isRecording = false;
@@ -78,7 +85,7 @@ $(document).ready(function(){
     }
 
     function togglePlayPause (e) {
-        if ((event.type === 'keypress' && event.key === ' ' && !isRecording) || (event.type === 'click') ) {
+        if ( (event.type === 'click') ) { // || (event.type === 'keypress' && event.key === ' ' && !isRecording)
             isPlaying = !isPlaying;
             playBtn.style.backgroundImage = isPlaying ? "url('./images/pause.png')" : "url('./images/play.png')";
             if (isPlaying) {
@@ -112,6 +119,7 @@ $(document).ready(function(){
             .then(mediaStream => {
                 //offset the initial time in keystrokes to the time user granted permission
                 keystrokes[0].timeoffset = parseInt(Date.now()) - parseInt(keystrokes[0].starttimestamp);
+                terminalOuts[0].timeoffset = keystrokes[0].timeoffset;
                 keystrokes[0].auxmedia = mediaToRecord;
 
                 if (mediaToRecord === "audio") {
@@ -140,7 +148,7 @@ $(document).ready(function(){
                     if (mediaToRecord === "video") {
 
                         recordedMedia = document.getElementById("preview");
-                        recordedMedia.style.maxWidth = "300px";
+                        recordedMedia.style.maxWidth = "150px";
                         
                             recordedMedia.style.display = "block";
                         //recordedMedia.controls = true;
@@ -229,29 +237,31 @@ $(document).ready(function(){
         };
 
         keystrokes.push(keyEvent);
+        terminalOuts.push({'text':'', 'starttimestamp':Date.now(), 'timestamp':0,'timeoffset':0});
     }
 
     function record() {
         isRecording = !isRecording;
         if (!isRecording) {
             document.getElementById("recording-text").innerText = "Record";
-            document.getElementById("mediaTypes").style.display = "block";
-            document.getElementById("play-btn").style.display = "block";
-            if (mediaToRecord !== 'text') {
+            // document.getElementById("mediaTypes").style.display = "block";
+            // document.getElementById("play-btn").style.display = "block";
+
+            for (let i=0; i<hideWhenRecording.length; i++) hideWhenRecording[i].style.display = "block";
+
+            if (mediaToRecord !== "text") {
                 stopRecordingMedia();
-                keystrokes.push({'data': {'action': 'idle'}, 'timestamp':Date.now()-keystrokes[0].starttimestamp});
             }
+            keystrokes.push({'data': {'action': 'idle'}, 'timestamp':Date.now()-keystrokes[0].starttimestamp}); //previously only added the idle end for audio/video recording, now for all
             stop();
         }
         else {
             document.getElementById("preview").src = "";
             document.getElementById("prev-aud").src = "";
             document.getElementById("recording-text").innerText = "Recording";
-            document.getElementById("play-btn").style.display = "none";
-            document.getElementById("mediaTypes").style.display = "none";
-            keystrokes = []; playbackEvents = [];
+            keystrokes = []; playbackEvents = []; terminalOuts = []; terminalEvents = [];
             document.getElementById('rec').style.backgroundColor = "green";
-            document.getElementById('myRange').style.display = 'none';
+            for (let i=0; i<hideWhenRecording.length; i++) hideWhenRecording[i].style.display = "none";
             captureState();
             editor.on("change", recordKeystroke);
 
@@ -278,12 +288,18 @@ $(document).ready(function(){
             for (i = 0; i < playbackEvents.length; i++) {
                 clearTimeout(playbackEvents[i]);
             }
+
+            for (i = 0; i < terminalEvents.length; i++) {
+                clearTimeout(terminalEvents[i]);
+            }
+
         }
     }
 
     function stop() {
         startTime = 0;
         startind = 0;
+        tstartind = 0;
         //document.getElementById('rec').style.backgroundColor = "buttonface";
         moveSlider = false;
 
@@ -298,14 +314,17 @@ $(document).ready(function(){
             for (i = 0; i < playbackEvents.length; i++) {
                 clearTimeout(playbackEvents[i]);
             }
+
+            for (i = 0; i < terminalEvents.length; i++) {
+                clearTimeout(terminalEvents[i]);
+            }
         }
-        document.getElementById("upload-public").style.display = 'block';
     }
     window.stop = stop;
 
     //binary search
-    function getIndexofFirstEventAfterTimestamp(tstamp) {
-        let start=0, end=keystrokes.length-1;
+    function getIndexofFirstEventAfterTimestamp(tstamp, arr) {
+        let start=0, end=arr.length-1;
          
         // Iterate while start not meets end
         while (start<=end){
@@ -313,7 +332,7 @@ $(document).ready(function(){
             // Find the mid index
             let mid=Math.floor((start + end)/2);
 
-            let ts = keystrokes[mid].timestamp;
+            let ts = arr[mid].timestamp;
       
             // If element is present at mid, return True
             if (ts===tstamp) return mid;
@@ -330,8 +349,12 @@ $(document).ready(function(){
 
     function setStartTimeandIndex() {
         startTime = curTimestamp;
-        startind = getIndexofFirstEventAfterTimestamp(curTimestamp + keystrokes[0].timeoffset); //add timeoffset to sync when paused
+        startind = getIndexofFirstEventAfterTimestamp(curTimestamp + keystrokes[0].timeoffset, keystrokes); //add timeoffset to sync when paused
+        tstartind = getIndexofFirstEventAfterTimestamp(curTimestamp + terminalOuts[0].timeoffset, terminalOuts);
         editor.setValue(keystrokes[(startind===0?0:startind-1)].data.alltext);
+        let tind = tstartind===0?0:tstartind-1;
+        terminalOutput.textContent = terminalOuts[tind].out;
+        terminalError.textContent = terminalOuts[tind].err;
         editor.clearSelection();
     }
 
@@ -343,10 +366,16 @@ $(document).ready(function(){
         //console.log(playbackEvents);
         if (startind === 0 && startTime === 0) {
             editor.setValue("");
+            let tind = tstartind===0?0:tstartind-1;
+            terminalOutput.textContent = terminalOuts[tind].out;
+            terminalError.textContent = terminalOuts[tind].err;
             slider.value = 0;
         }
         else {
             editor.setValue(keystrokes[(startind===0?0:startind-1)].data.alltext);
+            let tind = tstartind===0?0:tstartind-1;
+            terminalOutput.textContent = terminalOuts[tind].out;
+            terminalError.textContent = terminalOuts[tind].err;
         }
 
         if (currentMediaType === "video") {
@@ -372,6 +401,7 @@ $(document).ready(function(){
                 if (hasEnded) {
                     curTimestamp = 0;
                     startind = 0; startTime = 0;
+                    tstartind = 0;
                     document.getElementById("recordmenu").style.display = "block";
                 }
                 playBtn.style.backgroundImage = "url(./images/play.png)";
@@ -381,6 +411,10 @@ $(document).ready(function(){
 
         for (i = startind; i < keystrokes.length; i++) {
             createEvent(startTime, i);
+        }
+
+        for (i=tstartind; i<terminalOuts.length; i++) {
+            createTermEvent(startTime, i);
         }
         
 
@@ -440,6 +474,13 @@ $(document).ready(function(){
 
     }
 
+    function createTermEvent(starttime, i) {
+        var t = terminalOuts[i], dT=1;
+        var evt = setTimeout( function(){terminalOutput.textContent = t.out; terminalError.textContent=t.err;} ,
+                dT * ((terminalOuts[i].timestamp - starttime) - terminalOuts[0].timeoffset) );
+        terminalEvents.push(evt);
+    }
+
     function download(content, fileName, contentType) {
         var a = document.createElement("a");
         var file = new Blob([JSON.stringify(content)], {type: contentType});
@@ -482,19 +523,20 @@ $(document).ready(function(){
 
     function uploadPublic() {
         // const xhr = new XMLHttpRequest();
-        const url="https://fathomless-stream-52797.herokuapp.com/";
+        const url= "https://fathomless-stream-52797.herokuapp.com/";
         // xhr.open("POST", url, true);
         // xhr.setRequestHeader('Content-Type', 'application/json');
         var recordedMedia = currentMediaType === "video" ? document.getElementById("preview") : document.getElementById("prev-aud");
         // xhr.send(  JSON.stringify({'filename':Date.now(), 'textRec':keystrokes, 'media': mediaBlob}) );
+        let fileName = Date.now();
 
-        fetch(url, {method: "POST", body: {'filename':Date.now(), 'textRec':keystrokes}, headers: {'Content-Type': 'application/json'}}
-            ).then(response => console.log(response)
+        fetch(url, {method: "POST", body: JSON.stringify({'filename':fileName, 'textRec':keystrokes}), headers: {'Content-Type': 'application/json'}}
+            ).then(response => response.json().then(data=>console.log(data))
             ).catch(error => console.log(error));
 
         if (currentMediaType !== "text")
-            fetch(url + 'media', {method: "POST", body: mediaBlob}
-            ).then(response => console.log(response)
+            fetch(`${url}media/${fileName}`, {method: "POST", body: mediaBlob}
+            ).then(response => response.json().then(data=>console.log(data))
             ).catch(error => console.log(error));
 
 
@@ -503,5 +545,23 @@ $(document).ready(function(){
         // }
     }
     window.uploadPublic = uploadPublic;
+
+    function runCode() {
+        const url= "http://127.0.0.1:7777/runCode";
+        fetch(url, {method:"POST", body: JSON.stringify({'text': editor.getValue()}), headers: {'Content-Type': 'application/json'}}
+            ).then(response => response.json().then(
+                function (data) {
+                    let output = data.output.length > 500 ? data.output.slice(data.output.length - 500) : data.output;
+                    output = output + '\n[Program finished]';
+                    terminalOutput.textContent = output;
+                    terminalError.textContent = data.error;
+                    if (isRecording) {
+                        terminalOuts.push({'out':data.output, 'err':data.error, 'timestamp':Date.now() - terminalOuts[0].starttimestamp});
+                    }
+                }
+                )
+            ).catch(error => console.log(error));
+    }
+    window.runCode = runCode;
 
 });

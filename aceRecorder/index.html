@@ -16,9 +16,9 @@
     <body>
         <div class="container-fluid">
             <div class="row">
-                <div class="editor" id="editor" style="height:550px;"></div>
+                <div class="editor" id="editor" style="height:478px;"></div>
                 <div id = "recordmenu" class="rowblock">
-                    <div id="mediaTypes">
+                    <div id="mediaTypes" class="hide-when-rec hide-when-play">
                         <input type="radio" id="r-video" name="rec_media" value="video">
                         <label for="html">Text and Audio/Video</label><br>
                         <input type="radio" id="r-audio" name="rec_media" value="audio">
@@ -33,24 +33,26 @@
                     </label><br>
                     <label id="recording-text" for="rec">Record</label>
                 </div>
-                <div id="mic" style="display:none;"><img src="./images/microphone.png" width="40" height="40"></div>
-                <div id="video-feed" class="video-feed" style="display:none; max-width: 300px;">
+                <div id="video-feed" class="video-feed" style="display:none; max-width: 150px; aspect-ratio:4/3">
                     <video autoplay id="web-cam-container" 
-                        style="background-color: black; max-width: 300px;">
+                        style="background-color: black; max-width: 150px;">
                         Your browser doesn't support 
                         the video tag
                     </video>
                     <video id="preview" src=""></video>
                     <audio id="prev-aud" src=""></audio>
                 </div>
-                <div class="slidecontainer" style="width:100%;">
+                <button id="runCode" class="runCode hide-when-play" onclick="runCode()">Run code|></button>
+                <div id="term" style="background-color: black; font-size: 10px;"><textarea readonly id="out" style="color: white;resize: none; height:50%; width:100%; background-color:black;"></textarea><textarea readonly id="err" style="color: red;resize: none;height: 50%;width:100%;background-color:black;"></textarea></div>
+                <div class="slidecontainer hide-when-rec" style="width:100%;">
                     <input type="range" style="width:100%;display:none;" min="0" max="3600000" value="0" class="timeline" id="myRange">
                 </div>
-                <button class="reset-btn" onclick="">Reset</button><br>
-                <div id="play-btn" class="play-btn rowblock"></div>
-                <button class="downl-btn" onclick="downloadRecording()">Download</button>
+                <button class="reset-btn hide-when-rec" onclick="">Reset</button><br>
+                <div id="play-btn" class="play-btn rowblock hide-when-rec"></div>
+                <button class="downl-btn hide-when-rec" onclick="downloadRecording()">Download</button>
+                <button class="hide-when-rec" id="upload-public" style="display:none;" onclick="uploadPublic()">Upload publicly</button>
+                <div id="mic" style="display:none;"><img src="./images/microphone.png" width="40" height="40"></div>
             </div>
-            <button id="upload-public" style="display:none;" onclick="uploadPublic()">Upload publicly</button>
         </div>
         <script type="text/javascript" src="app.js"></script>
     </body>

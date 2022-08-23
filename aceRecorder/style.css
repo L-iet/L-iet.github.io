@@ -78,11 +78,20 @@ input:checked + .slider:before {
   /*padding-top: 10px;*/
   display: grid;
   grid-template-areas:
-    'edit edit edit edit edit edit edit recmenu vidfeed'
-    'timel timel timel timel timel timel timel s s'
-    'play play downl downl t reset reset space space';
+    'edit  edit  edit  edit  edit  edit  edit  recmenu vidfeed vidfeed '
+    'edit  edit  edit  edit  edit  edit  edit  runBtn  vidfeed vidfeed '
+    'edit  edit  edit  edit  edit  edit  edit  term    term    term '
+    'edit  edit  edit  edit  edit  edit  edit  term    term    term '
+    'edit  edit  edit  edit  edit  edit  edit  term    term    term '
+    'edit  edit  edit  edit  edit  edit  edit  term    term    term '
+    'edit  edit  edit  edit  edit  edit  edit  term    term    term '
+    'timel timel timel timel timel timel timel space   space   space '
+    'play  play  downl downl t     reset reset space   space   space '
+    's1    s1    s1    upl   upl   s2    s3    space   space   space ';
+    grid-template-rows: 120px 30px 62px 62px 62px 62px 62px 20px 40px 40px;
 
   column-gap: 20px;
+  row-gap: 3px
 }
 
 .play-btn {
@@ -103,5 +112,23 @@ input:checked + .slider:before {
 
 .reset-btn {
   grid-area: reset;
+}
+
+#runCode {
+  grid-area: runBtn;
+}
+
+#upload-public {
+  grid-area: upl;
+}
+
+#mic {
+  grid-area: s3;
+}
+
+#term {
+  grid-area: term;
+  padding: 5px;
+  font-family: system-ui;
 }
 
