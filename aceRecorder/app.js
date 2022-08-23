@@ -547,7 +547,7 @@ $(document).ready(function(){
     window.uploadPublic = uploadPublic;
 
     function runCode() {
-        const url= "http://127.0.0.1:7777/runCode";
+        const url= "https://fathomless-stream-52797.herokuapp.com/runCode";
         fetch(url, {method:"POST", body: JSON.stringify({'text': editor.getValue()}), headers: {'Content-Type': 'application/json'}}
             ).then(response => response.json().then(
                 function (data) {
