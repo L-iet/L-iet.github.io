@@ -237,7 +237,7 @@ $(document).ready(function(){
         };
 
         keystrokes.push(keyEvent);
-        terminalOuts.push({'text':'', 'starttimestamp':Date.now(), 'timestamp':0,'timeoffset':0});
+        terminalOuts.push({'out':document.getElementById('out').textContent, 'err':document.getElementById('err').textContent, 'starttimestamp':Date.now(), 'timestamp':0,'timeoffset':0});
     }
 
     function record() {
