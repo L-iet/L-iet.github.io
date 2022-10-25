@@ -1,7 +1,6 @@
 The determinant is (related to) the norm of a matrix. The determinant has the following properties:
 Let
-$$
-A = \begin{bmatrix}
+$$A = \begin{bmatrix}
 a&  b\\
 c & d
 \end{bmatrix}; \
@@ -12,8 +11,7 @@ c & d
 C = \begin{bmatrix}
 e&  f\\
 c & d
-\end{bmatrix}\\
-$$
+\end{bmatrix}\\$$
 $$
 \begin{align}
 \text{det}\biggl(\begin{bmatrix}
