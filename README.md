@@ -1,5 +1,7 @@
 # Joshua Mark's Personal Website
 
+[View live site](https://l-iet.github.io/)
+
 ## Time spent
 - 7 hours
 
