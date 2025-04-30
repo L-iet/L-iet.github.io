@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.structures.ordered_set &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../static/alabaster.css?v=27fed22d" />
+    <script src="../../../static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.structures.ordered_set</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fractions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">TypeAlias</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">cast</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.expr</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryExpression</span><span class="p">,</span> <span class="n">Expr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.iff</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iff</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.implies</span><span class="w"> </span><span class="kn">import</span> <span class="n">Implies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.not_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Not</span><span class="p">,</span> <span class="n">neg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.or_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Or</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.total</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">ForallInSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.equals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equals</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.infix.infix</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpecialInfix</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span>
+
+    <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Term</span><span class="p">)</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Expr</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">)</span>
+    <span class="n">BinOpFunc</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">BinaryExpression</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span>
+    <span class="n">TotalOrderOp</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">]</span>
+    <span class="n">StrictTotalOrderOp</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">StrictTotalOrder</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">BinOpFunc</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">TotalOrderOp</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">StrictTotalOrderOp</span> <span class="o">=</span> <span class="n">Any</span>
+
+
+<div class="viewcode-block" id="OrderedSet">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">OrderedSet</span><span class="p">(</span><span class="n">Set</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A set with a total order (such as &lt;=) and a corresponding strict total order (such as &lt;).&quot;&quot;&quot;</span>
+
+    <span class="n">strict_order_definition</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Iff</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">Not</span><span class="p">[</span><span class="n">Equals</span><span class="p">]]]]</span>
+    <span class="p">]</span>
+    <span class="n">order_definition</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Iff</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">Or</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]</span>
+    <span class="p">]</span>
+    <span class="n">order_is_reflexive</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">]</span>
+    <span class="n">order_is_transitive</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">],</span> <span class="n">TotalOrder</span><span class="p">]]]</span>
+    <span class="p">]</span>
+    <span class="n">order_is_antisymmetric</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">],</span> <span class="n">Equals</span><span class="p">]]</span>
+    <span class="p">]</span>
+    <span class="n">order_is_strongly_connected</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Or</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">]]]</span>
+    <span class="n">strict_order_is_irreflexive</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Not</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">]]</span>
+    <span class="n">strict_order_is_asymmetric</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">Not</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">]]]</span>
+    <span class="p">]</span>
+    <span class="n">strict_order_is_transitive</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span>
+            <span class="n">ForallInSet</span><span class="p">[</span>
+                <span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">StrictTotalOrder</span><span class="p">],</span> <span class="n">StrictTotalOrder</span><span class="p">]</span>
+            <span class="p">]</span>
+        <span class="p">]</span>
+    <span class="p">]</span>
+    <span class="n">strict_order_is_connected</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">Not</span><span class="p">[</span><span class="n">Equals</span><span class="p">],</span> <span class="n">Or</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">StrictTotalOrder</span><span class="p">]]]</span>
+    <span class="p">]</span>
+    <span class="n">add_to_both_sides_of_inequality</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">]]]</span>
+    <span class="p">]</span>
+    <span class="n">product_of_nonnegatives_is_nonnegative</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">],</span> <span class="n">TotalOrder</span><span class="p">]]</span>
+    <span class="p">]</span>
+
+    <span class="c1"># axioms of ordered sets that have operations</span>
+    <span class="n">add_to_both_sides_of_inequality</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">]]]</span>
+    <span class="p">]</span>
+    <span class="n">product_of_nonnegatives_is_nonnegative</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">],</span> <span class="n">TotalOrder</span><span class="p">]]</span>
+    <span class="p">]</span>
+
+    <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span>
+    <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span>
+
+<div class="viewcode-block" id="OrderedSet.property_order_definition">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_order_definition">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_order_definition</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span><span class="p">,</span>
+        <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Iff</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">Or</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]]:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">y</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Iff</span><span class="p">(</span>
+                    <span class="n">total_order</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                    <span class="n">Or</span><span class="p">(</span><span class="n">strict_total_order</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">Equals</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;total order definition&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_strict_order_definition">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_strict_order_definition">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_strict_order_definition</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span><span class="p">,</span>
+        <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Iff</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">Not</span><span class="p">[</span><span class="n">Equals</span><span class="p">]]]]]:</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">y</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Iff</span><span class="p">(</span>
+                    <span class="n">strict_total_order</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+                    <span class="n">And</span><span class="p">(</span><span class="n">total_order</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">neg</span><span class="p">(</span><span class="n">Equals</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;strict total order definition&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_order_is_reflexive">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_order_is_reflexive">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_order_is_reflexive</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span> <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;total order is reflexive in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_order_is_transitive">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_order_is_transitive">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_order_is_transitive</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span> <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">],</span> <span class="n">TotalOrder</span><span class="p">]]]</span>
+    <span class="p">]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">)</span>
+        <span class="n">a_le_b</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">b_le_c</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">a_le_c</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">ForallInSet</span><span class="p">(</span>
+                    <span class="n">c</span><span class="p">,</span>
+                    <span class="n">set_</span><span class="p">,</span>
+                    <span class="n">And</span><span class="p">(</span><span class="n">a_le_b</span><span class="p">,</span> <span class="n">b_le_c</span><span class="p">)</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">a_le_c</span><span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;total order is transitive in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>  <span class="c1"># type: ignore</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_order_is_antisymmetric">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_order_is_antisymmetric">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_order_is_antisymmetric</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span> <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">],</span> <span class="n">Equals</span><span class="p">]]]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">a_le_b</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">b_le_a</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Implies</span><span class="p">(</span>
+                    <span class="n">And</span><span class="p">(</span><span class="n">a_le_b</span><span class="p">,</span> <span class="n">b_le_a</span><span class="p">),</span>
+                    <span class="n">Equals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;total order is antisymmetric in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_order_is_strongly_connected">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_order_is_strongly_connected">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_order_is_strongly_connected</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span> <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Or</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">]]]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">a_le_b</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">b_le_a</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Or</span><span class="p">(</span>
+                    <span class="n">a_le_b</span><span class="p">,</span>
+                    <span class="n">b_le_a</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;total order is strongly connected in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_strict_order_is_irreflexive">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_strict_order_is_irreflexive">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_strict_order_is_irreflexive</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span> <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Not</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">]]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">Not</span><span class="p">(</span><span class="n">strict_total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;strict total order is irreflexive in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_strict_order_is_asymmetric">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_strict_order_is_asymmetric">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_strict_order_is_asymmetric</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span> <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">Not</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">]]]]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">a_lt_b</span> <span class="o">=</span> <span class="n">strict_total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">b_lt_a</span> <span class="o">=</span> <span class="n">strict_total_order</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Implies</span><span class="p">(</span>
+                    <span class="n">a_lt_b</span><span class="p">,</span>
+                    <span class="n">Not</span><span class="p">(</span><span class="n">b_lt_a</span><span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;strict total order is asymmetric in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_strict_order_is_transitive">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_strict_order_is_transitive">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_strict_order_is_transitive</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span> <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span>
+            <span class="n">ForallInSet</span><span class="p">[</span>
+                <span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">StrictTotalOrder</span><span class="p">],</span> <span class="n">StrictTotalOrder</span><span class="p">]</span>
+            <span class="p">]</span>
+        <span class="p">]</span>
+    <span class="p">]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">)</span>
+        <span class="n">a_lt_b</span> <span class="o">=</span> <span class="n">strict_total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">b_lt_c</span> <span class="o">=</span> <span class="n">strict_total_order</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">a_lt_c</span> <span class="o">=</span> <span class="n">strict_total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">ForallInSet</span><span class="p">(</span>
+                    <span class="n">c</span><span class="p">,</span>
+                    <span class="n">set_</span><span class="p">,</span>
+                    <span class="n">Implies</span><span class="p">(</span>
+                        <span class="n">And</span><span class="p">(</span><span class="n">a_lt_b</span><span class="p">,</span> <span class="n">b_lt_c</span><span class="p">),</span>
+                        <span class="n">a_lt_c</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;strict total order is transitive in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_strict_order_is_connected">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_strict_order_is_connected">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_strict_order_is_connected</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span> <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">Not</span><span class="p">[</span><span class="n">Equals</span><span class="p">],</span> <span class="n">Or</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">StrictTotalOrder</span><span class="p">]]]</span>
+    <span class="p">]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">a_ne_b</span> <span class="o">=</span> <span class="n">neg</span><span class="p">(</span><span class="n">Equals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="n">a_lt_b</span> <span class="o">=</span> <span class="n">strict_total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">b_lt_a</span> <span class="o">=</span> <span class="n">strict_total_order</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Implies</span><span class="p">(</span>
+                    <span class="n">a_ne_b</span><span class="p">,</span>
+                    <span class="n">Or</span><span class="p">(</span>
+                        <span class="n">a_lt_b</span><span class="p">,</span>
+                        <span class="n">b_lt_a</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;strict total order is connected in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_add_to_both_sides_of_inequality">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_add_to_both_sides_of_inequality">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_add_to_both_sides_of_inequality</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span><span class="p">,</span>
+        <span class="n">plus_operation</span><span class="p">:</span> <span class="n">SpecialInfix</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Expr</span><span class="p">,</span> <span class="n">Expr</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">]]]]:</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">)</span>
+        <span class="n">a_le_b</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">a_plus_c_le_b_plus_c</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="n">plus_operation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">),</span> <span class="n">plus_operation</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">ForallInSet</span><span class="p">(</span>
+                    <span class="n">c</span><span class="p">,</span>
+                    <span class="n">set_</span><span class="p">,</span>
+                    <span class="n">Implies</span><span class="p">(</span>
+                        <span class="n">a_le_b</span><span class="p">,</span>
+                        <span class="n">a_plus_c_le_b_plus_c</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;add to both sides of (total order) inequality in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OrderedSet.property_product_of_nonnegatives_is_nonnegative">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet.property_product_of_nonnegatives_is_nonnegative">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_product_of_nonnegatives_is_nonnegative</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span><span class="p">,</span>
+        <span class="n">times_operation</span><span class="p">:</span> <span class="n">SpecialInfix</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Expr</span><span class="p">,</span> <span class="n">Expr</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">],</span> <span class="n">TotalOrder</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Assuming the total order is a &lt;= b, return</span>
+<span class="sd">        0 &lt;= a and 0 &lt;= b implies 0 &lt;= a*b</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">)</span>
+        <span class="n">a_ge_0</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+        <span class="n">b_ge_0</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="n">a_times_b_ge_0</span> <span class="o">=</span> <span class="n">total_order</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">times_operation</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Implies</span><span class="p">(</span>
+                    <span class="n">And</span><span class="p">(</span><span class="n">a_ge_0</span><span class="p">,</span> <span class="n">b_ge_0</span><span class="p">),</span>
+                    <span class="n">a_times_b_ge_0</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;product of nonnegatives is nonnegative in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">elements</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Term</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">containment_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">predicate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">],</span> <span class="n">Proposition</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">illegal_occur_check</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">Set</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">,</span>
+            <span class="n">containment_function</span><span class="o">=</span><span class="n">containment_function</span><span class="p">,</span>
+            <span class="n">predicate</span><span class="o">=</span><span class="n">predicate</span><span class="p">,</span>
+            <span class="n">illegal_occur_check</span><span class="o">=</span><span class="n">illegal_occur_check</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="n">elements</span><span class="p">,</span>
+            <span class="s2">&quot;containment_function&quot;</span><span class="p">:</span> <span class="n">containment_function</span><span class="p">,</span>
+            <span class="s2">&quot;predicate&quot;</span><span class="p">:</span> <span class="n">predicate</span><span class="p">,</span>
+            <span class="s2">&quot;illegal_occur_check&quot;</span><span class="p">:</span> <span class="n">illegal_occur_check</span><span class="p">,</span>
+            <span class="s2">&quot;total_order&quot;</span><span class="p">:</span> <span class="n">total_order</span><span class="p">,</span>
+            <span class="s2">&quot;strict_total_order&quot;</span><span class="p">:</span> <span class="n">strict_total_order</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_build_total_and_strict_orders</span><span class="p">(</span><span class="n">total_order</span><span class="p">,</span> <span class="n">strict_total_order</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_is_reflexive</span> <span class="o">=</span> <span class="n">OrderedSet</span><span class="o">.</span><span class="n">property_order_is_reflexive</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_is_reflexive</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_is_transitive</span> <span class="o">=</span> <span class="n">OrderedSet</span><span class="o">.</span><span class="n">property_order_is_transitive</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_is_transitive</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_is_antisymmetric</span> <span class="o">=</span> <span class="n">OrderedSet</span><span class="o">.</span><span class="n">property_order_is_antisymmetric</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_is_antisymmetric</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_is_strongly_connected</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">OrderedSet</span><span class="o">.</span><span class="n">property_order_is_strongly_connected</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_is_strongly_connected</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_definition</span> <span class="o">=</span> <span class="n">OrderedSet</span><span class="o">.</span><span class="n">property_order_definition</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order_definition</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_definition</span> <span class="o">=</span> <span class="n">OrderedSet</span><span class="o">.</span><span class="n">property_strict_order_definition</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_definition</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">),</span>
+            <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">),</span>
+            <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;c&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">a_in_self</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">is_in</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">b_in_self</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">is_in</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">c_in_self</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">is_in</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># Strict order properties are theorems if we have defined total order properties</span>
+        <span class="c1"># 1. Strict order is irreflexive</span>
+        <span class="n">step_1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_definition</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span><span class="p">)</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span>
+        <span class="p">)</span>
+        <span class="n">step_2</span> <span class="o">=</span> <span class="n">step_1</span><span class="o">.</span><span class="n">contrapositive</span><span class="p">()</span>
+        <span class="n">a_nlt_a_or_a_eq_a</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">neg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">or_</span><span class="p">(</span><span class="n">Equals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">one_proven</span><span class="p">(</span><span class="n">Equals</span><span class="o">.</span><span class="n">reflexive</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">a_nlt_a_or_a_eq_a</span> <span class="o">=</span> <span class="n">a_nlt_a_or_a_eq_a</span><span class="o">.</span><span class="n">de_morgan</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_is_irreflexive</span> <span class="o">=</span> <span class="n">a_nlt_a_or_a_eq_a</span><span class="o">.</span><span class="n">modus_ponens</span><span class="p">(</span>
+            <span class="n">step_2</span><span class="o">.</span><span class="n">forward_implication</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">a_in_self</span><span class="p">)</span>
+
+        <span class="c1"># 2. Strict order is asymmetric</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+        <span class="n">a_in_self</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">b_in_self</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">a_lt_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">step_1</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_definition</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">forward_implication</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="n">a_leq_b</span><span class="p">,</span> <span class="n">a_neq_b</span> <span class="o">=</span> <span class="n">a_lt_b</span><span class="o">.</span><span class="n">modus_ponens</span><span class="p">(</span><span class="n">step_1</span><span class="p">)</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+        <span class="n">step_2</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">order_is_antisymmetric</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">contrapositive</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">step_3</span><span class="p">:</span> <span class="n">Or</span> <span class="o">=</span> <span class="n">a_neq_b</span><span class="o">.</span><span class="n">modus_ponens</span><span class="p">(</span><span class="n">step_2</span><span class="p">)</span><span class="o">.</span><span class="n">de_morgan</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="n">b_nleq_a</span> <span class="o">=</span> <span class="n">step_3</span><span class="o">.</span><span class="n">unit_resolve</span><span class="p">(</span><span class="n">a_leq_b</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">step_4</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">order_definition</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">inverse</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">forward_implication</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">b_nlt_a</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">b_nleq_a</span><span class="o">.</span><span class="n">modus_ponens</span><span class="p">(</span><span class="n">step_4</span><span class="p">)</span><span class="o">.</span><span class="n">de_morgan</span><span class="p">()</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="n">b_nlt_a</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Not</span><span class="p">[</span><span class="n">StrictTotalOrder</span><span class="p">],</span> <span class="n">b_nlt_a</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_is_asymmetric</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">b_nlt_a</span><span class="o">.</span><span class="n">followed_from</span><span class="p">(</span><span class="n">a_lt_b</span><span class="p">)</span><span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">b_in_self</span><span class="p">)</span><span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">a_in_self</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 3. Strict order is transitive</span>
+        <span class="c1"># techically this is a theorem,</span>
+        <span class="c1"># but we are just defining it to be true here.</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+        <span class="n">a_in_self</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">b_in_self</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">c_in_self</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">a_lt_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">b_lt_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">a_lt_c</span> <span class="o">=</span> <span class="n">a_lt_b</span><span class="o">.</span><span class="n">transitive</span><span class="p">(</span><span class="n">b_lt_c</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_is_transitive</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">a_lt_c</span><span class="o">.</span><span class="n">followed_from</span><span class="p">(</span><span class="n">a_lt_b</span><span class="p">,</span> <span class="n">b_lt_c</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">c_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">b_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">a_in_self</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 4. Strict order is connected</span>
+        <span class="n">a</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+        <span class="n">a_in_self</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">b_in_self</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">a_neq_b</span> <span class="o">=</span> <span class="n">neg</span><span class="p">(</span><span class="n">Equals</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">a_leq_b_or_b_leq_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">order_is_strongly_connected</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b_in_self</span><span class="p">)</span>
+        <span class="n">a_lt_b_def</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_definition</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">reverse_implication</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="c1"># to be used in the cases</span>
+        <span class="n">a_leq_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">b_leq_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">b_lt_a_def</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_definition</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">b_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">reverse_implication</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">a_lt_b_or_b_lt_a</span> <span class="o">=</span> <span class="n">a_leq_b_or_b_leq_a</span><span class="o">.</span><span class="n">by_cases</span><span class="p">(</span>
+            <span class="n">a_leq_b</span><span class="o">.</span><span class="n">p_and</span><span class="p">(</span><span class="n">a_neq_b</span><span class="p">)</span><span class="o">.</span><span class="n">modus_ponens</span><span class="p">(</span><span class="n">a_lt_b_def</span><span class="p">)</span><span class="o">.</span><span class="n">followed_from</span><span class="p">(</span><span class="n">a_leq_b</span><span class="p">),</span>  <span class="c1"># type: ignore</span>
+            <span class="n">b_leq_a</span><span class="o">.</span><span class="n">p_and</span><span class="p">(</span><span class="n">a_neq_b</span><span class="o">.</span><span class="n">symmetric</span><span class="p">())</span>
+            <span class="o">.</span><span class="n">modus_ponens</span><span class="p">(</span><span class="n">b_lt_a_def</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="o">.</span><span class="n">followed_from</span><span class="p">(</span><span class="n">b_leq_a</span><span class="p">),</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strict_order_is_connected</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">a_lt_b_or_b_lt_a</span><span class="o">.</span><span class="n">followed_from</span><span class="p">(</span><span class="n">a_neq_b</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">b_in_self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">a_in_self</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+        <span class="c1"># axioms of ordered sets that have operations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_to_both_sides_of_inequality</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">OrderedSet</span><span class="o">.</span><span class="n">property_add_to_both_sides_of_inequality</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plus_operation</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_to_both_sides_of_inequality</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">product_of_nonnegatives_is_nonnegative</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">OrderedSet</span><span class="o">.</span><span class="n">property_product_of_nonnegatives_is_nonnegative</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">times_operation</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">product_of_nonnegatives_is_nonnegative</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># TODO proving a &lt;= 0 implies -a &gt;= 0 (can use add -a to both sides)</span>
+        <span class="o">...</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_total_and_strict_orders</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.greaterorequal</span><span class="w"> </span><span class="kn">import</span> <span class="n">GreaterOrEqual</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.greaterthan</span><span class="w"> </span><span class="kn">import</span> <span class="n">GreaterThan</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.lessorequal</span><span class="w"> </span><span class="kn">import</span> <span class="n">LessOrEqual</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.lessthan</span><span class="w"> </span><span class="kn">import</span> <span class="n">LessThan</span>
+
+        <span class="k">class</span><span class="w"> </span><span class="nc">_CustomStrictTotalOrder</span><span class="p">(</span><span class="n">StrictTotalOrder</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">inst</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&lt;&quot;</span>
+
+        <span class="k">class</span><span class="w"> </span><span class="nc">_CustomTotalOrder</span><span class="p">(</span><span class="n">TotalOrder</span><span class="p">):</span>
+            <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">inst</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_&lt;=&quot;</span>
+
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">),</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">strict_total_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">total_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span> <span class="o">=</span> <span class="n">_CustomStrictTotalOrder</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span> <span class="o">=</span> <span class="n">_CustomTotalOrder</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">total_order</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">LessOrEqual</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span> <span class="o">=</span> <span class="n">total_order</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span> <span class="o">=</span> <span class="n">LessThan</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">total_order</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">GreaterOrEqual</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span> <span class="o">=</span> <span class="n">total_order</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span> <span class="o">=</span> <span class="n">GreaterThan</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span> <span class="o">=</span> <span class="n">total_order</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span> <span class="o">=</span> <span class="n">_CustomStrictTotalOrder</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># strict_total_order is not None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strict_total_order</span> <span class="o">=</span> <span class="n">strict_total_order</span>
+            <span class="k">if</span> <span class="n">total_order</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">strict_total_order</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">LessThan</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span> <span class="o">=</span> <span class="n">LessOrEqual</span>
+            <span class="k">elif</span> <span class="n">total_order</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">strict_total_order</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">GreaterThan</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span> <span class="o">=</span> <span class="n">GreaterOrEqual</span>
+            <span class="k">elif</span> <span class="n">total_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span> <span class="o">=</span> <span class="n">_CustomTotalOrder</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">total_order</span> <span class="o">=</span> <span class="n">total_order</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

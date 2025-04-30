@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.theories.integers &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../static/alabaster.css?v=27fed22d" />
+    <script src="../../../static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.theories.integers</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fractions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypeAlias</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constant</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.expr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Add</span><span class="p">,</span> <span class="n">Mul</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.lessorequal</span><span class="w"> </span><span class="kn">import</span> <span class="n">LessOrEqual</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.lessthan</span><span class="w"> </span><span class="kn">import</span> <span class="n">LessThan</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.exists</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExistsInSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.ordered_set</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderedSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.ringlike.ring</span><span class="w"> </span><span class="kn">import</span> <span class="n">RIng</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Unevaluated</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+<span class="n">zero</span> <span class="o">=</span> <span class="n">Constant</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">one</span> <span class="o">=</span> <span class="n">Constant</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.expr</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryExpression</span><span class="p">,</span> <span class="n">Expr</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.total</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrictTotalOrder</span><span class="p">,</span> <span class="n">TotalOrder</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.divides</span><span class="w"> </span><span class="kn">import</span> <span class="n">Divides</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.equals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equals</span>
+
+    <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Term</span><span class="p">)</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Expr</span><span class="p">)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">)</span>
+
+    <span class="n">BinOpFunc</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">BinaryExpression</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span>
+    <span class="n">TotalOrderOp</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">TotalOrder</span><span class="p">]</span>
+    <span class="n">StrictTotalOrderOp</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">StrictTotalOrder</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">Term</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">Unevaluated</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">E</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">BinOpFunc</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">TotalOrderOp</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">StrictTotalOrderOp</span> <span class="o">=</span> <span class="n">Any</span>
+
+
+<div class="viewcode-block" id="IntegersRing">
+<a class="viewcode-back" href="../../../pylogic.theories.html#pylogic.theories.integers.IntegersRing">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">IntegersRing</span><span class="p">(</span><span class="n">RIng</span><span class="p">[</span><span class="n">Z</span><span class="p">],</span> <span class="n">OrderedSet</span><span class="p">):</span>
+    <span class="n">successor</span><span class="p">:</span> <span class="n">Function</span>
+    <span class="n">predecessor</span><span class="p">:</span> <span class="n">Function</span>
+
+    <span class="c1"># TODO: add weak_induction_formal for integers</span>
+    <span class="c1"># If M is a set of integers such that</span>
+    <span class="c1"># (i) M is not empty ; (ii) for every integer x, x is in M if and only if x+1 is in M;</span>
+    <span class="c1"># then M=Z</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">elements</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">containment_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plus_operation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">E</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plus_operation_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">zero</span><span class="p">:</span> <span class="n">Z</span> <span class="o">|</span> <span class="n">Unevaluated</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">times_operation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">E</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">times_operation_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">one</span><span class="p">:</span> <span class="n">Z</span> <span class="o">|</span> <span class="n">Unevaluated</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">total_order</span><span class="p">:</span> <span class="n">TotalOrderOp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">strict_total_order</span><span class="p">:</span> <span class="n">StrictTotalOrderOp</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># explicitly call __init__ of both superclasses due to mro</span>
+        <span class="n">RIng</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">,</span>
+            <span class="n">containment_function</span><span class="o">=</span><span class="n">containment_function</span><span class="p">,</span>
+            <span class="n">plus_operation</span><span class="o">=</span><span class="n">plus_operation</span><span class="p">,</span>
+            <span class="n">plus_operation_symbol</span><span class="o">=</span><span class="n">plus_operation_symbol</span><span class="p">,</span>
+            <span class="n">zero</span><span class="o">=</span><span class="n">zero</span><span class="p">,</span>
+            <span class="n">times_operation</span><span class="o">=</span><span class="n">times_operation</span><span class="p">,</span>
+            <span class="n">times_operation_symbol</span><span class="o">=</span><span class="n">times_operation_symbol</span><span class="p">,</span>
+            <span class="n">one</span><span class="o">=</span><span class="n">one</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">OrderedSet</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">,</span>
+            <span class="n">containment_function</span><span class="o">=</span><span class="n">containment_function</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">total_order</span><span class="o">=</span><span class="n">total_order</span><span class="p">,</span>
+            <span class="n">strict_total_order</span><span class="o">=</span><span class="n">strict_total_order</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="n">elements</span><span class="p">,</span>
+            <span class="s2">&quot;containment_function&quot;</span><span class="p">:</span> <span class="n">containment_function</span><span class="p">,</span>
+            <span class="s2">&quot;plus_operation&quot;</span><span class="p">:</span> <span class="n">plus_operation</span><span class="p">,</span>
+            <span class="s2">&quot;plus_operation_symbol&quot;</span><span class="p">:</span> <span class="n">plus_operation_symbol</span><span class="p">,</span>
+            <span class="s2">&quot;zero&quot;</span><span class="p">:</span> <span class="n">zero</span><span class="p">,</span>
+            <span class="s2">&quot;times_operation&quot;</span><span class="p">:</span> <span class="n">times_operation</span><span class="p">,</span>
+            <span class="s2">&quot;times_operation_symbol&quot;</span><span class="p">:</span> <span class="n">times_operation_symbol</span><span class="p">,</span>
+            <span class="s2">&quot;one&quot;</span><span class="p">:</span> <span class="n">one</span><span class="p">,</span>
+            <span class="s2">&quot;total_order&quot;</span><span class="p">:</span> <span class="n">total_order</span><span class="p">,</span>
+            <span class="s2">&quot;strict_total_order&quot;</span><span class="p">:</span> <span class="n">strict_total_order</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">less_than</span> <span class="o">=</span> <span class="n">LessThan</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">less_or_equal</span> <span class="o">=</span> <span class="n">LessOrEqual</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">successor</span> <span class="o">=</span> <span class="n">Function</span><span class="p">(</span>
+            <span class="s2">&quot;Integers.successor&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,),</span> <span class="n">definition</span><span class="o">=</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predecessor</span> <span class="o">=</span> <span class="n">Function</span><span class="p">(</span>
+            <span class="s2">&quot;Integers.predecessor&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,),</span> <span class="n">definition</span><span class="o">=</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="IntegersRing.divides">
+<a class="viewcode-back" href="../../../pylogic.theories.html#pylogic.theories.integers.IntegersRing.divides">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">divides</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">:</span> <span class="n">Z</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Z</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Divides</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.divides</span><span class="w"> </span><span class="kn">import</span> <span class="n">Divides</span>
+
+        <span class="k">return</span> <span class="n">Divides</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="IntegersRing.even">
+<a class="viewcode-back" href="../../../pylogic.theories.html#pylogic.theories.integers.IntegersRing.even">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">even</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExistsInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">]:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">python_to_pylogic</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="n">python_to_pylogic</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ExistsInSet</span><span class="p">(</span>
+            <span class="n">k</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">Equals</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> is even&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="IntegersRing.odd">
+<a class="viewcode-back" href="../../../pylogic.theories.html#pylogic.theories.integers.IntegersRing.odd">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">odd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExistsInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">]:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">python_to_pylogic</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="n">python_to_pylogic</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;k&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ExistsInSet</span><span class="p">(</span>
+            <span class="n">k</span><span class="p">,</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">Equals</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2"> is odd&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<span class="n">Integers</span> <span class="o">=</span> <span class="n">IntegersRing</span><span class="p">(</span>
+    <span class="s2">&quot;Integers&quot;</span><span class="p">,</span>
+    <span class="n">plus_operation</span><span class="o">=</span><span class="n">Add</span><span class="p">,</span>
+    <span class="n">plus_operation_symbol</span><span class="o">=</span><span class="s2">&quot;+&quot;</span><span class="p">,</span>
+    <span class="n">times_operation</span><span class="o">=</span><span class="n">Mul</span><span class="p">,</span>
+    <span class="n">times_operation_symbol</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">,</span>
+    <span class="n">containment_function</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;is_integer&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+    <span class="n">zero</span><span class="o">=</span><span class="n">zero</span><span class="p">,</span>
+    <span class="n">one</span><span class="o">=</span><span class="n">one</span><span class="p">,</span>
+    <span class="n">total_order</span><span class="o">=</span><span class="n">LessOrEqual</span><span class="p">,</span>
+    <span class="n">strict_total_order</span><span class="o">=</span><span class="n">LessThan</span><span class="p">,</span>
+    <span class="n">latex_name</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">mathbb</span><span class="si">{Z}</span><span class="s2">&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">Integers</span><span class="o">.</span><span class="n">_is_real</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">Integers</span><span class="o">.</span><span class="n">_is_rational</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">Integers</span><span class="o">.</span><span class="n">_is_integer</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

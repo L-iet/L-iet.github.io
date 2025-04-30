@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.structures.ringlike.rng &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../static/alabaster.css?v=27fed22d" />
+    <script src="../../../../static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.structures.ringlike.rng</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fractions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Fraction</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">TypeAlias</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.expr</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryExpression</span><span class="p">,</span> <span class="n">Expr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.infix.infix</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpecialInfix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.exists</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExistsUniqueInSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">ForallInSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.equals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equals</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.grouplike.group</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbelianGroup</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.ringlike.semirng</span><span class="w"> </span><span class="kn">import</span> <span class="n">Semirng</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Unevaluated</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Term</span><span class="p">)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Expr</span><span class="p">)</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">complex</span><span class="p">,</span> <span class="n">Fraction</span><span class="p">)</span>
+<span class="n">BinOpFunc</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">BinaryExpression</span><span class="p">[</span><span class="n">T</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="Rng">
+<a class="viewcode-back" href="../../../../pylogic.structures.ringlike.html#pylogic.structures.ringlike.rng.Rng">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Rng</span><span class="p">(</span><span class="n">Semirng</span><span class="p">[</span><span class="n">Z</span><span class="p">]):</span>
+    <span class="n">have_add_inverses</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">Equals</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]</span>
+    <span class="n">plus_latin_square</span> <span class="o">=</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">],</span> <span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">]]]</span>
+    <span class="p">]</span>
+
+<div class="viewcode-block" id="Rng.property_have_add_inverses">
+<a class="viewcode-back" href="../../../../pylogic.structures.ringlike.html#pylogic.structures.ringlike.rng.Rng.property_have_add_inverses">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_have_add_inverses</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">plus_operation</span><span class="p">:</span> <span class="n">SpecialInfix</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Expr</span><span class="p">,</span> <span class="n">Expr</span><span class="p">],</span>
+        <span class="n">zero</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">Equals</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]:</span>
+        <span class="k">return</span> <span class="n">Group</span><span class="o">.</span><span class="n">property_have_inverses</span><span class="p">(</span><span class="n">set_</span><span class="p">,</span> <span class="n">plus_operation</span><span class="p">,</span> <span class="n">zero</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Rng.property_plus_latin_square">
+<a class="viewcode-back" href="../../../../pylogic.structures.ringlike.html#pylogic.structures.ringlike.rng.Rng.property_plus_latin_square">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_plus_latin_square</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">plus_operation</span><span class="p">:</span> <span class="n">SpecialInfix</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Expr</span><span class="p">,</span> <span class="n">Expr</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">],</span> <span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">]]]</span>
+    <span class="p">]:</span>
+        <span class="k">return</span> <span class="n">AbelianGroup</span><span class="o">.</span><span class="n">property_latin_square</span><span class="p">(</span><span class="n">set_</span><span class="p">,</span> <span class="n">plus_operation</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">elements</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">containment_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plus_operation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">E</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">plus_operation_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">zero</span><span class="p">:</span> <span class="n">Z</span> <span class="o">|</span> <span class="n">Unevaluated</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">times_operation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">E</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">times_operation_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">Semirng</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">,</span>
+            <span class="n">containment_function</span><span class="o">=</span><span class="n">containment_function</span><span class="p">,</span>
+            <span class="n">plus_operation</span><span class="o">=</span><span class="n">plus_operation</span><span class="p">,</span>
+            <span class="n">plus_operation_symbol</span><span class="o">=</span><span class="n">plus_operation_symbol</span><span class="p">,</span>
+            <span class="n">zero</span><span class="o">=</span><span class="n">zero</span><span class="p">,</span>
+            <span class="n">times_operation</span><span class="o">=</span><span class="n">times_operation</span><span class="p">,</span>
+            <span class="n">times_operation_symbol</span><span class="o">=</span><span class="n">times_operation_symbol</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="n">elements</span><span class="p">,</span>
+            <span class="s2">&quot;containment_function&quot;</span><span class="p">:</span> <span class="n">containment_function</span><span class="p">,</span>
+            <span class="s2">&quot;plus_operation&quot;</span><span class="p">:</span> <span class="n">plus_operation</span><span class="p">,</span>
+            <span class="s2">&quot;plus_operation_symbol&quot;</span><span class="p">:</span> <span class="n">plus_operation_symbol</span><span class="p">,</span>
+            <span class="s2">&quot;zero&quot;</span><span class="p">:</span> <span class="n">zero</span><span class="p">,</span>
+            <span class="s2">&quot;times_operation&quot;</span><span class="p">:</span> <span class="n">times_operation</span><span class="p">,</span>
+            <span class="s2">&quot;times_operation_symbol&quot;</span><span class="p">:</span> <span class="n">times_operation_symbol</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">abelian_group_plus</span> <span class="o">=</span> <span class="n">AbelianGroup</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">,</span>
+            <span class="n">containment_function</span><span class="o">=</span><span class="n">containment_function</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">plus_operation</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">operation_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">plus_operation_name</span><span class="p">,</span>
+            <span class="n">operation_symbol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">plus_operation_symbol</span><span class="p">,</span>
+            <span class="n">identity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">zero</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">have_add_inverses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replace_instance_set</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abelian_group_plus</span><span class="p">,</span> <span class="s2">&quot;have_inverses&quot;</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plus_latin_square</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_replace_instance_set</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">abelian_group_plus</span><span class="p">,</span> <span class="s2">&quot;latin_square&quot;</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

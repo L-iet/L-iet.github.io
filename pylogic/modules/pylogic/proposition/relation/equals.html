@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.proposition.relation.equals &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../static/alabaster.css?v=27fed22d" />
+    <script src="../../../../static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.proposition.relation.equals</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Basic</span><span class="p">,</span> <span class="n">Integer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.abs</span><span class="w"> </span><span class="kn">import</span> <span class="n">Abs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.expr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Expr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Side</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span><span class="p">,</span> <span class="n">get_assumptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.binaryrelation</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryRelation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">PythonNumeric</span><span class="p">,</span> <span class="n">Term</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sympy.core.relational</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equality</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Term</span><span class="p">)</span>
+<span class="n">U</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Term</span><span class="p">)</span>
+<span class="n">TProposition</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TProposition&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Proposition&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Equals">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Equals</span><span class="p">(</span><span class="n">BinaryRelation</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="p">]):</span>
+    <span class="n">is_transitive</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">is_reflexive</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">is_symmetric</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Equals&quot;</span>
+    <span class="n">infix_symbol</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+    <span class="n">infix_symbol_latex</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">left</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+        <span class="n">right</span><span class="p">:</span> <span class="n">U</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">left</span><span class="p">,</span>
+            <span class="n">right</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_init_inferred_attrs</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span> <span class="o">|</span> <span class="n">Equals</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Equals</span><span class="p">):</span>
+            <span class="n">both_proven</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">is_proven</span>
+            <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">left</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">right</span><span class="p">,</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="n">both_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">get_assumptions</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">both_proven</span>
+                    <span class="k">else</span> <span class="nb">set</span><span class="p">()</span>
+                <span class="p">),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__add__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">both_proven</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">+</span> <span class="n">other</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">+</span> <span class="n">other</span><span class="p">,</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__add__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span> <span class="o">|</span> <span class="n">Equals</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="o">-</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span> <span class="o">|</span> <span class="n">Equals</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Equals</span><span class="p">):</span>
+            <span class="n">both_proven</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">is_proven</span>
+            <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">left</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">*</span> <span class="n">other</span><span class="o">.</span><span class="n">right</span><span class="p">,</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="n">both_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">get_assumptions</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">both_proven</span>
+                    <span class="k">else</span> <span class="nb">set</span><span class="p">()</span>
+                <span class="p">),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__mul__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">both_proven</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">*</span> <span class="n">other</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">*</span> <span class="n">other</span><span class="p">,</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__mul__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span> <span class="o">|</span> <span class="n">Equals</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Equals</span><span class="p">):</span>
+            <span class="n">both_proven</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">is_proven</span>
+            <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">/</span> <span class="n">other</span><span class="o">.</span><span class="n">left</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">/</span> <span class="n">other</span><span class="o">.</span><span class="n">right</span><span class="p">,</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="n">both_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">get_assumptions</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">both_proven</span>
+                    <span class="k">else</span> <span class="nb">set</span><span class="p">()</span>
+                <span class="p">),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__truediv__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">both_proven</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">/</span> <span class="n">other</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">/</span> <span class="n">other</span><span class="p">,</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__truediv__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span>
+            <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__neg__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__pow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span> <span class="o">|</span> <span class="n">Equals</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Equals</span><span class="p">):</span>
+            <span class="n">both_proven</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">is_proven</span>
+            <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">**</span><span class="n">other</span><span class="o">.</span><span class="n">left</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">**</span><span class="n">other</span><span class="o">.</span><span class="n">right</span><span class="p">,</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="n">both_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">get_assumptions</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">both_proven</span>
+                    <span class="k">else</span> <span class="nb">set</span><span class="p">()</span>
+                <span class="p">),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__pow__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">both_proven</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">**</span><span class="n">other</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">**</span><span class="n">other</span><span class="p">,</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__pow__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="n">eq</span> <span class="o">=</span> <span class="n">Equals</span><span class="o">.</span><span class="n">reflexive</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">eq</span><span class="o">.</span><span class="fm">__add__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__rsub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="n">eq</span> <span class="o">=</span> <span class="n">Equals</span><span class="o">.</span><span class="n">reflexive</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">eq</span><span class="o">.</span><span class="fm">__sub__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__rmul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="n">eq</span> <span class="o">=</span> <span class="n">Equals</span><span class="o">.</span><span class="n">reflexive</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">eq</span><span class="o">.</span><span class="fm">__mul__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__rtruediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="n">eq</span> <span class="o">=</span> <span class="n">Equals</span><span class="o">.</span><span class="n">reflexive</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">eq</span><span class="o">.</span><span class="fm">__truediv__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__rpow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="n">PythonNumeric</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="n">eq</span> <span class="o">=</span> <span class="n">Equals</span><span class="o">.</span><span class="n">reflexive</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">eq</span><span class="o">.</span><span class="fm">__pow__</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__abs__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">),</span>
+            <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;__abs__&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="Equals.get">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="n">Side</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span>
+        <span class="k">elif</span> <span class="n">side</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid side: </span><span class="si">{</span><span class="n">side</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_is_inferred</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_set_is_inferred</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constant</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">==</span> <span class="n">Constant</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">is_zero</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">value</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_check_provable_by_simplification</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">_checking_side</span><span class="p">:</span> <span class="n">Side</span><span class="p">,</span> <span class="n">_doit_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Side</span><span class="p">,</span> <span class="n">Term</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        To check if we can use sympy methods to simplify and prove this equality.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        _checking_side: str</span>
+<span class="sd">            &quot;left&quot; or &quot;right&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">other_side</span><span class="p">:</span> <span class="n">Side</span> <span class="o">=</span> <span class="n">Side</span><span class="o">.</span><span class="n">RIGHT</span> <span class="k">if</span> <span class="n">_checking_side</span> <span class="o">==</span> <span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span> <span class="k">else</span> <span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span>
+        <span class="n">proven</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">:</span>
+            <span class="n">proven</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_checking_side</span><span class="p">),</span> <span class="p">(</span><span class="n">Basic</span><span class="p">,</span> <span class="n">Expr</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_checking_side</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">other_side</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+                <span class="n">proven</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="n">_doit_results</span><span class="p">[</span><span class="n">_checking_side</span><span class="p">]</span> <span class="o">==</span> <span class="n">_doit_results</span><span class="p">[</span><span class="n">other_side</span><span class="p">]:</span>
+                <span class="n">proven</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="n">proven</span>
+
+<div class="viewcode-block" id="Equals.by_simplification">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.by_simplification">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_simplification</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logical inference rule.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">eval_same</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">):</span>
+            <span class="n">proven</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">proven</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">left_doit</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="p">(</span><span class="n">Basic</span><span class="p">,</span> <span class="n">Expr</span><span class="p">))</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span>
+            <span class="p">)</span>
+            <span class="n">right_doit</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">evaluate</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="p">(</span><span class="n">Basic</span><span class="p">,</span> <span class="n">Expr</span><span class="p">))</span>
+                <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span>
+            <span class="p">)</span>
+            <span class="n">doit_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Side</span><span class="p">,</span> <span class="n">Term</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span><span class="p">:</span> <span class="n">left_doit</span><span class="p">,</span>
+                <span class="n">Side</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">:</span> <span class="n">right_doit</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="n">proven</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_provable_by_simplification</span><span class="p">(</span><span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">doit_results</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">proven</span><span class="p">:</span>
+            <span class="n">proven</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_provable_by_simplification</span><span class="p">(</span><span class="n">Side</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">doit_results</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">proven</span><span class="p">:</span>
+            <span class="n">new_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">new_p</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">new_p</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">new_p</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;by_simplification&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_p</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> cannot be proven by simplification&quot;</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="Equals.by_eval">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.by_eval">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a proven equality if both sides evaluate to the same value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">by_simplification</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Equals.by_inspection_check">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.by_inspection_check">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_inspection_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if self is provable by inspection.</span>
+<span class="sd">        Returns True if self is provable by inspection, False if</span>
+<span class="sd">        its negation is provable by inspection, and None if neither is provable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_numeric</span>
+
+        <span class="k">if</span> <span class="n">is_numeric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_numeric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span>
+        <span class="k">return</span> <span class="kc">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="Equals.evaluate">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the equality.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="nb">set</span><span class="p">(),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;evaluate&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Equals.substitute_into">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.substitute_into">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">substitute_into</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="n">Side</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">other_prop</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TProposition</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If side == Side.LEFT, will look for self.right in other_prop and replace it with self.left.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        side: Side</span>
+<span class="sd">            Side to appear in the result.</span>
+<span class="sd">        other_prop: Proposition</span>
+<span class="sd">            Proposition to search for the other side in.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid side: </span><span class="si">{</span><span class="n">side</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="s2">&quot;left&quot;</span><span class="p">:</span>
+            <span class="n">side</span> <span class="o">=</span> <span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span>
+        <span class="k">elif</span> <span class="n">side</span> <span class="o">==</span> <span class="s2">&quot;right&quot;</span><span class="p">:</span>
+            <span class="n">side</span> <span class="o">=</span> <span class="n">Side</span><span class="o">.</span><span class="n">RIGHT</span>
+        <span class="n">other_side</span><span class="p">:</span> <span class="n">Side</span> <span class="o">=</span> <span class="n">Side</span><span class="o">.</span><span class="n">RIGHT</span> <span class="k">if</span> <span class="n">side</span> <span class="o">==</span> <span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span> <span class="k">else</span> <span class="n">Side</span><span class="o">.</span><span class="n">LEFT</span>
+        <span class="n">new_prop</span><span class="p">:</span> <span class="n">TProposition</span> <span class="o">=</span> <span class="n">other_prop</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">other_side</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">side</span><span class="p">)}</span>
+        <span class="p">)</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_is_proven&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_assumptions&quot;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_inference&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_prop</span></div>
+
+
+<div class="viewcode-block" id="Equals.p_substitute_into">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.p_substitute_into">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">p_substitute_into</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">side</span><span class="p">:</span> <span class="n">Side</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">other_prop</span><span class="p">:</span> <span class="n">TProposition</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TProposition</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logical inference rule.</span>
+<span class="sd">        If side == Side.LEFT, will look for self.right in other_prop and replace it with self.left.</span>
+<span class="sd">        Returns a proven proposition.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        side: Side</span>
+<span class="sd">            Side to appear in the result.</span>
+<span class="sd">        other_prop: Proposition</span>
+<span class="sd">            Proposition to search for the other side in.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+        <span class="k">assert</span> <span class="n">other_prop</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">other_prop</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+        <span class="n">new_prop</span><span class="p">:</span> <span class="n">TProposition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">substitute_into</span><span class="p">(</span><span class="n">side</span><span class="p">,</span> <span class="n">other_prop</span><span class="p">)</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
+            <span class="n">get_assumptions</span><span class="p">(</span><span class="n">other_prop</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_prop</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;p_substitute_into&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_prop</span></div>
+
+
+<div class="viewcode-block" id="Equals.zero_abs_is_0">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.zero_abs_is_0">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">zero_abs_is_0</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logical inference rule. If self is of the form Abs(x) = 0,</span>
+<span class="sd">        return a proof of x = 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">Abs</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">==</span> <span class="n">Integer</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+            <span class="mi">0</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;zero_abs_is_0&quot;</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Equals.apply">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.apply">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">],</span> <span class="n">Term</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply a function to both sides of the equality.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span>
+            <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">),</span>
+            <span class="n">f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;apply&quot;</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Equals.symmetric">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.symmetric">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">symmetric</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">[</span><span class="n">U</span><span class="p">,</span> <span class="n">T</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">symmetric</span><span class="p">()</span>  <span class="c1"># type: ignore</span></div>
+
+
+<div class="viewcode-block" id="Equals.to_sympy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals.to_sympy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_sympy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equality</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Eq</span>
+
+        <span class="k">return</span> <span class="n">Eq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">to_sympy</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">to_sympy</span><span class="p">())</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
