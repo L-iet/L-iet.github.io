@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pylogic.proposition.ordering package &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pylogic.proposition.quantified package" href="pylogic.proposition.quantified.html" />
+    <link rel="prev" title="pylogic.proposition package" href="pylogic.proposition.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pylogic-proposition-ordering-package">
+<h1>pylogic.proposition.ordering package<a class="headerlink" href="#pylogic-proposition-ordering-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pylogic.proposition.ordering.greaterorequal">
+<span id="pylogic-proposition-ordering-greaterorequal-module"></span><h2>pylogic.proposition.ordering.greaterorequal module<a class="headerlink" href="#module-pylogic.proposition.ordering.greaterorequal" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.greaterorequal.</span></span><span class="sig-name descname"><span class="pre">GreaterOrEqual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_assumption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterorequal.html#GreaterOrEqual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">TotalOrder</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">_Ordering</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.add_negative_to_right">
+<span class="sig-name descname"><span class="pre">add_negative_to_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">negative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterorequal.html#GreaterOrEqual.add_negative_to_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.add_negative_to_right" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &gt;= b</cite> and <cite>c</cite> is negative, returns a
+proposition of the form <cite>a &gt; b + c</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.add_nonnegative_to_left">
+<span class="sig-name descname"><span class="pre">add_nonnegative_to_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nonnegative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual" title="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual"><span class="pre">GreaterOrEqual</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterorequal.html#GreaterOrEqual.add_nonnegative_to_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.add_nonnegative_to_left" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &gt;= b</cite> and <cite>c</cite> is nonnegative, returns a
+proposition of the form <cite>a + c &gt;= b</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.add_nonpositive_to_right">
+<span class="sig-name descname"><span class="pre">add_nonpositive_to_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nonpositive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual" title="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual"><span class="pre">GreaterOrEqual</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterorequal.html#GreaterOrEqual.add_nonpositive_to_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.add_nonpositive_to_right" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &gt;= b</cite> and <cite>c</cite> is nonpositive (c &lt;= 0), returns a
+proposition of the form <cite>a &gt;= b + c</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.add_positive_to_left">
+<span class="sig-name descname"><span class="pre">add_positive_to_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterorequal.html#GreaterOrEqual.add_positive_to_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.add_positive_to_left" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &gt;= b</cite> and <cite>c</cite> is positive, returns a
+proposition of the form <cite>a + c &gt; b</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.by_inspection_check">
+<span class="sig-name descname"><span class="pre">by_inspection_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterorequal.html#GreaterOrEqual.by_inspection_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.by_inspection_check" title="Link to this definition">¶</a></dt>
+<dd><p>Check if self is provable by inspection.
+Returns True if self is provable by inspection, False if
+its negation is provable by inspection, and None if neither is provable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.infix_symbol">
+<span class="sig-name descname"><span class="pre">infix_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&gt;='</span></em><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.infix_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.infix_symbol_latex">
+<span class="sig-name descname"><span class="pre">infix_symbol_latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\\geq'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.infix_symbol_latex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GreaterOrEqual'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.to_disjunction">
+<span class="sig-name descname"><span class="pre">to_disjunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.or_.Or" title="pylogic.proposition.or_.Or"><span class="pre">Or</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterorequal.html#GreaterOrEqual.to_disjunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterorequal.GreaterOrEqual.to_disjunction" title="Link to this definition">¶</a></dt>
+<dd><p>If self is of the form <cite>a &gt;= b</cite>, returns a proposition of the form <cite>a &gt; b or a = b</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.proposition.ordering.greaterthan">
+<span id="pylogic-proposition-ordering-greaterthan-module"></span><h2>pylogic.proposition.ordering.greaterthan module<a class="headerlink" href="#module-pylogic.proposition.ordering.greaterthan" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.greaterthan.</span></span><span class="sig-name descname"><span class="pre">GreaterThan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_assumption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.proposition.ordering.total.StrictTotalOrder" title="pylogic.proposition.ordering.total.StrictTotalOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrictTotalOrder</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">_Ordering</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.add_nonnegative_to_left">
+<span class="sig-name descname"><span class="pre">add_nonnegative_to_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nonnegative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.add_nonnegative_to_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.add_nonnegative_to_left" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &gt; b</cite> and <cite>c</cite> is nonnegative, returns a
+proposition of the form <cite>a + c &gt; b</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.add_nonpositive_to_right">
+<span class="sig-name descname"><span class="pre">add_nonpositive_to_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nonpositive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.add_nonpositive_to_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.add_nonpositive_to_right" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &gt; b</cite> and <cite>c</cite> is nonpositive (c &lt;= 0), returns a
+proposition of the form <cite>a &gt; b + c</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.by_inspection_check">
+<span class="sig-name descname"><span class="pre">by_inspection_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.by_inspection_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.by_inspection_check" title="Link to this definition">¶</a></dt>
+<dd><p>Check if self is provable by inspection.
+Returns True if self is provable by inspection, False if
+its negation is provable by inspection, and None if neither is provable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.infix_symbol">
+<span class="sig-name descname"><span class="pre">infix_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&gt;'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.infix_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.infix_symbol_latex">
+<span class="sig-name descname"><span class="pre">infix_symbol_latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&gt;'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.infix_symbol_latex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.mul_inverse">
+<span class="sig-name descname"><span class="pre">mul_inverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.mul_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.mul_inverse" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.multiply_by_negative">
+<span class="sig-name descname"><span class="pre">multiply_by_negative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_x_is_negative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.multiply_by_negative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.multiply_by_negative" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.multiply_by_positive">
+<span class="sig-name descname"><span class="pre">multiply_by_positive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_x_is_positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.multiply_by_positive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.multiply_by_positive" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'GreaterThan'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.p_multiply_by_negative">
+<span class="sig-name descname"><span class="pre">p_multiply_by_negative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_x_is_negative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.p_multiply_by_negative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.p_multiply_by_negative" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+Same as multiply_by_negative, but returns a proven proposition</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.p_multiply_by_positive">
+<span class="sig-name descname"><span class="pre">p_multiply_by_positive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_x_is_positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.p_multiply_by_positive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.p_multiply_by_positive" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+Same as multiply_by_positive, but returns a proven proposition</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.p_to_less_than">
+<span class="sig-name descname"><span class="pre">p_to_less_than</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.p_to_less_than"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.p_to_less_than" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule. Same as to_less_than, but returns a proven proposition</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.to_less_than">
+<span class="sig-name descname"><span class="pre">to_less_than</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.to_less_than"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.to_less_than" title="Link to this definition">¶</a></dt>
+<dd><p>If self is of the form a &gt; b, returns an inequality of the form b &lt; a</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.to_negative_inequality">
+<span class="sig-name descname"><span class="pre">to_negative_inequality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.to_negative_inequality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.to_negative_inequality" title="Link to this definition">¶</a></dt>
+<dd><p>If self is of the form a &gt; b, returns an inequality of the form b - a &lt; 0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.GreaterThan.to_positive_inequality">
+<span class="sig-name descname"><span class="pre">to_positive_inequality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#GreaterThan.to_positive_inequality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.GreaterThan.to_positive_inequality" title="Link to this definition">¶</a></dt>
+<dd><p>If self is of the form a &gt; b, returns an inequality of the form a - b &gt; 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.is_absolute">
+<span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.greaterthan.</span></span><span class="sig-name descname"><span class="pre">is_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expr_not_zero</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#is_absolute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.is_absolute" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+Given an expr of the form sympy.Abs(x) and a proof that the expr is
+not zero,
+return a proven proposition that says sympy.Abs(x) &gt; 0</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.is_even_power">
+<span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.greaterthan.</span></span><span class="sig-name descname"><span class="pre">is_even_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#is_even_power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.is_even_power" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+Given an expr of the form x**(2n), return a proven proposition that says
+x**(2n) &gt; 0</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.greaterthan.is_rational_power">
+<span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.greaterthan.</span></span><span class="sig-name descname"><span class="pre">is_rational_power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_base_is_positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/greaterthan.html#is_rational_power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.greaterthan.is_rational_power" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+Given an expr of the form x**(p/q) and a proof that x &gt; 0,
+return a proven proposition that says
+x**(p/q) &gt; 0</p>
+</dd></dl>
+
+</section>
+<section id="module-pylogic.proposition.ordering.inference">
+<span id="pylogic-proposition-ordering-inference-module"></span><h2>pylogic.proposition.ordering.inference module<a class="headerlink" href="#module-pylogic.proposition.ordering.inference" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.inference.transitive">
+<span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.inference.</span></span><span class="sig-name descname"><span class="pre">transitive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conclusion_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ConcType</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">props</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.binaryrelation.BinaryRelation" title="pylogic.proposition.relation.binaryrelation.BinaryRelation"><span class="pre">BinaryRelation</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/inference.html#transitive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.inference.transitive" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+Prove a relation from a series of relations using transitivity.</p>
+<p>For example, if we have a series of relations:
+a = b, b &lt;= c, c &lt; d, d = e
+we can prove a &lt; e (if conclusion type is &lt;) or a &lt;= e (if conclusion type is &lt;=).</p>
+</dd></dl>
+
+</section>
+<section id="module-pylogic.proposition.ordering.lessorequal">
+<span id="pylogic-proposition-ordering-lessorequal-module"></span><h2>pylogic.proposition.ordering.lessorequal module<a class="headerlink" href="#module-pylogic.proposition.ordering.lessorequal" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.lessorequal.</span></span><span class="sig-name descname"><span class="pre">LessOrEqual</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_assumption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessorequal.html#LessOrEqual"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">TotalOrder</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">_Ordering</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.add_negative_to_left">
+<span class="sig-name descname"><span class="pre">add_negative_to_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">negative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessorequal.html#LessOrEqual.add_negative_to_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.add_negative_to_left" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &lt;= b</cite> and <cite>c</cite> is negative, returns a
+proposition of the form <cite>a + c &lt; b</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.add_nonnegative_to_right">
+<span class="sig-name descname"><span class="pre">add_nonnegative_to_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nonnegative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual" title="pylogic.proposition.ordering.lessorequal.LessOrEqual"><span class="pre">LessOrEqual</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessorequal.html#LessOrEqual.add_nonnegative_to_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.add_nonnegative_to_right" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &lt;= b</cite> and <cite>c</cite> is nonnegative, returns a
+proposition of the form <cite>a &lt;= b + c</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.add_nonpositive_to_left">
+<span class="sig-name descname"><span class="pre">add_nonpositive_to_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nonpositive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual" title="pylogic.proposition.ordering.lessorequal.LessOrEqual"><span class="pre">LessOrEqual</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessorequal.html#LessOrEqual.add_nonpositive_to_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.add_nonpositive_to_left" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &lt;= b</cite> and <cite>c</cite> is nonpositive (c &lt;= 0), returns a
+proposition of the form <cite>a + c &lt;= b</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.add_positive_to_right">
+<span class="sig-name descname"><span class="pre">add_positive_to_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessorequal.html#LessOrEqual.add_positive_to_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.add_positive_to_right" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &lt;= b</cite> and <cite>c</cite> is positive, returns a
+proposition of the form <cite>a &lt; b + c</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.by_inspection_check">
+<span class="sig-name descname"><span class="pre">by_inspection_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessorequal.html#LessOrEqual.by_inspection_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.by_inspection_check" title="Link to this definition">¶</a></dt>
+<dd><p>Check if self is provable by inspection.
+Returns True if self is provable by inspection, False if
+its negation is provable by inspection, and None if neither is provable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.infix_symbol">
+<span class="sig-name descname"><span class="pre">infix_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;='</span></em><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.infix_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.infix_symbol_latex">
+<span class="sig-name descname"><span class="pre">infix_symbol_latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\\leq'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.infix_symbol_latex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LessOrEqual'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessorequal.LessOrEqual.to_disjunction">
+<span class="sig-name descname"><span class="pre">to_disjunction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.or_.Or" title="pylogic.proposition.or_.Or"><span class="pre">Or</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessorequal.html#LessOrEqual.to_disjunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessorequal.LessOrEqual.to_disjunction" title="Link to this definition">¶</a></dt>
+<dd><p>If self is of the form <cite>a &lt;= b</cite>, returns a proposition of the form <cite>a &lt; b or a = b</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.proposition.ordering.lessthan">
+<span id="pylogic-proposition-ordering-lessthan-module"></span><h2>pylogic.proposition.ordering.lessthan module<a class="headerlink" href="#module-pylogic.proposition.ordering.lessthan" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.lessthan.</span></span><span class="sig-name descname"><span class="pre">LessThan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_assumption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.proposition.ordering.total.StrictTotalOrder" title="pylogic.proposition.ordering.total.StrictTotalOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrictTotalOrder</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">_Ordering</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.add_nonnegative_to_right">
+<span class="sig-name descname"><span class="pre">add_nonnegative_to_right</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nonnegative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.add_nonnegative_to_right"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.add_nonnegative_to_right" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &lt; b</cite> and <cite>c</cite> is nonnegative, returns a
+proposition of the form <cite>a &lt; b + c</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.add_nonpositive_to_left">
+<span class="sig-name descname"><span class="pre">add_nonpositive_to_left</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nonpositive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.add_nonpositive_to_left"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.add_nonpositive_to_left" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+If self is of the form <cite>a &lt; b</cite> and <cite>c</cite> is nonpositive (c &lt;= 0), returns a
+proposition of the form <cite>a + c &lt; b</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.by_definition">
+<span class="sig-name descname"><span class="pre">by_definition</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.by_definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.by_definition" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule. Determine if the proposition is true by definition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.by_inspection_check">
+<span class="sig-name descname"><span class="pre">by_inspection_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.by_inspection_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.by_inspection_check" title="Link to this definition">¶</a></dt>
+<dd><p>Check if self is provable by inspection.
+Returns True if self is provable by inspection, False if
+its negation is provable by inspection, and None if neither is provable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.infix_symbol">
+<span class="sig-name descname"><span class="pre">infix_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.infix_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.infix_symbol_latex">
+<span class="sig-name descname"><span class="pre">infix_symbol_latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.infix_symbol_latex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.mul_inverse">
+<span class="sig-name descname"><span class="pre">mul_inverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.mul_inverse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.mul_inverse" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.multiply_by_negative">
+<span class="sig-name descname"><span class="pre">multiply_by_negative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_x_is_negative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.multiply_by_negative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.multiply_by_negative" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.multiply_by_positive">
+<span class="sig-name descname"><span class="pre">multiply_by_positive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_x_is_positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.multiply_by_positive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.multiply_by_positive" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'LessThan'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.p_multiply_by_negative">
+<span class="sig-name descname"><span class="pre">p_multiply_by_negative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_x_is_negative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.p_multiply_by_negative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.p_multiply_by_negative" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+Same as multiply_by_negative, but returns a proven proposition</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.p_multiply_by_positive">
+<span class="sig-name descname"><span class="pre">p_multiply_by_positive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_x_is_positive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.p_multiply_by_positive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.p_multiply_by_positive" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule.
+Same as multiply_by_positive, but returns a proven proposition</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.p_to_greater_than">
+<span class="sig-name descname"><span class="pre">p_to_greater_than</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.p_to_greater_than"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.p_to_greater_than" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule. Same as to_greater_than, but returns a proven proposition</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.to_greater_than">
+<span class="sig-name descname"><span class="pre">to_greater_than</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.to_greater_than"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.to_greater_than" title="Link to this definition">¶</a></dt>
+<dd><p>If self is of the form a &lt; b, returns an inequality of the form b &gt; a</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.to_negative_inequality">
+<span class="sig-name descname"><span class="pre">to_negative_inequality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.to_negative_inequality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.to_negative_inequality" title="Link to this definition">¶</a></dt>
+<dd><p>If self is of the form a &lt; b, returns an inequality of the form a - b &lt; 0</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.lessthan.LessThan.to_positive_inequality">
+<span class="sig-name descname"><span class="pre">to_positive_inequality</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/lessthan.html#LessThan.to_positive_inequality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.lessthan.LessThan.to_positive_inequality" title="Link to this definition">¶</a></dt>
+<dd><p>If self is of the form a &lt; b, returns an inequality of the form b - a &gt; 0</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.proposition.ordering.ordering">
+<span id="pylogic-proposition-ordering-ordering-module"></span><h2>pylogic.proposition.ordering.ordering module<a class="headerlink" href="#module-pylogic.proposition.ordering.ordering" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pylogic.proposition.ordering.partial">
+<span id="pylogic-proposition-ordering-partial-module"></span><h2>pylogic.proposition.ordering.partial module<a class="headerlink" href="#module-pylogic.proposition.ordering.partial" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.partial.</span></span><span class="sig-name descname"><span class="pre">PartialOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'PartialOrder'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_assumption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/partial.html#PartialOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.binaryrelation.BinaryRelation" title="pylogic.proposition.relation.binaryrelation.BinaryRelation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryRelation</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">_Ordering</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the partial order.</p></li>
+<li><p><strong>left</strong> (<em>T</em>) – The left term of the partial order.</p></li>
+<li><p><strong>right</strong> (<em>U</em>) – The right term of the partial order.</p></li>
+<li><p><strong>BinaryRelation.</strong> (<em>Also receives the same parameters as</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder.by_inspection_check">
+<span class="sig-name descname"><span class="pre">by_inspection_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/partial.html#PartialOrder.by_inspection_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder.by_inspection_check" title="Link to this definition">¶</a></dt>
+<dd><p>Check if self is provable by inspection.
+Returns True if self is provable by inspection, False if
+its negation is provable by inspection, and None if neither is provable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder.infix_symbol">
+<span class="sig-name descname"><span class="pre">infix_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;='</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder.infix_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder.infix_symbol_latex">
+<span class="sig-name descname"><span class="pre">infix_symbol_latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\\leq'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder.infix_symbol_latex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder.is_antisymmetric">
+<span class="sig-name descname"><span class="pre">is_antisymmetric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder.is_antisymmetric" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder.is_reflexive">
+<span class="sig-name descname"><span class="pre">is_reflexive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder.is_reflexive" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder.is_transitive">
+<span class="sig-name descname"><span class="pre">is_transitive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder.is_transitive" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PartialOrder'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.PartialOrder.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/partial.html#PartialOrder.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.partial.PartialOrder.to_sympy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.partial.</span></span><span class="sig-name descname"><span class="pre">StrictPartialOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'StrictPartialOrder'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_assumption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/partial.html#StrictPartialOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.binaryrelation.BinaryRelation" title="pylogic.proposition.relation.binaryrelation.BinaryRelation"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryRelation</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">_Ordering</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the strict partial order.</p></li>
+<li><p><strong>left</strong> (<em>T</em>) – The left term of the strict partial order.</p></li>
+<li><p><strong>right</strong> (<em>U</em>) – The right term of the strict partial order.</p></li>
+<li><p><strong>BinaryRelation.</strong> (<em>Also receives the same parameters as</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder.by_inspection_check">
+<span class="sig-name descname"><span class="pre">by_inspection_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/partial.html#StrictPartialOrder.by_inspection_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder.by_inspection_check" title="Link to this definition">¶</a></dt>
+<dd><p>Check if self is provable by inspection.
+Returns True if self is provable by inspection, False if
+its negation is provable by inspection, and None if neither is provable.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder.infix_symbol">
+<span class="sig-name descname"><span class="pre">infix_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder.infix_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder.infix_symbol_latex">
+<span class="sig-name descname"><span class="pre">infix_symbol_latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder.infix_symbol_latex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder.is_asymmetric">
+<span class="sig-name descname"><span class="pre">is_asymmetric</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder.is_asymmetric" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder.is_irreflexive">
+<span class="sig-name descname"><span class="pre">is_irreflexive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder.is_irreflexive" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder.is_transitive">
+<span class="sig-name descname"><span class="pre">is_transitive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder.is_transitive" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'StrictPartialOrder'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.partial.StrictPartialOrder.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/partial.html#StrictPartialOrder.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.partial.StrictPartialOrder.to_sympy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.proposition.ordering.theorems">
+<span id="pylogic-proposition-ordering-theorems-module"></span><h2>pylogic.proposition.ordering.theorems module<a class="headerlink" href="#module-pylogic.proposition.ordering.theorems" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.theorems.absolute_value_nonnegative_f">
+<span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.theorems.</span></span><span class="sig-name descname"><span class="pre">absolute_value_nonnegative_f</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.or_.Or" title="pylogic.proposition.or_.Or"><span class="pre">Or</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pylogic.proposition.ordering.greaterthan.GreaterThan" title="pylogic.proposition.ordering.greaterthan.GreaterThan"><span class="pre">GreaterThan</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/theorems.html#absolute_value_nonnegative_f"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.theorems.absolute_value_nonnegative_f" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule. If x is a real number, returns a proven proposition of the form Abs(x) &gt; 0 V Abs(x) = 0.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.theorems.order_axiom_bf">
+<span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.theorems.</span></span><span class="sig-name descname"><span class="pre">order_axiom_bf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UnevaluatedExpr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Numeric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UnevaluatedExpr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Numeric</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/proposition/ordering/theorems.html#order_axiom_bf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.theorems.order_axiom_bf" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.theorems.</span></span><span class="sig-name descname"><span class="pre">order_axiom_bf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">sp.Basic</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Numeric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">sp.Basic</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Numeric</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pylogic.proposition.ordering.lessthan.LessThan" title="pylogic.proposition.ordering.lessthan.LessThan"><span class="pre">LessThan</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pylogic.proposition.ordering.total">
+<span id="pylogic-proposition-ordering-total-module"></span><h2>pylogic.proposition.ordering.total module<a class="headerlink" href="#module-pylogic.proposition.ordering.total" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.StrictTotalOrder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.total.</span></span><span class="sig-name descname"><span class="pre">StrictTotalOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'StrictPartialOrder'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_assumption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/total.html#StrictTotalOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.total.StrictTotalOrder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.proposition.ordering.partial.StrictPartialOrder" title="pylogic.proposition.ordering.partial.StrictPartialOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">StrictPartialOrder</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.StrictTotalOrder.infix_symbol">
+<span class="sig-name descname"><span class="pre">infix_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.total.StrictTotalOrder.infix_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.StrictTotalOrder.infix_symbol_latex">
+<span class="sig-name descname"><span class="pre">infix_symbol_latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.total.StrictTotalOrder.infix_symbol_latex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.StrictTotalOrder.is_connected">
+<span class="sig-name descname"><span class="pre">is_connected</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pylogic.proposition.ordering.total.StrictTotalOrder.is_connected" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.StrictTotalOrder.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'StrictTotalOrder'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.total.StrictTotalOrder.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.TotalOrder">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.proposition.ordering.total.</span></span><span class="sig-name descname"><span class="pre">TotalOrder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'PartialOrder'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_assumption</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/proposition/ordering/total.html#TotalOrder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.proposition.ordering.total.TotalOrder" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.proposition.ordering.partial.PartialOrder" title="pylogic.proposition.ordering.partial.PartialOrder"><code class="xref py py-class docutils literal notranslate"><span class="pre">PartialOrder</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>]</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.TotalOrder.infix_symbol">
+<span class="sig-name descname"><span class="pre">infix_symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;='</span></em><a class="headerlink" href="#pylogic.proposition.ordering.total.TotalOrder.infix_symbol" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.TotalOrder.infix_symbol_latex">
+<span class="sig-name descname"><span class="pre">infix_symbol_latex</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'\\leq'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.total.TotalOrder.infix_symbol_latex" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.TotalOrder.is_strongly_connected">
+<span class="sig-name descname"><span class="pre">is_strongly_connected</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#pylogic.proposition.ordering.total.TotalOrder.is_strongly_connected" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.proposition.ordering.total.TotalOrder.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'TotalOrder'</span></em><a class="headerlink" href="#pylogic.proposition.ordering.total.TotalOrder.name" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.proposition.ordering">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pylogic.proposition.ordering" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pylogic.html">pylogic package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pylogic.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.abc">pylogic.abc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.assumptions_context">pylogic.assumptions_context module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.constant">pylogic.constant module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.helpers">pylogic.helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.inference">pylogic.inference module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.symbol">pylogic.symbol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.sympy_helpers">pylogic.sympy_helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.variable">pylogic.variable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.warn">pylogic.warn module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="pylogic.html">pylogic package</a><ul>
+  <li><a href="pylogic.proposition.html">pylogic.proposition package</a><ul>
+      <li>Previous: <a href="pylogic.proposition.html" title="previous chapter">pylogic.proposition package</a></li>
+      <li>Next: <a href="pylogic.proposition.quantified.html" title="next chapter">pylogic.proposition.quantified package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/pylogic.proposition.ordering.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

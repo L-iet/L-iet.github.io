@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.proposition.quantified.exists &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.proposition.quantified.exists</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constant</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.implies</span><span class="w"> </span><span class="kn">import</span> <span class="n">Implies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span><span class="p">,</span> <span class="n">get_assumptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">Forall</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.quantified</span><span class="w"> </span><span class="kn">import</span> <span class="n">_Quantified</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.contains</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsContainedIn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.equals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equals</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.subsets</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsSubsetOf</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+<span class="n">TProposition</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TProposition&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Proposition&quot;</span><span class="p">)</span>
+<span class="n">UProposition</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;UProposition&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Proposition&quot;</span><span class="p">)</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Proposition&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.not_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Not</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.symbol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Symbol</span>
+
+
+<span class="n">InferenceRule</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;InferenceRule&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]})</span>
+
+
+<div class="viewcode-block" id="Exists">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Exists</span><span class="p">(</span><span class="n">_Quantified</span><span class="p">[</span><span class="n">TProposition</span><span class="p">]):</span>
+    <span class="c1"># order of operations for propositions (0-indexed)</span>
+    <span class="c1"># not xor and or =&gt; &lt;=&gt; forall forallInSet forallSubsets exists existsInSet existsUnique</span>
+    <span class="c1"># existsUniqueInSet existsSubset existsUniqueSubset Proposition</span>
+    <span class="n">_precedence</span> <span class="o">=</span> <span class="mi">9</span>
+
+    <span class="n">_inference_rules</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InferenceRule</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;exists_modus_ponens&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Forall&quot;</span><span class="p">]},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;extract&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[]},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;de_morgan&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[]},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;to_exists_in_set&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[]},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;to_exists_unique&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[]},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;to_exists_unique_in_set&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[]},</span>
+    <span class="p">]</span>
+
+    <span class="n">_q</span> <span class="o">=</span> <span class="s2">&quot;exists&quot;</span>
+    <span class="n">_bin_symb</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_innermost_prop_attr</span> <span class="o">=</span> <span class="s2">&quot;inner_proposition&quot;</span>
+
+<div class="viewcode-block" id="Exists.from_proposition">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.from_proposition">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_proposition</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">existential_var_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">expression_to_replace</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">inner_proposition</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span>
+        <span class="n">latex_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Exists</span><span class="p">[</span><span class="n">TProposition</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        latex_name: str | None</span>
+<span class="sd">            The latex representation of the existential variable.</span>
+<span class="sd">        positions: list[list[int]]</span>
+<span class="sd">            This is a list containing the positions of the expression_to_replace in self.</span>
+<span class="sd">            If None, we will search for all occurences of the expression_to_replace in self.</span>
+<span class="sd">            This is a nested list representing the path we need to go down in the proposition tree,</span>
+<span class="sd">            For example, if self is</span>
+<span class="sd">            (forall x: (p1 x -&gt; p2 x) /\ (p3 x) /\ (p4 x)) -&gt; (p5 x)</span>
+<span class="sd">            existential_var = q</span>
+<span class="sd">            and positions = [[0, 0, 0], [0, 2], [1]]</span>
+<span class="sd">            we end up with</span>
+<span class="sd">            exists q: (forall x: (p1 q -&gt; p2 x) /\ (p3 x) /\ (p4 q)) -&gt; (p5 q)</span>
+
+<span class="sd">        Other keyword arguments are passed to the variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">variable</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span>
+            <span class="n">existential_var_name</span><span class="p">,</span> <span class="n">latex_name</span><span class="o">=</span><span class="n">latex_name</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">expression_to_replace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">inner_proposition</span> <span class="o">=</span> <span class="n">inner_proposition</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="p">{</span><span class="n">expression_to_replace</span><span class="p">:</span> <span class="n">variable</span><span class="p">},</span>
+                <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span>
+                <span class="n">equal_check</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;equal_check&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">variable</span><span class="p">,</span>
+            <span class="n">inner_proposition</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span>
+        <span class="n">inner_proposition</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="s2">&quot;exists&quot;</span><span class="p">,</span>
+            <span class="n">variable</span><span class="p">,</span>
+            <span class="n">inner_proposition</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># And or Proposition or None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span><span class="p">:</span> <span class="n">Proposition</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Proposition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Exists</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">inner_proposition</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__hash__</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Exists.extract">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.extract">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extract</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">latex_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Symbol</span><span class="p">,</span> <span class="n">TProposition</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Logical inference rule.</span>
+<span class="sd">        If self is proven, return a constant and a proven inner proposition.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+
+        <span class="n">other_free_vars</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="n">v</span>
+                <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span><span class="o">.</span><span class="n">variables</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">v</span><span class="o">.</span><span class="n">is_bound</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">v</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">other_free_vars</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">is_set</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+
+                <span class="bp">cls</span> <span class="o">=</span> <span class="n">Set</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">:</span>
+                <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.sequence</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+
+                <span class="bp">cls</span> <span class="o">=</span> <span class="n">Sequence</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">cls</span> <span class="o">=</span> <span class="n">Constant</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">cls</span> <span class="o">=</span> <span class="n">Variable</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">latex_name</span><span class="o">=</span><span class="n">latex_name</span> <span class="ow">or</span> <span class="n">name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">latex_name</span><span class="p">,</span>
+            <span class="n">depends_on</span><span class="o">=</span><span class="n">other_free_vars</span><span class="p">,</span>
+            <span class="n">_from_existential_instance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">set_</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">is_set</span><span class="p">,</span>
+            <span class="n">sequence</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">is_sequence</span><span class="p">,</span>
+            <span class="n">length</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">proven_inner</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">:</span> <span class="n">c</span><span class="p">})</span>
+        <span class="n">proven_inner</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">proven_inner</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">proven_inner</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;extract&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">proven_inner</span><span class="p">,</span> <span class="n">And</span><span class="p">):</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">knowledge_base</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">proven_inner</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">knowledge_base</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">proven_inner</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">proven_inner</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Exists.exists_modus_ponens">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.exists_modus_ponens">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">exists_modus_ponens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Forall</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">TProposition</span><span class="p">,</span> <span class="n">B</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Exists</span><span class="p">[</span><span class="n">B</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logical inference rule. If self is exists x: P(x) and given forall x: P(x) -&gt; Q(x)</span>
+<span class="sd">        and each is proven, conclude exists x: Q(x).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">Forall</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Forall</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">other</span><span class="si">}</span><span class="s2"> is not a forall statement&quot;</span>
+        <span class="k">assert</span> <span class="n">other</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">other</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">inner_proposition</span><span class="o">.</span><span class="n">antecedent</span>
+
+        <span class="n">other_cons</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">inner_proposition</span><span class="o">.</span><span class="n">consequent</span>
+        <span class="n">new_p</span> <span class="o">=</span> <span class="n">Exists</span><span class="p">(</span>
+            <span class="n">variable</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span>
+            <span class="n">inner_proposition</span><span class="o">=</span><span class="n">other_cons</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">get_assumptions</span><span class="p">(</span><span class="n">other</span><span class="p">)),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;exists_modus_ponens&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_p</span></div>
+
+
+<div class="viewcode-block" id="Exists.de_morgan">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.de_morgan">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">de_morgan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Proposition</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply De Morgan&#39;s law to an existentially quantified sentence.</span>
+
+<span class="sd">        In intuitionistic logic, the only valid De Morgan&#39;s laws are</span>
+
+<span class="sd">        `~A and ~B &lt;-&gt; ~(A or B)`</span>
+
+<span class="sd">        `~A or ~B -&gt; ~(A and B)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.enviroment_settings.settings</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.not_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Not</span><span class="p">,</span> <span class="n">neg</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">Forall</span>
+
+        <span class="k">if</span> <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;USE_CLASSICAL_LOGIC&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span><span class="p">,</span> <span class="n">Not</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Not</span><span class="p">(</span>
+                <span class="n">Forall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span><span class="o">.</span><span class="n">negated</span><span class="o">.</span><span class="n">de_morgan</span><span class="p">()),</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+                <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+                <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;de_morgan&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+
+        <span class="n">inner_negated</span> <span class="o">=</span> <span class="n">neg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span><span class="o">.</span><span class="n">de_morgan</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">unbind</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Not</span><span class="p">(</span>
+            <span class="n">Forall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">inner_negated</span><span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;de_morgan&quot;</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Exists.to_exists_in_set">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.to_exists_in_set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_exists_in_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExistsInSet</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If self matches the structure,</span>
+
+<span class="sd">        exists x: (x in set /\\ P (x))</span>
+
+<span class="sd">        convert self to an `ExistsInSet` statement.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inner_prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span>
+        <span class="k">match</span> <span class="n">inner_prop</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">And</span><span class="p">(</span><span class="n">propositions</span><span class="o">=</span><span class="p">[</span><span class="n">IsContainedIn</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">),</span> <span class="o">*</span><span class="n">props</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="n">ExistsInSet</span><span class="p">(</span>
+                    <span class="n">variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span>
+                    <span class="n">set_</span><span class="o">=</span><span class="n">inner_prop</span><span class="o">.</span><span class="n">propositions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_</span><span class="p">,</span>
+                    <span class="n">inner_proposition</span><span class="o">=</span><span class="n">And</span><span class="p">(</span><span class="o">*</span><span class="n">props</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">props</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">props</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                    <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+                    <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+                    <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot convert </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> to ExistsInSet&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Exists.to_exists_unique">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.to_exists_unique">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_exists_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExistsUnique</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If self matches the structure,</span>
+
+<span class="sd">        exists x: (P (x) /\\ forall y: [P (y) -&gt; y = x])</span>
+
+<span class="sd">        convert self to an `ExistsUnique` statement.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inner_prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span>
+        <span class="k">match</span> <span class="n">inner_prop</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">And</span><span class="p">(</span>
+                <span class="n">propositions</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">new_inner</span><span class="p">,</span>
+                    <span class="n">Forall</span><span class="p">(</span>
+                        <span class="n">variable</span><span class="o">=</span><span class="n">y1</span><span class="p">,</span>
+                        <span class="n">inner_proposition</span><span class="o">=</span><span class="n">Implies</span><span class="p">(</span>
+                            <span class="n">antecedent</span><span class="o">=</span><span class="n">implies_antecedent</span><span class="p">,</span>
+                            <span class="n">consequent</span><span class="o">=</span><span class="n">Equals</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">y2</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">),</span>
+                        <span class="p">),</span>
+                    <span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">y1</span> <span class="o">==</span> <span class="n">y2</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                <span class="n">implies_antecedent</span> <span class="o">==</span> <span class="n">new_inner</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">:</span> <span class="n">y1</span><span class="p">})</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="n">ExistsUnique</span><span class="p">(</span>
+                    <span class="n">variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span>
+                    <span class="n">inner_proposition</span><span class="o">=</span><span class="n">new_inner</span><span class="p">,</span>
+                    <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                    <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+                    <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+                    <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot convert </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> to ExistsUnique&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Exists.to_exists_unique_in_set">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.to_exists_unique_in_set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_exists_unique_in_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If self matches the structure,</span>
+
+<span class="sd">        exists x: x in set /\\ P (x) /\\ [forall y: (y in set /\\ P (y)) -&gt; y = x])</span>
+
+<span class="sd">        convert self to an `ExistsUniqueInSet` statement.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">inner_prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span>
+        <span class="k">match</span> <span class="n">inner_prop</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">And</span><span class="p">(</span>
+                <span class="n">propositions</span><span class="o">=</span><span class="p">[</span>
+                    <span class="n">IsContainedIn</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">set_1</span><span class="p">),</span>
+                    <span class="o">*</span><span class="n">Pxs</span><span class="p">,</span>
+                    <span class="n">Forall</span><span class="p">(</span>
+                        <span class="n">variable</span><span class="o">=</span><span class="n">y1</span><span class="p">,</span>
+                        <span class="n">inner_proposition</span><span class="o">=</span><span class="n">Implies</span><span class="p">(</span>
+                            <span class="n">antecedent</span><span class="o">=</span><span class="n">And</span><span class="p">(</span>
+                                <span class="n">propositions</span><span class="o">=</span><span class="p">[</span><span class="n">IsContainedIn</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">y2</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">set_2</span><span class="p">),</span> <span class="o">*</span><span class="n">Pys</span><span class="p">]</span>
+                            <span class="p">),</span>
+                            <span class="n">consequent</span><span class="o">=</span><span class="n">Equals</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="n">y3</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">),</span>
+                        <span class="p">),</span>
+                    <span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span> <span class="k">if</span> <span class="p">(</span>
+                <span class="p">(</span><span class="n">y1</span> <span class="o">==</span> <span class="n">y2</span> <span class="o">==</span> <span class="n">y3</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="n">set_1</span> <span class="o">==</span> <span class="n">set_2</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span>
+                    <span class="n">Px</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">:</span> <span class="n">y1</span><span class="p">})</span> <span class="o">==</span> <span class="n">Py</span> <span class="k">for</span> <span class="n">Px</span><span class="p">,</span> <span class="n">Py</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Pxs</span><span class="p">,</span> <span class="n">Pys</span><span class="p">)</span>
+                <span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">return</span> <span class="n">ExistsUniqueInSet</span><span class="p">(</span>
+                    <span class="n">variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span>
+                    <span class="n">set_</span><span class="o">=</span><span class="n">set_1</span><span class="p">,</span>
+                    <span class="n">inner_proposition</span><span class="o">=</span><span class="n">Pxs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Pxs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">And</span><span class="p">(</span><span class="o">*</span><span class="n">Pxs</span><span class="p">),</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+                    <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+                    <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+                    <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+                    <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot convert </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> to ExistsUniqueInSet&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Exists.by_single_substitution">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.by_single_substitution">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_single_substitution</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span> <span class="n">proven_proposition</span><span class="p">:</span> <span class="n">Proposition</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logical inference rule.</span>
+<span class="sd">        If self is `exists x: P(x)` and term is `y` and `P(y)` is proven,</span>
+<span class="sd">        return a proven `exists x: P(x)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+
+        <span class="k">if</span> <span class="n">proven_proposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">proven_proposition</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">proven_proposition</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+
+        <span class="n">inner_replaced</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">:</span> <span class="n">term</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">proven_proposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">inner_replaced</span> <span class="o">==</span> <span class="n">proven_proposition</span><span class="p">:</span>
+            <span class="n">new_prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">new_prop</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">new_prop</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="n">get_assumptions</span><span class="p">(</span><span class="n">proven_proposition</span><span class="p">)</span>
+            <span class="n">new_prop</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span>
+                <span class="n">proven_proposition</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;by_substitution&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_prop</span>
+
+        <span class="n">kb</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">knowledge_base</span>
+        <span class="k">if</span> <span class="n">proven_proposition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">kb</span> <span class="o">=</span> <span class="n">kb</span><span class="o">.</span><span class="n">union</span><span class="p">({</span><span class="n">proven_proposition</span><span class="p">})</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inner_replaced</span><span class="p">,</span> <span class="n">And</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">inner_replaced</span><span class="o">.</span><span class="n">propositions</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">prop</span><span class="o">.</span><span class="n">by_inspection_check</span><span class="p">())</span> <span class="ow">and</span> <span class="n">prop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kb</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> cannot be proven by substitution:</span><span class="se">\n</span><span class="si">{</span><span class="n">prop</span><span class="si">}</span><span class="s2"> is not true by inspection or in the knowledge base&quot;</span>
+                    <span class="p">)</span>
+        <span class="n">new_prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># TODO: fix this to use the assumptions from the KB</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">get_assumptions</span><span class="p">(</span><span class="n">proven_proposition</span><span class="p">)</span> <span class="k">if</span> <span class="n">proven_proposition</span> <span class="k">else</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">new_prop</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">term</span><span class="o">.</span><span class="n">knowledge_base</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;by_single_substitution&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_prop</span></div>
+
+        <span class="c1"># replace inner_prop with term.</span>
+        <span class="c1"># if result equals proven, return new prop</span>
+        <span class="c1"># else if result is conjunction, new kb = term kb + {proven}</span>
+        <span class="c1"># for each prop in conjunction, if prop true by inspection</span>
+        <span class="c1"># or prop in kb, cross it off</span>
+        <span class="c1"># if all crossed off, return new prop</span>
+        <span class="c1"># else raise error</span>
+
+<div class="viewcode-block" id="Exists.by_substitution">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.Exists.by_substitution">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_substitution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">terms</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span> <span class="n">proven</span><span class="p">:</span> <span class="n">Proposition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logical inference rule.</span>
+<span class="sd">        Continually substitute until the innermost exists proposition is unwrapped.</span>
+
+<span class="sd">        If self is `exists x: exists y: P(x, y)` and terms is `(a, b)` and `P(a, b)` is proven,</span>
+<span class="sd">        return a proven `exists x: exists y: P(x, y)`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">proven</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">proven</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+        <span class="n">first_non_exists</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_innermost_prop_attr</span><span class="p">)</span>
+        <span class="n">innermost_exists</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">{</span><span class="n">innermost_exists</span><span class="o">.</span><span class="n">variable</span><span class="p">:</span> <span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">]}</span>
+        <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">first_non_exists</span><span class="p">,</span> <span class="n">Exists</span><span class="p">):</span>
+            <span class="n">non_inner_proven</span> <span class="o">=</span> <span class="n">innermost_exists</span><span class="o">.</span><span class="n">_prove_non_inner</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">non_inner_proven</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> cannot be proven by substitution:</span><span class="se">\n</span><span class="si">{</span><span class="n">innermost_exists</span><span class="si">}</span><span class="s2"> is not true by inspection or in the knowledge base&quot;</span>
+                <span class="p">)</span>
+            <span class="n">innermost_exists</span> <span class="o">=</span> <span class="n">first_non_exists</span>
+
+            <span class="n">first_non_exists</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span>
+                <span class="n">innermost_exists</span><span class="p">,</span> <span class="n">innermost_exists</span><span class="o">.</span><span class="n">_innermost_prop_attr</span>
+            <span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">variables</span><span class="p">[</span><span class="n">innermost_exists</span><span class="o">.</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">non_inner_proven</span> <span class="o">=</span> <span class="n">innermost_exists</span><span class="o">.</span><span class="n">_prove_non_inner</span><span class="p">(</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">non_inner_proven</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> cannot be proven by substitution:</span><span class="se">\n</span><span class="si">{</span><span class="n">innermost_exists</span><span class="si">}</span><span class="s2"> is not true by inspection or in the knowledge base&quot;</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">first_non_exists_replaced</span> <span class="o">:=</span> <span class="n">first_non_exists</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">variables</span><span class="p">))</span> <span class="o">==</span> <span class="n">proven</span><span class="p">:</span>
+            <span class="n">new_prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">new_prop</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">new_prop</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="n">get_assumptions</span><span class="p">(</span><span class="n">proven</span><span class="p">)</span>
+            <span class="n">new_prop</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span><span class="n">proven</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;by_substitution&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_prop</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2"> cannot be proven by substitution:</span><span class="se">\n</span><span class="si">{</span><span class="n">first_non_exists_replaced</span><span class="si">}</span><span class="s2"> is not equal to </span><span class="si">{</span><span class="n">proven</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prove_non_inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">:</span> <span class="n">Term</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Given a term, return True if we can prove the non-inner parts of the existential</span>
+<span class="sd">        proposition, and False otherwise.</span>
+
+<span class="sd">        For an ExistsInSet proposition, return True if we can prove `term in self.set_`.</span>
+
+<span class="sd">        For an ExistsUnique proposition, return True if we can prove `term is unique`.</span>
+
+<span class="sd">        For an ExistsSubset proposition, return True if we can prove `term issubset self.set_`.</span>
+
+<span class="sd">        etc.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="n">proven</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span><span class="p">,</span> <span class="n">And</span><span class="p">):</span>
+            <span class="n">replaced</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">prop</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">:</span> <span class="n">term</span><span class="p">})</span>
+                <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span><span class="o">.</span><span class="n">propositions</span>
+            <span class="p">]</span>
+            <span class="n">proven</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">rep</span> <span class="ow">in</span> <span class="n">term</span><span class="o">.</span><span class="n">knowledge_base</span> <span class="ow">or</span> <span class="n">replaced</span><span class="o">.</span><span class="n">by_inspection_check</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">rep</span> <span class="ow">in</span> <span class="n">replaced</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">proven</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span><span class="p">,</span> <span class="n">Proposition</span><span class="p">):</span>
+            <span class="n">replaced</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">:</span> <span class="n">term</span><span class="p">})</span>
+            <span class="n">proven</span> <span class="o">=</span> <span class="n">replaced</span> <span class="ow">in</span> <span class="n">term</span><span class="o">.</span><span class="n">knowledge_base</span> <span class="ow">or</span> <span class="n">replaced</span><span class="o">.</span><span class="n">by_inspection_check</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">proven</span></div>
+
+
+
+<div class="viewcode-block" id="ExistsInSet">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExistsInSet</span><span class="p">(</span><span class="n">Exists</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">IsContainedIn</span><span class="p">,</span> <span class="n">TProposition</span><span class="p">]]):</span>
+    <span class="c1"># order of operations for propositions (0-indexed)</span>
+    <span class="c1"># not xor and or =&gt; &lt;=&gt; forall forallInSet forallSubsets exists existsInSet existsUnique</span>
+    <span class="c1"># existsUniqueInSet existsSubset existsUniqueSubset Proposition</span>
+    <span class="n">_precedence</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="n">_q</span> <span class="o">=</span> <span class="s2">&quot;exists&quot;</span>
+    <span class="n">_bin_symb</span> <span class="o">=</span> <span class="s2">&quot;in&quot;</span>
+    <span class="n">_innermost_prop_attr</span> <span class="o">=</span> <span class="s2">&quot;_inner_without_set&quot;</span>
+
+<div class="viewcode-block" id="ExistsInSet.from_proposition">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet.from_proposition">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_proposition</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">existential_var_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">expression_to_replace</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span> <span class="o">|</span> <span class="n">Variable</span><span class="p">,</span>
+        <span class="n">inner_proposition</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span>
+        <span class="n">latex_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ExistsInSet</span><span class="p">[</span><span class="n">TProposition</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        latex_name: str | None</span>
+<span class="sd">            The latex representation of the existential variable.</span>
+<span class="sd">        positions: list[list[int]]</span>
+<span class="sd">            This is a list containing the positions of the expression_to_replace in self.</span>
+<span class="sd">            If None, we will search for all occurences of the expression_to_replace in self.</span>
+<span class="sd">            This is a nested list representing the path we need to go down in the proposition tree,</span>
+<span class="sd">            For example, if self is</span>
+<span class="sd">            (forall x: (p1 x -&gt; p2 x) /\ (p3 x) /\ (p4 x)) -&gt; (p5 x)</span>
+<span class="sd">            existential_var = q</span>
+<span class="sd">            and positions = [[0, 0, 0], [0, 2], [1]]</span>
+<span class="sd">            we end up with</span>
+<span class="sd">            exists q: (forall x: (p1 q -&gt; p2 x) /\ (p3 x) /\ (p4 q)) -&gt; (p5 q)</span>
+<span class="sd">        Other keyword arguments are passed to the variable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">variable</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span>
+            <span class="n">existential_var_name</span><span class="p">,</span> <span class="n">latex_name</span><span class="o">=</span><span class="n">latex_name</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">expression_to_replace</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">expression_to_replace</span><span class="o">.</span><span class="n">is_in</span><span class="p">(</span>
+                <span class="n">set_</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">by_inspection_check</span><span class="p">(),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">expression_to_replace</span><span class="si">}</span><span class="s2"> not in </span><span class="si">{</span><span class="n">set_</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">inner_proposition</span> <span class="o">=</span> <span class="n">inner_proposition</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="p">{</span><span class="n">expression_to_replace</span><span class="p">:</span> <span class="n">variable</span><span class="p">},</span>
+                <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span>
+                <span class="n">equal_check</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;equal_check&quot;</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">variable</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">inner_proposition</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span> <span class="o">|</span> <span class="n">Variable</span><span class="p">,</span>
+        <span class="n">inner_proposition</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">variable</span><span class="p">,</span>
+            <span class="n">IsContainedIn</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">set_</span><span class="p">)</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span><span class="n">inner_proposition</span><span class="p">),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_</span> <span class="o">=</span> <span class="n">set_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set</span> <span class="o">=</span> <span class="n">inner_proposition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span> <span class="o">=</span> <span class="n">IsContainedIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">set_</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__hash__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="ExistsInSet.to_exists">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet.to_exists">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Exists</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">IsContainedIn</span><span class="p">,</span> <span class="n">TProposition</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert self to a regular `exists` statement.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Exists</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">inner_proposition</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExistsInSet.to_exists_in_set">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet.to_exists_in_set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_exists_in_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="ExistsInSet.replace">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet.replace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">replace_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">],</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">equal_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+
+        <span class="n">new_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span> <span class="ow">in</span> <span class="n">replace_dict</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">replace_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">],</span> <span class="n">Variable</span>
+            <span class="p">),</span> <span class="s2">&quot;Cannot replace variable with non-variable&quot;</span>
+            <span class="n">new_var</span> <span class="o">=</span> <span class="n">replace_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_</span> <span class="ow">in</span> <span class="n">replace_dict</span><span class="p">:</span>
+            <span class="n">new_val</span> <span class="o">=</span> <span class="n">replace_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">set_</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_val</span><span class="p">,</span> <span class="n">Set</span><span class="p">)</span> <span class="ow">or</span> <span class="n">new_val</span><span class="o">.</span><span class="n">is_set</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">new_val</span><span class="si">}</span><span class="s2"> is not a set&quot;</span>
+            <span class="n">new_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+                <span class="n">new_var</span><span class="p">,</span>
+                <span class="n">new_val</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                    <span class="n">replace_dict</span><span class="p">,</span>
+                    <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span>
+                    <span class="n">equal_check</span><span class="o">=</span><span class="n">equal_check</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_p</span>
+
+        <span class="n">new_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">new_var</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="n">replace_dict</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">equal_check</span><span class="o">=</span><span class="n">equal_check</span>
+            <span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_p</span></div>
+
+
+<div class="viewcode-block" id="ExistsInSet.copy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExistsInSet.deepcopy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet.deepcopy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ExistsUnique">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUnique">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExistsUnique</span><span class="p">(</span><span class="n">Exists</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TProposition</span><span class="p">,</span> <span class="n">Forall</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">TProposition</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]]):</span>
+    <span class="c1"># order of operations for propositions (0-indexed)</span>
+    <span class="c1"># not xor and or =&gt; &lt;=&gt; forall forallInSet forallSubsets exists existsInSet existsUnique</span>
+    <span class="c1"># existsUniqueInSet existsSubset existsUniqueSubset Proposition</span>
+    <span class="n">_precedence</span> <span class="o">=</span> <span class="mi">11</span>
+
+    <span class="n">_q</span> <span class="o">=</span> <span class="s2">&quot;exists 1&quot;</span>
+    <span class="n">_bin_symb</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_innermost_prop_attr</span> <span class="o">=</span> <span class="s2">&quot;_inner_without_unique&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span>
+        <span class="n">inner_proposition</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">Forall</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.equals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equals</span>
+
+        <span class="n">prev_latex_name</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">latex_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prev_latex_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># assuming curly braces are opened and closed correctly</span>
+            <span class="k">if</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">):</span>
+                <span class="n">subscript</span> <span class="o">=</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subscript</span> <span class="o">=</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">under_2</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\_2&quot;</span>
+            <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="si">{</span><span class="n">subscript</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">under_2</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prev_latex_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\_2&quot;</span><span class="p">)</span>
+        <span class="n">new_latex_name</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prev_latex_name</span><span class="p">)</span>
+        <span class="n">other_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_2&quot;</span><span class="p">,</span> <span class="n">latex_name</span><span class="o">=</span><span class="n">new_latex_name</span><span class="p">)</span>
+        <span class="n">other_prop</span> <span class="o">=</span> <span class="n">inner_proposition</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">variable</span><span class="p">:</span> <span class="n">other_var</span><span class="p">})</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">variable</span><span class="p">,</span>
+            <span class="n">inner_proposition</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span>
+                <span class="n">Forall</span><span class="p">(</span><span class="n">other_var</span><span class="p">,</span> <span class="n">Implies</span><span class="p">(</span><span class="n">other_prop</span><span class="p">,</span> <span class="n">Equals</span><span class="p">(</span><span class="n">other_var</span><span class="p">,</span> <span class="n">variable</span><span class="p">)))</span>
+            <span class="p">),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_unique</span> <span class="o">=</span> <span class="n">inner_proposition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span>
+            <span class="n">other_var</span><span class="p">,</span> <span class="n">Implies</span><span class="p">(</span><span class="n">other_prop</span><span class="p">,</span> <span class="n">Equals</span><span class="p">(</span><span class="n">other_var</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">))</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="ExistsUnique.replace">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUnique.replace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">replace_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">],</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">equal_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="n">new_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span> <span class="ow">in</span> <span class="n">replace_dict</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">replace_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">],</span> <span class="n">Variable</span>
+            <span class="p">),</span> <span class="s2">&quot;Cannot replace variable with non-variable&quot;</span>
+            <span class="n">new_var</span> <span class="o">=</span> <span class="n">replace_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">]</span>
+
+        <span class="n">new_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">new_var</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_unique</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="n">replace_dict</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">equal_check</span><span class="o">=</span><span class="n">equal_check</span>
+            <span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_p</span></div>
+
+
+<div class="viewcode-block" id="ExistsUnique.to_exists_unique">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUnique.to_exists_unique">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_exists_unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="ExistsUnique.copy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUnique.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_unique</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExistsUnique.deepcopy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUnique.deepcopy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_unique</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ExistsUniqueInSet">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUniqueInSet">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExistsUniqueInSet</span><span class="p">(</span>
+    <span class="n">ExistsInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TProposition</span><span class="p">,</span> <span class="n">Forall</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">TProposition</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]]</span>
+<span class="p">):</span>
+    <span class="c1"># order of operations for propositions (0-indexed)</span>
+    <span class="c1"># not xor and or =&gt; &lt;=&gt; forall forallInSet forallSubsets exists existsInSet existsUnique</span>
+    <span class="c1"># existsUniqueInSet existsSubset existsUniqueSubset Proposition</span>
+    <span class="n">_precedence</span> <span class="o">=</span> <span class="mi">12</span>
+
+    <span class="n">_q</span> <span class="o">=</span> <span class="s2">&quot;exists 1&quot;</span>
+    <span class="n">_bin_symb</span> <span class="o">=</span> <span class="s2">&quot;in&quot;</span>
+    <span class="n">_innermost_prop_attr</span> <span class="o">=</span> <span class="s2">&quot;_inner_without_set_and_unique&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">inner_proposition</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">ForallInSet</span>
+
+        <span class="n">prev_latex_name</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">latex_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prev_latex_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># assuming curly braces are opened and closed correctly</span>
+            <span class="k">if</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">):</span>
+                <span class="n">subscript</span> <span class="o">=</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subscript</span> <span class="o">=</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">under_2</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\_2&quot;</span>
+            <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="si">{</span><span class="n">subscript</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">under_2</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prev_latex_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\_2&quot;</span><span class="p">)</span>
+        <span class="n">new_latex_name</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prev_latex_name</span><span class="p">)</span>
+        <span class="n">other_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_2&quot;</span><span class="p">,</span> <span class="n">latex_name</span><span class="o">=</span><span class="n">new_latex_name</span><span class="p">)</span>
+        <span class="n">other_prop</span> <span class="o">=</span> <span class="n">inner_proposition</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">variable</span><span class="p">:</span> <span class="n">other_var</span><span class="p">})</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">variable</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">IsContainedIn</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">set_</span><span class="p">)</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span>
+                <span class="n">inner_proposition</span><span class="p">,</span>
+                <span class="n">ForallInSet</span><span class="p">(</span>
+                    <span class="n">other_var</span><span class="p">,</span> <span class="n">set_</span><span class="p">,</span> <span class="n">other_prop</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">Equals</span><span class="p">(</span><span class="n">other_var</span><span class="p">,</span> <span class="n">variable</span><span class="p">))</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set_and_unique</span> <span class="o">=</span> <span class="n">inner_proposition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span> <span class="o">=</span> <span class="n">IsContainedIn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">set_</span><span class="p">)</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">other_var</span><span class="p">,</span> <span class="n">set_</span><span class="p">,</span> <span class="n">other_prop</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">Equals</span><span class="p">(</span><span class="n">other_var</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="ExistsUniqueInSet.replace">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUniqueInSet.replace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">replace_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">],</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">equal_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+
+        <span class="n">new_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span> <span class="ow">in</span> <span class="n">replace_dict</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">replace_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">],</span> <span class="n">Variable</span>
+            <span class="p">),</span> <span class="s2">&quot;Cannot replace variable with non-variable&quot;</span>
+            <span class="n">new_var</span> <span class="o">=</span> <span class="n">replace_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_</span> <span class="ow">in</span> <span class="n">replace_dict</span><span class="p">:</span>
+            <span class="n">new_val</span> <span class="o">=</span> <span class="n">replace_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">set_</span><span class="p">]</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_val</span><span class="p">,</span> <span class="n">Set</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">new_val</span><span class="si">}</span><span class="s2"> is not a set&quot;</span>
+            <span class="n">new_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+                <span class="n">new_var</span><span class="p">,</span>
+                <span class="n">new_val</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set_and_unique</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                    <span class="n">replace_dict</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">equal_check</span><span class="o">=</span><span class="n">equal_check</span>
+                <span class="p">),</span>
+                <span class="n">_is_proven</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_p</span>
+
+        <span class="n">new_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">new_var</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set_and_unique</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                <span class="n">replace_dict</span><span class="p">,</span> <span class="n">positions</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">equal_check</span><span class="o">=</span><span class="n">equal_check</span>
+            <span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_p</span></div>
+
+
+<div class="viewcode-block" id="ExistsUniqueInSet.to_exists_unique_in_set">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUniqueInSet.to_exists_unique_in_set">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_exists_unique_in_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="ExistsUniqueInSet.copy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUniqueInSet.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set_and_unique</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ExistsUniqueInSet.deepcopy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUniqueInSet.deepcopy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set_and_unique</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="ExistsSubset">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsSubset">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExistsSubset</span><span class="p">(</span><span class="n">Exists</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">IsSubsetOf</span><span class="p">,</span> <span class="n">TProposition</span><span class="p">]]):</span>
+    <span class="c1"># order of operations for propositions (0-indexed)</span>
+    <span class="c1"># not xor and or =&gt; &lt;=&gt; forall forallInSet forallSubsets exists existsInSet existsUnique</span>
+    <span class="c1"># existsUniqueInSet existsSubset existsUniqueSubset Proposition</span>
+    <span class="n">_precedence</span> <span class="o">=</span> <span class="mi">13</span>
+
+    <span class="n">_q</span> <span class="o">=</span> <span class="s2">&quot;exists&quot;</span>
+    <span class="n">_bin_symb</span> <span class="o">=</span> <span class="s2">&quot;subset of&quot;</span>
+    <span class="n">_innermost_prop_attr</span> <span class="o">=</span> <span class="s2">&quot;_inner_without_set&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">inner_proposition</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">variable</span><span class="p">,</span>
+            <span class="n">IsSubsetOf</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">set_</span><span class="p">)</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span><span class="n">inner_proposition</span><span class="p">),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_</span> <span class="o">=</span> <span class="n">set_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_set</span> <span class="o">=</span> <span class="n">set_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set</span> <span class="o">=</span> <span class="n">inner_proposition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span> <span class="o">=</span> <span class="n">IsSubsetOf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">set_</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__hash__</span><span class="p">()</span>
+
+    <span class="n">to_exists</span> <span class="o">=</span> <span class="n">ExistsInSet</span><span class="o">.</span><span class="n">to_exists</span>
+    <span class="n">replace</span> <span class="o">=</span> <span class="n">ExistsInSet</span><span class="o">.</span><span class="n">replace</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">ExistsInSet</span><span class="o">.</span><span class="n">copy</span>
+    <span class="n">deepcopy</span> <span class="o">=</span> <span class="n">ExistsInSet</span><span class="o">.</span><span class="n">deepcopy</span></div>
+
+
+
+<div class="viewcode-block" id="ExistsUniqueSubset">
+<a class="viewcode-back" href="../../../../pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsUniqueSubset">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExistsUniqueSubset</span><span class="p">(</span>
+    <span class="n">ExistsSubset</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">TProposition</span><span class="p">,</span> <span class="n">Forall</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">TProposition</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]]</span>
+<span class="p">):</span>
+    <span class="c1"># order of operations for propositions (0-indexed)</span>
+    <span class="c1"># not xor and or =&gt; &lt;=&gt; forall forallInSet forallSubsets exists existsInSet existsUnique</span>
+    <span class="c1"># existsUniqueInSet existsSubset existsUniqueSubset Proposition</span>
+    <span class="n">_precedence</span> <span class="o">=</span> <span class="mi">14</span>
+
+    <span class="n">_q</span> <span class="o">=</span> <span class="s2">&quot;exists 1&quot;</span>
+    <span class="n">_bin_symb</span> <span class="o">=</span> <span class="s2">&quot;subset of&quot;</span>
+    <span class="n">_innermost_prop_attr</span> <span class="o">=</span> <span class="s2">&quot;_inner_without_set_and_unique&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">variable</span><span class="p">:</span> <span class="n">Variable</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">inner_proposition</span><span class="p">:</span> <span class="n">TProposition</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">ForallInSet</span>
+
+        <span class="n">prev_latex_name</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">latex_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prev_latex_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="c1"># assuming curly braces are opened and closed correctly</span>
+            <span class="k">if</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;{&quot;</span><span class="p">):</span>
+                <span class="n">subscript</span> <span class="o">=</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subscript</span> <span class="o">=</span> <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">under_2</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\_2&quot;</span>
+            <span class="n">prev_latex_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">{{</span><span class="si">{</span><span class="n">subscript</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">under_2</span><span class="si">}</span><span class="se">}}</span><span class="s2">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">prev_latex_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\_2&quot;</span><span class="p">)</span>
+        <span class="n">new_latex_name</span> <span class="o">=</span> <span class="s2">&quot;_&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">prev_latex_name</span><span class="p">)</span>
+        <span class="n">other_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;_2&quot;</span><span class="p">,</span> <span class="n">latex_name</span><span class="o">=</span><span class="n">new_latex_name</span><span class="p">)</span>
+        <span class="n">other_prop</span> <span class="o">=</span> <span class="n">inner_proposition</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">variable</span><span class="p">:</span> <span class="n">other_var</span><span class="p">})</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">variable</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">IsSubsetOf</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">set_</span><span class="p">)</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span>
+                <span class="n">inner_proposition</span><span class="p">,</span>
+                <span class="n">ForallInSet</span><span class="p">(</span>
+                    <span class="n">other_var</span><span class="p">,</span> <span class="n">set_</span><span class="p">,</span> <span class="n">other_prop</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">Equals</span><span class="p">(</span><span class="n">other_var</span><span class="p">,</span> <span class="n">variable</span><span class="p">))</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inner_without_set_and_unique</span> <span class="o">=</span> <span class="n">inner_proposition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_non_inner_prop</span> <span class="o">=</span> <span class="n">IsSubsetOf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">set_</span><span class="p">)</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">other_var</span><span class="p">,</span> <span class="n">set_</span><span class="p">,</span> <span class="n">other_prop</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">Equals</span><span class="p">(</span><span class="n">other_var</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">))</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">replace</span> <span class="o">=</span> <span class="n">ExistsUniqueInSet</span><span class="o">.</span><span class="n">replace</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">ExistsUniqueInSet</span><span class="o">.</span><span class="n">copy</span>
+    <span class="n">deepcopy</span> <span class="o">=</span> <span class="n">ExistsUniqueInSet</span><span class="o">.</span><span class="n">deepcopy</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

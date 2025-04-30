@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.assumptions_context &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.assumptions_context</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">overload</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+
+<div class="viewcode-block" id="AssumptionsContext">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AssumptionsContext</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Proposition</span> <span class="o">|</span> <span class="n">Variable</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_proven</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># all props proven inside the context</span>
+
+        <span class="c1"># the conclusions to use to build implications</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interesting_conclusions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># the implications true ourside the context</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">proven_propositions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exited</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">assumptions_contexts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;AssumptionsContext(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="k">else</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AssumptionsContext.variable">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext.variable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+        <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AssumptionsContext.var">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext.var">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span> <span class="o">...</span>
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span> <span class="o">...</span>
+<div class="viewcode-block" id="AssumptionsContext.variables">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext.variables">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)</span></div>
+
+
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span> <span class="o">...</span>
+    <span class="nd">@overload</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">vars</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span> <span class="o">...</span>
+<div class="viewcode-block" id="AssumptionsContext.vars">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext.vars">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_build_proven</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conclusion</span><span class="p">:</span> <span class="n">Proposition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Proposition</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Build the proven implication or Forall proposition that is proven by closing</span>
+<span class="sd">        all scopes introduced in this context.</span>
+<span class="sd">        For example, if self.assumptions is</span>
+<span class="sd">        `[x, x in S, y, P(y), y in T]`, we return</span>
+<span class="sd">        `forall x in S: forall y: (P(y) and y in T) =&gt; conclusion`</span>
+
+<span class="sd">        self.assumptions is reversed before calling this method.</span>
+<span class="sd">        So we essentially loop through self.assumptions in reverse, and at each index:</span>
+
+<span class="sd">        - if the item is an IsContainedIn, check if the previous item is the corresponding</span>
+<span class="sd">        free variable, in which case we build a ForallInSet</span>
+<span class="sd">        - if the item is a proposition, use that and all propositions before the next</span>
+<span class="sd">        IsContainedIn/Variable to build an implication</span>
+<span class="sd">        - if the item is a free variable, build a Forall</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.contradiction</span><span class="w"> </span><span class="kn">import</span> <span class="n">Contradiction</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.implies</span><span class="w"> </span><span class="kn">import</span> <span class="n">Implies</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.not_</span><span class="w"> </span><span class="kn">import</span> <span class="n">neg</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span><span class="p">,</span> <span class="n">get_assumptions</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">Forall</span><span class="p">,</span> <span class="n">ForallInSet</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.contains</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsContainedIn</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+        <span class="n">conclusion</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">cons</span> <span class="o">=</span> <span class="n">conclusion</span>
+
+        <span class="c1"># for if we are building an And(...) =&gt; cons</span>
+        <span class="n">current_ante</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">IsContainedIn</span><span class="p">))</span>
+                <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="n">a</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">is_bound</span> <span class="ow">is</span> <span class="kc">False</span>
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">depends_on</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="p">):</span>
+                <span class="n">cons</span> <span class="o">=</span> <span class="n">ForallInSet</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">cons</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">2</span>  <span class="c1"># skip the variable</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">Proposition</span><span class="p">):</span>
+                <span class="n">current_ante</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="p">(</span><span class="n">IsContainedIn</span><span class="p">,</span> <span class="n">Variable</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="n">current_ante</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">current_ante</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">Contradiction</span><span class="p">):</span>
+                        <span class="n">cons</span> <span class="o">=</span> <span class="n">neg</span><span class="p">(</span><span class="n">current_ante</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># dont de-nest, to avoid</span>
+                        <span class="c1"># changing a -&gt; (b -&gt; c) to ((a and b) -&gt; c)</span>
+                        <span class="n">cons</span> <span class="o">=</span> <span class="n">current_ante</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">de_nest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">current_ante</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">Contradiction</span><span class="p">):</span>
+                        <span class="n">cons</span> <span class="o">=</span> <span class="n">neg</span><span class="p">(</span><span class="n">And</span><span class="p">(</span><span class="o">*</span><span class="n">current_ante</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">cons</span> <span class="o">=</span> <span class="n">And</span><span class="p">(</span><span class="o">*</span><span class="n">current_ante</span><span class="p">)</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">cons</span><span class="p">,</span> <span class="n">de_nest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">current_ante</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">i</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># a is a free Variable, and we didn&#39;t skip so use Forall</span>
+                <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">is_bound</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">depends_on</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">cons</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">cons</span><span class="p">)</span>
+                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">cons</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span>
+            <span class="kc">True</span><span class="p">,</span>
+            <span class="n">context</span><span class="o">=</span><span class="n">assumptions_contexts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">assumptions_contexts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">conclusion</span><span class="o">.</span><span class="n">deduced_from</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cons</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span><span class="n">conclusion</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;close_assumptions_context&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">other_props</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+                <span class="nb">filter</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="p">(</span>
+                        <span class="n">conclusion</span><span class="o">.</span><span class="n">deduced_from</span><span class="o">.</span><span class="n">starting_premise</span><span class="p">,</span>
+                        <span class="o">*</span><span class="n">conclusion</span><span class="o">.</span><span class="n">deduced_from</span><span class="o">.</span><span class="n">other_premises</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">cons</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span>
+                <span class="n">conclusion</span><span class="p">,</span>  <span class="c1"># the conclusion is included first here</span>
+                <span class="o">*</span><span class="n">other_props</span><span class="p">,</span>
+                <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;close_assumptions_context&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">cons</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="n">get_assumptions</span><span class="p">(</span><span class="n">conclusion</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cons</span>
+
+<div class="viewcode-block" id="AssumptionsContext.open">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext.open">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="AssumptionsContext.close">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext.close">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exited</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exited</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span>
+
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span> <span class="o">==</span> <span class="n">assumptions_contexts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">),</span> <span class="s2">&quot;Cannot exit context because a nested (inner) context is still open&quot;</span>
+
+        <span class="c1"># these proven props were only true inside the context</span>
+        <span class="c1"># do these first because the _build_proven method</span>
+        <span class="c1"># still runs inside the context, and we want those</span>
+        <span class="c1"># to be True outside the context</span>
+        <span class="c1"># we don&#39;t call _set_is_proven(False) on these because</span>
+        <span class="c1"># perhaps a copy was proven in an outer context and we don&#39;t want to mutate</span>
+        <span class="c1"># the Terms in the props</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proven</span><span class="p">:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">_is_proven</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">Proposition</span><span class="p">):</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">_set_is_assumption</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="c1"># remove need to call conclude</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_interesting_conclusions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_proven</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proven_propositions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_proven</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_proven</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interesting_conclusions</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">proven_propositions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_proven</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+        <span class="k">del</span> <span class="n">assumptions_contexts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assumptions</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exited</span> <span class="o">=</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="AssumptionsContext.get_proven">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext.get_proven">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_proven</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of implications that have been proven as a result of</span>
+<span class="sd">        closing this context.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        ```</span>
+<span class="sd">        p = Proposition(&quot;p&quot;)</span>
+<span class="sd">        q = Proposition(&quot;q&quot;)</span>
+<span class="sd">        r = Proposition(&quot;r&quot;)</span>
+<span class="sd">        p_implies_q = p.implies(q).assume()</span>
+<span class="sd">        q_implies_r = q.implies(r).assume()</span>
+<span class="sd">        with AssumptionsContext() as ctx:</span>
+<span class="sd">            p_true = p.assume()</span>
+<span class="sd">            r_true = p_true.modus_ponens(p_implies_q).modus_ponens(q_implies_r)</span>
+<span class="sd">            conclude(r_true)</span>
+<span class="sd">        print(ctx.get_proven())</span>
+<span class="sd">        ```</span>
+<span class="sd">        Output:</span>
+<span class="sd">        ```</span>
+<span class="sd">        [p -&gt; r]</span>
+<span class="sd">        ```</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exited</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proven_propositions</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+    
+<div class="viewcode-block" id="AssumptionsContext.get_first_proven">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.AssumptionsContext.get_first_proven">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_first_proven</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Proposition</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the first proven proposition after the context.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exited</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">proven_propositions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proven_propositions</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="conclude">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.conclude">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">conclude</span><span class="p">(</span><span class="n">conclusion</span><span class="p">:</span> <span class="n">Proposition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Proposition</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Used inside a context.</span>
+
+<span class="sd">    Tell pylogic that you are interested in proving an implication</span>
+<span class="sd">    or a Forall statement incolving this conclusion when the context is closed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">conclusion</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">conclusion</span><span class="si">}</span><span class="s2"> is not proven&quot;</span>
+
+    <span class="k">if</span> <span class="n">assumptions_contexts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">assumptions_contexts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_interesting_conclusions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">conclusion</span><span class="p">)</span>
+    
+    <span class="c1"># check if conclusion is an assumption so we can update target if needed</span>
+    <span class="c1"># for eg in proving p -&gt; (q -&gt; p)</span>
+    <span class="k">global</span> <span class="n">_target_to_prove</span>
+    <span class="k">if</span> <span class="n">conclusion</span><span class="o">.</span><span class="n">is_assumption</span> <span class="ow">and</span> <span class="n">conclusion</span> <span class="o">==</span> <span class="n">_target_to_prove</span><span class="p">:</span>
+        <span class="n">_target_to_prove</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">conclusion</span></div>
+
+
+
+<div class="viewcode-block" id="context_variable">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.context_variable">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">context_variable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+    <span class="k">return</span> <span class="n">Variable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">assumptions_contexts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="ctx_var">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.ctx_var">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ctx_var</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">context_variable</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">context_variables</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span> <span class="o">...</span>
+<span class="nd">@overload</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">context_variables</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span> <span class="o">...</span>
+<div class="viewcode-block" id="context_variables">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.context_variables">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">context_variables</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">context_variable</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">context_variable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ctx_vars</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span><span class="p">:</span> <span class="o">...</span>
+<span class="nd">@overload</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ctx_vars</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span> <span class="o">...</span>
+<div class="viewcode-block" id="ctx_vars">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.ctx_vars">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ctx_vars</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variable</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Variable</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="n">context_variables</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="to_prove">
+<a class="viewcode-back" href="../../pylogic.html#pylogic.assumptions_context.to_prove">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_prove</span><span class="p">(</span><span class="o">*</span><span class="n">target</span><span class="p">:</span> <span class="n">Proposition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Proposition</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set a target proposition to prove.</span>
+
+<span class="sd">    When called with no arguments, it returns the current target proposition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_target_to_prove</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_target_to_prove</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">_target_to_prove</span> <span class="o">=</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">target</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;to_prove() accepts zero or one argument&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="n">assumptions_contexts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">AssumptionsContext</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+<span class="n">_target_to_prove</span><span class="p">:</span> <span class="n">Proposition</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

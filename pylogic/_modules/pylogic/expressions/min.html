@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.expressions.min &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.expressions.min</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sp</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.expr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Expr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
+
+
+<div class="viewcode-block" id="MinElement">
+<a class="viewcode-back" href="../../../pylogic.expressions.html#pylogic.expressions.min.MinElement">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MinElement</span><span class="p">(</span><span class="n">Expr</span><span class="p">):</span>
+    <span class="c1"># order of operations for expressions (0-indexed)</span>
+    <span class="c1"># Function MinElement Abs SequenceTerm Pow Prod Mul Sum Add Binary_Expr</span>
+    <span class="c1"># Custom_Expr Piecewise Relation(eg &lt;, subset)</span>
+    <span class="n">_precedence</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">_is_wrapped</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutable_attrs_to_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mutable_attrs_to_copy</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;expr&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__new_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="n">Term</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__new_init__</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="MinElement.evaluate">
+<a class="viewcode-back" href="../../../pylogic.expressions.html#pylogic.expressions.min.MinElement.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MinElement</span> <span class="o">|</span> <span class="n">Term</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">getkey</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.not_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Not</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.subsets</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsSubsetOf</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmptySet</span><span class="p">,</span> <span class="n">Set</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.theories.natural_numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Naturals</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.theories.real_numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Interval</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+        <span class="c1"># check if it is an interval of reals closed below</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">,</span> <span class="n">Interval</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">a_inclusive</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">a</span>
+
+        <span class="c1"># check if it is a nonempty subset of naturals</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">,</span> <span class="p">(</span><span class="n">Set</span><span class="p">,</span> <span class="n">Variable</span><span class="p">)):</span>
+            <span class="n">subset_proof</span> <span class="o">=</span> <span class="n">getkey</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">knowledge_base</span><span class="p">,</span> <span class="n">IsSubsetOf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">,</span> <span class="n">Naturals</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">subset_proof</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">non_empty_proof</span> <span class="o">=</span> <span class="n">getkey</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">knowledge_base</span><span class="p">,</span> <span class="n">Not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">EmptySet</span><span class="p">))</span>
+                <span class="p">)</span>
+                <span class="n">exists_min_proof</span> <span class="o">=</span> <span class="n">Naturals</span><span class="o">.</span><span class="n">well_ordering_set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="p">)(</span>
+                    <span class="n">subset_proof</span><span class="p">,</span> <span class="n">non_empty_proof</span>
+                <span class="p">)</span>
+                <span class="n">min_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">exists_min_proof</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+                <span class="k">return</span> <span class="n">min_</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_latex</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">rf</span><span class="s2">&quot;\text</span><span class="se">{{</span><span class="s2">MinElement</span><span class="se">}}</span><span class="s2">\left(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">_latex</span><span class="p">()</span><span class="si">}</span><span class="s2">\right)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;MinElement(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">expr</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+<div class="viewcode-block" id="MinElement.update_properties">
+<a class="viewcode-back" href="../../../pylogic.expressions.html#pylogic.expressions.min.MinElement.update_properties">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

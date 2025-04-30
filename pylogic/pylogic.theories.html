@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pylogic.theories package &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pylogic.typing package" href="pylogic.typing.html" />
+    <link rel="prev" title="pylogic.syntax_helpers package" href="pylogic.syntax_helpers.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pylogic-theories-package">
+<h1>pylogic.theories package<a class="headerlink" href="#pylogic-theories-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pylogic.theories.integers">
+<span id="pylogic-theories-integers-module"></span><h2>pylogic.theories.integers module<a class="headerlink" href="#module-pylogic.theories.integers" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.theories.integers.IntegersRing">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.integers.</span></span><span class="sig-name descname"><span class="pre">IntegersRing</span></span><a class="reference internal" href="_modules/pylogic/theories/integers.html#IntegersRing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.integers.IntegersRing" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.integers.</span></span><span class="sig-name descname"><span class="pre">IntegersRing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <a class="reference internal" href="pylogic.structures.ringlike.html#pylogic.structures.ringlike.ring.RIng" title="pylogic.structures.ringlike.ring.RIng"><code class="xref py py-class docutils literal notranslate"><span class="pre">RIng</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code>], <a class="reference internal" href="pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet" title="pylogic.structures.ordered_set.OrderedSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedSet</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.integers.IntegersRing.divides">
+<span class="sig-name descname"><span class="pre">divides</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Z</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.divides.Divides" title="pylogic.proposition.relation.divides.Divides"><span class="pre">Divides</span></a></span></span><a class="reference internal" href="_modules/pylogic/theories/integers.html#IntegersRing.divides"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.integers.IntegersRing.divides" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.integers.IntegersRing.even">
+<span class="sig-name descname"><span class="pre">even</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet" title="pylogic.proposition.quantified.exists.ExistsInSet"><span class="pre">ExistsInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/integers.html#IntegersRing.even"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.integers.IntegersRing.even" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.integers.IntegersRing.odd">
+<span class="sig-name descname"><span class="pre">odd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet" title="pylogic.proposition.quantified.exists.ExistsInSet"><span class="pre">ExistsInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/integers.html#IntegersRing.odd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.integers.IntegersRing.odd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.integers.IntegersRing.predecessor">
+<span class="sig-name descname"><span class="pre">predecessor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.expressions.html#pylogic.expressions.function.Function" title="pylogic.expressions.function.Function"><span class="pre">Function</span></a></em><a class="headerlink" href="#pylogic.theories.integers.IntegersRing.predecessor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.integers.IntegersRing.successor">
+<span class="sig-name descname"><span class="pre">successor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.expressions.html#pylogic.expressions.function.Function" title="pylogic.expressions.function.Function"><span class="pre">Function</span></a></em><a class="headerlink" href="#pylogic.theories.integers.IntegersRing.successor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.theories.natural_numbers">
+<span id="pylogic-theories-natural-numbers-module"></span><h2>pylogic.theories.natural_numbers module<a class="headerlink" href="#module-pylogic.theories.natural_numbers" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.natural_numbers.</span></span><span class="sig-name descname"><span class="pre">NaturalsSemiring</span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.natural_numbers.</span></span><span class="sig-name descname"><span class="pre">NaturalsSemiring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <a class="reference internal" href="pylogic.structures.ringlike.html#pylogic.structures.ringlike.semiring.SemirIng" title="pylogic.structures.ringlike.semiring.SemirIng"><code class="xref py py-class docutils literal notranslate"><span class="pre">SemirIng</span></code></a>, <a class="reference internal" href="pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet" title="pylogic.structures.ordered_set.OrderedSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedSet</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.closed_under_successor">
+<span class="sig-name descname"><span class="pre">closed_under_successor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.closed_under_successor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.divides">
+<span class="sig-name descname"><span class="pre">divides</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.divides.Divides" title="pylogic.proposition.relation.divides.Divides"><span class="pre">Divides</span></a></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.divides"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.divides" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.even">
+<span class="sig-name descname"><span class="pre">even</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet" title="pylogic.proposition.quantified.exists.ExistsInSet"><span class="pre">ExistsInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.even"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.even" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.odd">
+<span class="sig-name descname"><span class="pre">odd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet" title="pylogic.proposition.quantified.exists.ExistsInSet"><span class="pre">ExistsInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.odd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.odd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.prime">
+<span class="sig-name descname"><span class="pre">prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.theories.natural_numbers.Prime" title="pylogic.theories.natural_numbers.Prime"><span class="pre">Prime</span></a></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.prime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.prime" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.property_closed_under_successor">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_closed_under_successor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">successor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.expressions.html#pylogic.expressions.function.Function" title="pylogic.expressions.function.Function"><span class="pre">Function</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.property_closed_under_successor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.property_closed_under_successor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.property_strong_induction_formal">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_strong_induction_formal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TotalOrderOp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">successor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.expressions.html#pylogic.expressions.function.Function" title="pylogic.expressions.function.Function"><span class="pre">Function</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.html#pylogic.constant.Constant" title="pylogic.constant.Constant"><span class="pre">Constant</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallSubsets" title="pylogic.proposition.quantified.forall.ForallSubsets"><span class="pre">ForallSubsets</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.and_.And" title="pylogic.proposition.and_.And"><span class="pre">And</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.ordering.html#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><span class="pre">TotalOrder</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.property_strong_induction_formal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.property_strong_induction_formal" title="Link to this definition">¶</a></dt>
+<dd><p>This uses second order logic (quantifying over subsets of N) to state the principle of strong induction.
+This is formal in the sense that it uses the successor function without evaluating it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.property_successor_injective">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_successor_injective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">successor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.expressions.html#pylogic.expressions.function.Function" title="pylogic.expressions.function.Function"><span class="pre">Function</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.property_successor_injective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.property_successor_injective" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.property_successor_neq_0">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_successor_neq_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">successor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.expressions.html#pylogic.expressions.function.Function" title="pylogic.expressions.function.Function"><span class="pre">Function</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.html#pylogic.constant.Constant" title="pylogic.constant.Constant"><span class="pre">Constant</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.property_successor_neq_0"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.property_successor_neq_0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.property_well_ordering_set">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_well_ordering_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TotalOrderOp</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallSubsets" title="pylogic.proposition.quantified.forall.ForallSubsets"><span class="pre">ForallSubsets</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet" title="pylogic.proposition.quantified.exists.ExistsInSet"><span class="pre">ExistsInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.ordering.html#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><span class="pre">TotalOrder</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.property_well_ordering_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.property_well_ordering_set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.property_zero_is_min_nat">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_zero_is_min_nat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">TotalOrderOp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.html#pylogic.constant.Constant" title="pylogic.constant.Constant"><span class="pre">Constant</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.ordering.html#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><span class="pre">TotalOrder</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.property_zero_is_min_nat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.property_zero_is_min_nat" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.strong_induction">
+<span class="sig-name descname"><span class="pre">strong_induction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_case</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">induction_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.ordering.html#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><span class="pre">TotalOrder</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.strong_induction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.strong_induction" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule. This uses the principle of strong induction given the base case and inductive step.
+Given base case P(0) and induction step
+forall n in N:</p>
+<blockquote>
+<div><p>forall k in N: (k &lt;= n -&gt; P(k))
+implies P(n+1),</p>
+</div></blockquote>
+<p>return a proof of forall n: n in N -&gt; P(n).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.strong_induction_formal">
+<span class="sig-name descname"><span class="pre">strong_induction_formal</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallSubsets" title="pylogic.proposition.quantified.forall.ForallSubsets"><span class="pre">ForallSubsets</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.and_.And" title="pylogic.proposition.and_.And"><span class="pre">And</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.ordering.html#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><span class="pre">TotalOrder</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.strong_induction_formal" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.successor">
+<span class="sig-name descname"><span class="pre">successor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.expressions.html#pylogic.expressions.function.Function" title="pylogic.expressions.function.Function"><span class="pre">Function</span></a></em><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.successor" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.successor_injective">
+<span class="sig-name descname"><span class="pre">successor_injective</span></span><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.successor_injective" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForallInSet</span></code></a>[<a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">ForallInSet</span></code></a>[<a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><code class="xref py py-class docutils literal notranslate"><span class="pre">Implies</span></code></a>[<a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><code class="xref py py-class docutils literal notranslate"><span class="pre">Equals</span></code></a>, <a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><code class="xref py py-class docutils literal notranslate"><span class="pre">Equals</span></code></a>]]]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.successor_neq_0">
+<span class="sig-name descname"><span class="pre">successor_neq_0</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.successor_neq_0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.weak_induction">
+<span class="sig-name descname"><span class="pre">weak_induction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_case</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">induction_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.weak_induction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.weak_induction" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule. This uses the principle of weak induction given the base case and inductive step.
+Given base case P(0) and induction step
+forall n in N: P(n) -&gt; P(n+1),
+return a proof of forall n in N, P(n).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.well_ordering">
+<span class="sig-name descname"><span class="pre">well_ordering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">argument</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet" title="pylogic.proposition.quantified.exists.ExistsInSet"><span class="pre">ExistsInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.and_.And" title="pylogic.proposition.and_.And"><span class="pre">And</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.ordering.html#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><span class="pre">TotalOrder</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#NaturalsSemiring.well_ordering"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.well_ordering" title="Link to this definition">¶</a></dt>
+<dd><p>Logical inference rule. Given a proposition about naturals, prove that there is a
+least natural number satisfying it.
+If argument is provided, it should be an argument of the proposition
+and will be used in patter-matching to construct the result.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.well_ordering_set">
+<span class="sig-name descname"><span class="pre">well_ordering_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallSubsets" title="pylogic.proposition.quantified.forall.ForallSubsets"><span class="pre">ForallSubsets</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.exists.ExistsInSet" title="pylogic.proposition.quantified.exists.ExistsInSet"><span class="pre">ExistsInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.ordering.html#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><span class="pre">TotalOrder</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.well_ordering_set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.NaturalsSemiring.zero_is_min_nat">
+<span class="sig-name descname"><span class="pre">zero_is_min_nat</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.ordering.html#pylogic.proposition.ordering.total.TotalOrder" title="pylogic.proposition.ordering.total.TotalOrder"><span class="pre">TotalOrder</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pylogic.theories.natural_numbers.NaturalsSemiring.zero_is_min_nat" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.Prime">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.natural_numbers.</span></span><span class="sig-name descname"><span class="pre">Prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#Prime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.Prime" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Proposition</span></code></a></p>
+<p>Represents a number being prime.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.Prime.by_inspection_check">
+<span class="sig-name descname"><span class="pre">by_inspection_check</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#Prime.by_inspection_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.Prime.by_inspection_check" title="Link to this definition">¶</a></dt>
+<dd><p>Check if self is provable by inspection.
+Returns True if self is provable by inspection, False if
+its negation is provable by inspection, and None if neither is provable.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.Prime.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#Prime.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.Prime.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Create a shallow copy of the proposition.
+The copy keeps the same references to the arguments, assumptions, and
+inference as the original proposition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A shallow copy of the proposition.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.Prime.deepcopy">
+<span class="sig-name descname"><span class="pre">deepcopy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#Prime.deepcopy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.Prime.deepcopy" title="Link to this definition">¶</a></dt>
+<dd><p>Create a deep copy of the proposition.
+The copy creates new copies of the arguments of the proposition.
+The copy keeps the same references to the assumptions and inference
+as the original proposition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A deep copy of the proposition.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.Prime.definition">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">definition</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.and_.And" title="pylogic.proposition.and_.And"><span class="pre">And</span></a></em><a class="headerlink" href="#pylogic.theories.natural_numbers.Prime.definition" title="Link to this definition">¶</a></dt>
+<dd><p>A(n expanded) definition of the proposition.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.natural_numbers.Prime.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replace_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equal_check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="_modules/pylogic/theories/natural_numbers.html#Prime.replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.natural_numbers.Prime.replace" title="Link to this definition">¶</a></dt>
+<dd><p>This function currently replaces Terms in the proposition with other Terms.
+It does not replace Propositions.</p>
+<p>For each key in <cite>replace_dict</cite>, we replace it in the proposition with the
+corresponding new value.</p>
+<p><cite>positions</cite> is a list of lists of integers representing the occurences
+of the old values in the proposition. Each list of integers represents
+a path to the value in the proposition tree.
+Each integer in the list represents the index of the subproposition (or
+subexpression) in the list of subpropositions/arguments of the parent
+proposition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>replace_dict</strong> (<em>dict</em><em>[</em><em>Term</em><em>, </em><em>Term</em><em>]</em>) – A dictionary where the keys are the <code class="xref py py-class docutils literal notranslate"><span class="pre">Term</span></code>s to be replaced
+and the values are the new <code class="xref py py-class docutils literal notranslate"><span class="pre">Term</span></code>s.</p></li>
+<li><p><strong>positions</strong> (<em>list</em><em>[</em><em>list</em><em>[</em><em>int</em><em>]</em><em>] </em><em>| </em><em>None</em>) – <p>This is a list containing the positions of the old values in this
+instance.
+If <cite>None</cite>, we will replace for all occurences of the old values with
+the new values.
+The nested list represents the path we need to go down in the
+proposition tree.</p>
+<p>TODO: finish replace, document replacing the quantified variables
+as well</p>
+<p>For example, if self is
+<cite>(forall x: (p1 x -&gt; p2 x) /(p3 x) /(p4 x)) -&gt; (p5 x)</cite>
+current_val = x
+new_val = p
+and positions = [[0, 0, 0], [0, 2], [1]]
+we end up with
+exists q: (forall x: (p1 q -&gt; p2 x) /(p3 x) /(p4 q)) -&gt; (p5 q)
+The quantified variable in a forall is never replaced itself. Due to this,
+the positions array for forall goes directly into the inner proposition.
+Same for exists.
+In the example above, the first list [0,0,0] refers to the x in p1 x, not (p1 x -&gt; p2 x).</p>
+</p></li>
+<li><p><strong>equal_check</strong> (<em>Callable</em><em>[</em><em>[</em><em>Term</em><em>, </em><em>Term</em><em>]</em><em>, </em><em>bool</em><em>] </em><em>| </em><em>None</em>) – A function that takes two arguments and returns True if they compare
+equal. By default, it uses the <cite>==</cite> operator.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A new proposition with the replaced values.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition">Proposition</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">variables</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">p3</span><span class="p">,</span>  <span class="n">p4</span><span class="p">,</span> <span class="n">p5</span> <span class="o">=</span> <span class="n">predicates</span><span class="p">(</span><span class="s2">&quot;p1&quot;</span><span class="p">,</span> <span class="s2">&quot;p2&quot;</span><span class="p">,</span> <span class="s2">&quot;p3&quot;</span><span class="p">,</span> <span class="s2">&quot;p4&quot;</span><span class="p">,</span> <span class="s2">&quot;p5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prop1</span> <span class="o">=</span> <span class="n">Forall</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">p2</span><span class="p">(</span><span class="n">y</span><span class="p">))</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span><span class="n">p3</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">p4</span><span class="p">(</span><span class="n">y</span><span class="p">)))</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">p5</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prop1</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">y</span><span class="p">:</span> <span class="n">a</span><span class="p">},</span> <span class="n">positions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+<span class="go">(forall x: ((p1(x, a) -&gt; p2(y)) /\ p3(y) /\ p4(a))) -&gt; p5(a)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">prop1</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="n">x</span><span class="p">:</span> <span class="n">a</span><span class="p">},</span> <span class="n">positions</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="go">(forall a: ((p1(a, y) -&gt; p2(y)) /\ p3(y) /\ p4(y))) -&gt; p5(y)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the example above, the first list [0,0,0] refers to the proposition
+<cite>p1(x, y)</cite>, so in the first call to <a class="reference internal" href="#pylogic.theories.natural_numbers.Prime.replace" title="pylogic.theories.natural_numbers.Prime.replace"><code class="xref py py-meth docutils literal notranslate"><span class="pre">replace()</span></code></a>, all occurences
+of <cite>y</cite> in <cite>p1(x, y)</cite> are replaced with <cite>a</cite>.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.theories.numbers">
+<span id="pylogic-theories-numbers-module"></span><h2>pylogic.theories.numbers module<a class="headerlink" href="#module-pylogic.theories.numbers" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.theories.numbers.add_positive_gt_parts">
+<span class="sig-prename descclassname"><span class="pre">pylogic.theories.numbers.</span></span><span class="sig-name descname"><span class="pre">add_positive_gt_parts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/theories/numbers.html#add_positive_gt_parts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.numbers.add_positive_gt_parts" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.theories.numbers.gt_implies_neq">
+<span class="sig-prename descclassname"><span class="pre">pylogic.theories.numbers.</span></span><span class="sig-name descname"><span class="pre">gt_implies_neq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/theories/numbers.html#gt_implies_neq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.numbers.gt_implies_neq" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.theories.numbers.lt_implies_neq">
+<span class="sig-prename descclassname"><span class="pre">pylogic.theories.numbers.</span></span><span class="sig-name descname"><span class="pre">lt_implies_neq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/theories/numbers.html#lt_implies_neq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.numbers.lt_implies_neq" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pylogic.theories.rational_numbers">
+<span id="pylogic-theories-rational-numbers-module"></span><h2>pylogic.theories.rational_numbers module<a class="headerlink" href="#module-pylogic.theories.rational_numbers" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.theories.rational_numbers.RationalsField">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.rational_numbers.</span></span><span class="sig-name descname"><span class="pre">RationalsField</span></span><a class="reference internal" href="_modules/pylogic/theories/rational_numbers.html#RationalsField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.rational_numbers.RationalsField" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.rational_numbers.</span></span><span class="sig-name descname"><span class="pre">RationalsField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <a class="reference internal" href="pylogic.structures.ringlike.html#pylogic.structures.ringlike.field.Field" title="pylogic.structures.ringlike.field.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code>], <a class="reference internal" href="pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet" title="pylogic.structures.ordered_set.OrderedSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedSet</span></code></a></p>
+</dd></dl>
+
+</section>
+<section id="module-pylogic.theories.real_numbers">
+<span id="pylogic-theories-real-numbers-module"></span><h2>pylogic.theories.real_numbers module<a class="headerlink" href="#module-pylogic.theories.real_numbers" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.Interval">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.real_numbers.</span></span><span class="sig-name descname"><span class="pre">Interval</span></span><a class="reference internal" href="_modules/pylogic/theories/real_numbers.html#Interval"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.real_numbers.Interval" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.real_numbers.</span></span><span class="sig-name descname"><span class="pre">Interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><code class="xref py py-class docutils literal notranslate"><span class="pre">Set</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.Interval.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/theories/real_numbers.html#Interval.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.real_numbers.Interval.evaluate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.IntervalFunc">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.real_numbers.</span></span><span class="sig-name descname"><span class="pre">IntervalFunc</span></span><a class="reference internal" href="_modules/pylogic/theories/real_numbers.html#IntervalFunc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.real_numbers.IntervalFunc" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Returns an interval with the given bounds.</p>
+<p>You can create a closed interval by using the subscript operator,
+or calling the function with the bounds as arguments for more flexibility.</p>
+<dl>
+<dt>arguments are either:</dt><dd><p>left_symbol: ‘[’ or ‘(’
+a: Term
+b: Term
+right_symbol: ‘]’ or ‘)’</p>
+<p>Returns an interval with the given bounds.</p>
+</dd>
+<dt>or:</dt><dd><p><a href="#id1"><span class="problematic" id="id2">*</span></a>terms: Term
+two terms representing the bounds.</p>
+<p>Returns an open interval with the given bounds.</p>
+</dd>
+<dt>or:</dt><dd><p>terms: Tuple[Term, Term]</p>
+<p>Returns an open interval with the given bounds.</p>
+</dd>
+<dt>or:</dt><dd><p>terms: list[Term]</p>
+<p>A list of two terms. Returns a closed interval with the given bounds.</p>
+</dd>
+</dl>
+<p>Examples:
+&gt;&gt;&gt; interval(“[”, 1, 2, “]”)
+[1, 2]
+&gt;&gt;&gt; interval(“[”, 1, 2, “)”)
+[1, 2)
+&gt;&gt;&gt; interval(1, 2)
+(1, 2)
+&gt;&gt;&gt; interval((1, 2))
+(1, 2)
+&gt;&gt;&gt; interval([1, 2])
+[1, 2]
+&gt;&gt;&gt; interval[1, 2]
+[1, 2]</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.RealsField">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.real_numbers.</span></span><span class="sig-name descname"><span class="pre">RealsField</span></span><a class="reference internal" href="_modules/pylogic/theories/real_numbers.html#RealsField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.real_numbers.RealsField" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.theories.real_numbers.</span></span><span class="sig-name descname"><span class="pre">RealsField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <a class="reference internal" href="pylogic.structures.ringlike.html#pylogic.structures.ringlike.field.Field" title="pylogic.structures.ringlike.field.Field"><code class="xref py py-class docutils literal notranslate"><span class="pre">Field</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code>], <a class="reference internal" href="pylogic.structures.html#pylogic.structures.ordered_set.OrderedSet" title="pylogic.structures.ordered_set.OrderedSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">OrderedSet</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.RealsField.bounded_above">
+<span class="sig-name descname"><span class="pre">bounded_above</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/theories/real_numbers.html#RealsField.bounded_above"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.real_numbers.RealsField.bounded_above" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.RealsField.bounded_above_has_lub">
+<span class="sig-name descname"><span class="pre">bounded_above_has_lub</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallSubsets" title="pylogic.proposition.quantified.forall.ForallSubsets"><span class="pre">ForallSubsets</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.and_.And" title="pylogic.proposition.and_.And"><span class="pre">And</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">BoundedAbove</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">HasLUB</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pylogic.theories.real_numbers.RealsField.bounded_above_has_lub" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.RealsField.has_lub">
+<span class="sig-name descname"><span class="pre">has_lub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/theories/real_numbers.html#RealsField.has_lub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.real_numbers.RealsField.has_lub" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.RealsField.is_ub">
+<span class="sig-name descname"><span class="pre">is_ub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/theories/real_numbers.html#RealsField.is_ub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.real_numbers.RealsField.is_ub" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.theories.real_numbers.RealsField.property_bounded_above_has_lub">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_bounded_above_has_lub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">set_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallSubsets" title="pylogic.proposition.quantified.forall.ForallSubsets"><span class="pre">ForallSubsets</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.implies.Implies" title="pylogic.proposition.implies.Implies"><span class="pre">Implies</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.and_.And" title="pylogic.proposition.and_.And"><span class="pre">And</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/theories/real_numbers.html#RealsField.property_bounded_above_has_lub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.theories.real_numbers.RealsField.property_bounded_above_has_lub" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.theories">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pylogic.theories" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pylogic.html">pylogic package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pylogic.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.abc">pylogic.abc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.assumptions_context">pylogic.assumptions_context module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.constant">pylogic.constant module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.helpers">pylogic.helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.inference">pylogic.inference module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.symbol">pylogic.symbol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.sympy_helpers">pylogic.sympy_helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.variable">pylogic.variable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.warn">pylogic.warn module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="pylogic.html">pylogic package</a><ul>
+      <li>Previous: <a href="pylogic.syntax_helpers.html" title="previous chapter">pylogic.syntax_helpers package</a></li>
+      <li>Next: <a href="pylogic.typing.html" title="next chapter">pylogic.typing package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/pylogic.theories.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

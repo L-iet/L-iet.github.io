@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.structures.sequence &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.structures.sequence</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Self</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span> <span class="k">as</span> <span class="n">TSequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">cast</span><span class="p">,</span> <span class="n">overload</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.ordering.greaterorequal</span><span class="w"> </span><span class="kn">import</span> <span class="n">GreaterOrEqual</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">PythonNumeric</span><span class="p">,</span> <span class="n">Term</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">sympy.series.sequences</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqBase</span><span class="p">,</span> <span class="n">SeqFormula</span><span class="p">,</span> <span class="n">SeqPer</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constant</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.expr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Expr</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.sequence_term</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequenceTerm</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.not_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Not</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.contains</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsContainedIn</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.equals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equals</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqSet</span><span class="p">,</span> <span class="n">Set</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+    <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Term</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Set&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Sequence">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Sequence</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A sequence is a countably infinite or finite ordered list of elements.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        predicate: `Callable[[Term], Proposition] | None`</span>
+<span class="sd">        A function that receives a natural number and returns a proposition.</span>
+<span class="sd">        sequence.predicate() actually receives a natural number n and returns a proposition</span>
+<span class="sd">        about the corresponding sequence term.</span>
+<span class="sd">        So `forall n, predicate(n)` is True.</span>
+
+<span class="sd">        Note that if a term `x` is the nth term of the sequence, then `predicate(n)`</span>
+<span class="sd">        is True, but if some predicate is True for `x`, it doesn&#39;t necessarily mean that</span>
+<span class="sd">        `x` is in the sequence.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">is_atomic</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">initial_terms</span><span class="p">:</span> <span class="n">TSequence</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">nth_term</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">int</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">predicate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">],</span> <span class="n">Proposition</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">real</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;real&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">real</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constant</span><span class="p">,</span> <span class="n">Infinity</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.abs</span><span class="w"> </span><span class="kn">import</span> <span class="n">Abs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">_add_assumption_props</span><span class="p">,</span> <span class="n">python_to_pylogic</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+        <span class="n">init_inds</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">Constant</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">initial_terms</span><span class="p">))))</span> <span class="k">if</span> <span class="n">initial_terms</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_sequence</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">knowledge_base</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">python_to_pylogic</span><span class="p">,</span> <span class="n">initial_terms</span><span class="p">))</span> <span class="k">if</span> <span class="n">initial_terms</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terms</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Constant</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">init_inds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nth_term</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">],</span> <span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">nth_term</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_finite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">],</span> <span class="n">Proposition</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">predicate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate_uses_self</span> <span class="o">=</span> <span class="n">predicate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="c1"># hack to make n a natural number &amp; save time</span>
+        <span class="n">n_ind</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+        <span class="n">n_ind</span><span class="o">.</span><span class="n">_is_natural</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">nth_term_expr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nth_term</span><span class="p">(</span><span class="n">n_ind</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nth_term</span> <span class="k">else</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_real</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;real&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_rational</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;rational&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_integer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_natural</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;natural&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_set</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span><span class="s2">&quot;set_&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_set</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span><span class="s2">&quot;set&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_graph</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_set</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;graph&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_pair</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_graph</span> <span class="ow">or</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pair&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_list</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_pair</span> <span class="ow">or</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;list_&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_zero</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;zero&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_nonpositive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;nonpositive&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_nonnegative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;nonnegative&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_positive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;positive&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_negative</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;negative&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_even</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_init_assump_attr</span><span class="p">(</span>
+            <span class="s2">&quot;even&quot;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">,</span> <span class="n">nth_term_expr</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nth_term_expr</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">nth_term_expr</span>
+
+        <span class="c1"># expressions that contain this sequence</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Expr</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties_of_each_term</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Proposition</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">_add_assumption_props</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># needs to be here, after setting all above attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">Abs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_at_least</span> <span class="o">=</span> <span class="n">GreaterOrEqual</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;by_definition&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;length&quot;</span><span class="p">,</span> <span class="n">Infinity</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;initial_terms&quot;</span><span class="p">:</span> <span class="n">initial_terms</span><span class="p">,</span>
+            <span class="s2">&quot;nth_term&quot;</span><span class="p">:</span> <span class="n">nth_term</span><span class="p">,</span>
+            <span class="s2">&quot;predicate&quot;</span><span class="p">:</span> <span class="n">predicate</span><span class="p">,</span>
+            <span class="s2">&quot;real&quot;</span><span class="p">:</span> <span class="n">real</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_init_assump_attr</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">attr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">nth_term_expr</span><span class="p">:</span> <span class="n">Term</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">kwarg_val</span> <span class="o">:=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">kwarg_val</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">nth_term_expr</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;is_</span><span class="si">{</span><span class="n">attr</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="n">nth_term_expr</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_natural</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_and</span><span class="p">,</span> <span class="n">ternary_if_not_none</span>
+
+        <span class="k">return</span> <span class="n">ternary_if_not_none</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_natural</span><span class="p">,</span> <span class="n">ternary_and</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_integer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_nonnegative</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@is_natural</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_natural</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_natural</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_or</span>
+
+        <span class="k">return</span> <span class="n">ternary_or</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_integer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_natural</span><span class="p">)</span>
+
+    <span class="nd">@is_integer</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_integer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_integer</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_rational</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_or</span>
+
+        <span class="k">return</span> <span class="n">ternary_or</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_rational</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_integer</span><span class="p">)</span>
+
+    <span class="nd">@is_rational</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_rational</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_rational</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_real</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_or</span>
+
+        <span class="k">return</span> <span class="n">ternary_or</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_real</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rational</span><span class="p">)</span>
+
+    <span class="nd">@is_real</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_real</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_real</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_zero</span>
+
+    <span class="nd">@is_zero</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_zero</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_zero</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_nonzero</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_not</span>
+
+        <span class="k">return</span> <span class="n">ternary_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_zero</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_even</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_even</span>
+
+    <span class="nd">@is_even</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_even</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_even</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_odd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_not</span>
+
+        <span class="k">return</span> <span class="n">ternary_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_even</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_positive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_and</span><span class="p">,</span> <span class="n">ternary_if_not_none</span><span class="p">,</span> <span class="n">ternary_not</span>
+
+        <span class="k">return</span> <span class="n">ternary_if_not_none</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_positive</span><span class="p">,</span>
+            <span class="n">ternary_and</span><span class="p">(</span><span class="n">ternary_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_zero</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_nonnegative</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@is_positive</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_positive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_positive</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_negative</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_and</span><span class="p">,</span> <span class="n">ternary_if_not_none</span><span class="p">,</span> <span class="n">ternary_not</span>
+
+        <span class="k">return</span> <span class="n">ternary_if_not_none</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_negative</span><span class="p">,</span>
+            <span class="n">ternary_and</span><span class="p">(</span><span class="n">ternary_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_zero</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_nonpositive</span><span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@is_negative</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_negative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_negative</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_nonpositive</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_and</span><span class="p">,</span> <span class="n">ternary_if_not_none</span><span class="p">,</span> <span class="n">ternary_not</span>
+
+        <span class="c1"># must use ._is_nonpositive to avoid infinite recursion</span>
+        <span class="c1"># and .is_real for correctness</span>
+        <span class="k">return</span> <span class="n">ternary_if_not_none</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_nonpositive</span><span class="p">,</span>
+            <span class="n">ternary_and</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">,</span> <span class="n">ternary_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_positive</span><span class="p">)),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@is_nonpositive</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_nonpositive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_nonpositive</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_nonnegative</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_and</span><span class="p">,</span> <span class="n">ternary_if_not_none</span><span class="p">,</span> <span class="n">ternary_not</span>
+
+        <span class="c1"># see is_nonpositive</span>
+        <span class="k">return</span> <span class="n">ternary_if_not_none</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_is_nonnegative</span><span class="p">,</span>
+            <span class="n">ternary_if_not_none</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_is_natural</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">ternary_and</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">is_real</span><span class="p">,</span> <span class="n">ternary_not</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_negative</span><span class="p">)),</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+    <span class="nd">@is_nonnegative</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_nonnegative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_nonnegative</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_set</span>
+
+    <span class="nd">@is_set</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_set</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">for</span> <span class="n">parent</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent_exprs</span><span class="p">:</span>
+            <span class="n">parent</span><span class="o">.</span><span class="n">update_properties</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_list</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="kc">True</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="nd">@is_sequence</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_sequence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_finite</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_finite</span>
+
+    <span class="nd">@is_finite</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_finite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_finite</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="c1"># parent expressions don&#39;t currently depend</span>
+        <span class="c1"># on this property</span>
+        <span class="c1"># for parent in self.parent_exprs:</span>
+        <span class="c1">#     parent.update_properties()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Sequence(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nth_term_expr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nth_term_expr</span><span class="si">}</span><span class="s2">...)&quot;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_n)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">initial_terms</span>
+        <span class="k">return</span> <span class="bp">NotImplemented</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nth_term</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_finite</span><span class="p">,</span>
+                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Term</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceTerm</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.sequence_term</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequenceTerm</span>
+
+        <span class="k">return</span> <span class="n">SequenceTerm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Sequence.equals">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.equals">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.equals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equals</span>
+
+        <span class="k">return</span> <span class="n">Equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Sequence.is_in">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.is_in">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span> <span class="o">|</span> <span class="n">Variable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IsContainedIn</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the proposition `self in set_`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">set_</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Sequence.is_not_in">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.is_not_in">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_not_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span> <span class="o">|</span> <span class="n">Variable</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Not</span><span class="p">[</span><span class="n">IsContainedIn</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the proposition `self not in set_`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.not_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Not</span>
+
+        <span class="k">return</span> <span class="n">Not</span><span class="p">(</span><span class="n">set_</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Sequence.contains">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.contains">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">contains</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span> <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">IsContainedIn</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">SeqSet</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;elementhood&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.contains</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsContainedIn</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqSet</span>
+
+        <span class="k">return</span> <span class="n">IsContainedIn</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">SeqSet</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Sequence.evaluate">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_latex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">printer</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nth_term_expr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">rf</span><span class="s2">&quot;\left(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nth_term_expr</span><span class="o">.</span><span class="n">_latex</span><span class="p">()</span><span class="si">}</span><span class="s2">\cdots\right)&quot;</span>
+        <span class="k">return</span> <span class="sa">rf</span><span class="s2">&quot;\left(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_n\right)&quot;</span>
+
+<div class="viewcode-block" id="Sequence.define_predicate">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.define_predicate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">define_predicate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">predicate</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">],</span> <span class="n">Proposition</span><span class="p">],</span>
+        <span class="n">predicate_uses_self</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Define the predicate that the sequence satisfies.</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            predicate: `Callable[[Term], Proposition]`</span>
+
+<span class="sd">                A function that receives a natural number and returns a proposition.</span>
+<span class="sd">                sequence.predicate() actually receives a natural number n and returns a proposition</span>
+<span class="sd">                about the corresponding sequence term.</span>
+<span class="sd">                So for all n, predicate(n) should be True.</span>
+
+<span class="sd">            predicate_uses_self: bool</span>
+
+<span class="sd">                Whether the predicate uses `self`  (imported from pylogic.sequence) as opposed to the</span>
+<span class="sd">                reference of the actual sequence.</span>
+<span class="sd">                If `define_predicate` is being called, the sequence is already initialized and can</span>
+<span class="sd">                be referenced directly in the predicate. In this case, `predicate_uses_self` should be False.</span>
+<span class="sd">                If `self` is used in the predicate, `predicate_uses_self` should be True.</span>
+<span class="sd">                This facilitates replacing `self` with the actual sequence instance when the predicate is called.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_predicate</span> <span class="o">=</span> <span class="n">predicate</span>
+        <span class="k">if</span> <span class="n">predicate_uses_self</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_predicate_uses_self</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Sequence.predicate">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.predicate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predicate</span><span class="p">(</span><span class="n">inst</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="n">Term</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Proposition</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the proposition that the term satisfies the predicate.</span>
+
+<span class="sd">        expr: Term</span>
+<span class="sd">            an expression that corresponds to a natural number.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">python_to_pylogic</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+
+        <span class="n">expr</span> <span class="o">=</span> <span class="n">python_to_pylogic</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">expr</span><span class="o">.</span><span class="n">is_natural</span><span class="p">,</span> <span class="s2">&quot;The argument must be a natural number&quot;</span>
+        <span class="k">if</span> <span class="n">inst</span><span class="o">.</span><span class="n">_predicate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No predicate was provided&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">inst</span><span class="o">.</span><span class="n">_predicate</span><span class="p">(</span><span class="n">expr</span><span class="p">)</span>
+
+        <span class="c1"># if the predicate was defined at initialization, replace the dummy self sequence</span>
+        <span class="c1"># with this instance</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predicate_uses_self</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="bp">self</span><span class="p">:</span> <span class="n">inst</span><span class="p">})</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;by_predicate&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div>
+
+
+<div class="viewcode-block" id="Sequence.to_sympy">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.to_sympy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_sympy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SeqBase</span> <span class="o">|</span> <span class="n">SeqFormula</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">oo</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.sympy_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PylSympySeqBase</span><span class="p">,</span> <span class="n">PylSympySeqFormula</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">nth_term</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">PylSympySeqFormula</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nth_term</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">to_sympy</span><span class="p">(),</span>
+                <span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">to_sympy</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">oo</span><span class="p">),</span>
+                <span class="n">_pyl_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
+                <span class="n">_pyl_init_args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span><span class="p">,</span>
+                <span class="n">_pyl_init_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">PylSympySeqBase</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">_pyl_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
+            <span class="n">_pyl_init_args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span><span class="p">,</span>
+            <span class="n">_pyl_init_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Sequence.replace">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Sequence.replace">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">replace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">replace_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">],</span>
+        <span class="n">positions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">equal_check</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">equal_check</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">equal_check</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="n">y</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">replace_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">equal_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">replace_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="PeriodicSequence">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.PeriodicSequence">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PeriodicSequence</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A periodic sequence is an infinite sequence that repeats after a</span>
+<span class="sd">    certain number of terms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">initial_terms</span><span class="p">:</span> <span class="n">TSequence</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">period</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">Constant</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="n">T</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">initial_terms</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">python_to_pylogic</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_finite</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="n">python_to_pylogic</span><span class="p">(</span><span class="n">period</span><span class="p">)</span>  <span class="c1"># TODO: or infinite when None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;initial_terms&quot;</span><span class="p">:</span> <span class="n">initial_terms</span><span class="p">,</span>
+            <span class="s2">&quot;period&quot;</span><span class="p">:</span> <span class="n">period</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">Term</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SequenceTerm</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_integer_numeric</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">is_integer_numeric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">is_integer_numeric</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="n">index</span> <span class="o">%=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">period</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PeriodicSequence.to_sympy">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.PeriodicSequence.to_sympy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_sympy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SeqBase</span> <span class="o">|</span> <span class="n">SeqPer</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sympy.series.sequences</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqPer</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.sympy_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PylSympySeqBase</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">SeqPer</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">term</span><span class="o">.</span><span class="n">to_sympy</span><span class="p">()</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">PylSympySeqBase</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">_pyl_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
+            <span class="n">_pyl_init_args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span><span class="p">,</span>
+            <span class="n">_pyl_init_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="FiniteSequence">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.FiniteSequence">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">FiniteSequence</span><span class="p">(</span><span class="n">Sequence</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A finite sequence is a sequence with a finite number of terms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">length</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span>
+        <span class="n">initial_terms</span><span class="p">:</span> <span class="n">TSequence</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.constant</span><span class="w"> </span><span class="kn">import</span> <span class="n">Constant</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.abs</span><span class="w"> </span><span class="kn">import</span> <span class="n">Abs</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">python_to_pylogic</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+        <span class="n">length</span> <span class="o">=</span> <span class="n">python_to_pylogic</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">Constant</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">length</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The length of a sequence must be a natural number&quot;</span><span class="p">)</span>
+        <span class="n">_length</span> <span class="o">=</span> <span class="n">length</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">_length</span><span class="p">,</span> <span class="n">Constant</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_length</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">_length</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">initial_terms</span><span class="p">)</span> <span class="k">if</span> <span class="n">initial_terms</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The length of the sequence must be at least the number of initial terms&quot;</span>
+            <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">initial_terms</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_finite</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span> <span class="n">Term</span> <span class="o">=</span> <span class="n">_length</span>
+        <span class="c1"># TODO self.size_is_finite = self.size.is_in(Naturals0, _is_proven=True)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_at_least</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">size_at_least</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span>
+            <span class="n">GreaterOrEqual</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">)),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">_length</span><span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="nb">set</span><span class="p">(),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;by_definition&quot;</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;initial_terms&quot;</span><span class="p">:</span> <span class="n">initial_terms</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="FiniteSequence.to_sympy">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.FiniteSequence.to_sympy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_sympy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SeqBase</span> <span class="o">|</span> <span class="n">SeqPer</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">sympy.series.sequences</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqPer</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.sympy_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">PylSympySeqBase</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">SeqPer</span><span class="p">(</span>
+                <span class="nb">tuple</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">to_sympy</span><span class="p">()</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">PylSympySeqBase</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">_pyl_class</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span>
+            <span class="n">_pyl_init_args</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span><span class="p">,</span>
+            <span class="n">_pyl_init_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Pair">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Pair">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Pair</span><span class="p">(</span><span class="n">FiniteSequence</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A pair is a finite sequence with two terms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">first</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">second</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_and</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">initial_terms</span><span class="o">=</span><span class="p">[</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">],</span>
+            <span class="n">real</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_real</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_real</span><span class="p">),</span>
+            <span class="n">rational</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_rational</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_rational</span><span class="p">),</span>
+            <span class="n">integer</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_integer</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_integer</span><span class="p">),</span>
+            <span class="n">natural</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_natural</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_natural</span><span class="p">),</span>
+            <span class="n">zero</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_zero</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_zero</span><span class="p">),</span>
+            <span class="n">nonpositive</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_nonpositive</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_nonpositive</span><span class="p">),</span>
+            <span class="n">nonnegative</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_nonnegative</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_nonnegative</span><span class="p">),</span>
+            <span class="n">even</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_even</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_even</span><span class="p">),</span>
+            <span class="n">set_</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_set</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_set</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">second</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_pair</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Pair(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Triple">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.Triple">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Triple</span><span class="p">(</span><span class="n">FiniteSequence</span><span class="p">[</span><span class="n">T</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A triple is a finite sequence with three terms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">first</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">second</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">third</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ternary_and</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span>
+            <span class="n">length</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">initial_terms</span><span class="o">=</span><span class="p">[</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">third</span><span class="p">],</span>
+            <span class="n">real</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_real</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_real</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_real</span><span class="p">),</span>
+            <span class="n">rational</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span>
+                <span class="n">first</span><span class="o">.</span><span class="n">is_rational</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_rational</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_rational</span>
+            <span class="p">),</span>
+            <span class="n">integer</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_integer</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_integer</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_integer</span><span class="p">),</span>
+            <span class="n">natural</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_natural</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_natural</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_natural</span><span class="p">),</span>
+            <span class="n">zero</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_zero</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_zero</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_zero</span><span class="p">),</span>
+            <span class="n">nonpositive</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span>
+                <span class="n">first</span><span class="o">.</span><span class="n">is_nonpositive</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_nonpositive</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_nonpositive</span>
+            <span class="p">),</span>
+            <span class="n">nonnegative</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span>
+                <span class="n">first</span><span class="o">.</span><span class="n">is_nonnegative</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_nonnegative</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_nonnegative</span>
+            <span class="p">),</span>
+            <span class="n">even</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_even</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_even</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_even</span><span class="p">),</span>
+            <span class="n">set_</span><span class="o">=</span><span class="n">ternary_and</span><span class="p">(</span><span class="n">first</span><span class="o">.</span><span class="n">is_set</span><span class="p">,</span> <span class="n">second</span><span class="o">.</span><span class="n">is_set</span><span class="p">,</span> <span class="n">third</span><span class="o">.</span><span class="n">is_set</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">first</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">second</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">third</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_terms</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_pair</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">third</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Triple(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">third</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">second</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">third</span><span class="si">}</span><span class="s2">)&quot;</span></div>
+
+
+
+<span class="bp">self</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">(</span><span class="s2">&quot;_PylogicSelfSeq&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@overload</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sequences</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">:</span> <span class="o">...</span>
+<span class="nd">@overload</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sequences</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Sequence</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span> <span class="o">...</span>
+<div class="viewcode-block" id="sequences">
+<a class="viewcode-back" href="../../../pylogic.structures.html#pylogic.structures.sequence.sequences">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">sequences</span><span class="p">(</span><span class="o">*</span><span class="n">names</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span> <span class="o">|</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Sequence</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create one or more sequences.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Sequence</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">Sequence</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

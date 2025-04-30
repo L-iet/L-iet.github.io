@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.structures.grouplike.group &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.structures.grouplike.group</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">cast</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.expr</span><span class="w"> </span><span class="kn">import</span> <span class="n">Expr</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.infix.infix</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpecialInfix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.implies</span><span class="w"> </span><span class="kn">import</span> <span class="n">Implies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.exists</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExistsUniqueInSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">Forall</span><span class="p">,</span> <span class="n">ForallInSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.contains</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsContainedIn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.equals</span><span class="w"> </span><span class="kn">import</span> <span class="n">Equals</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.grouplike.monoid</span><span class="w"> </span><span class="kn">import</span> <span class="n">Monoid</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Term</span><span class="p">)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Expr</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Group">
+<a class="viewcode-back" href="../../../../pylogic.structures.grouplike.html#pylogic.structures.grouplike.group.Group">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Group</span><span class="p">(</span><span class="n">Monoid</span><span class="p">):</span>
+    <span class="n">latin_square</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">],</span> <span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">]]]</span>
+    <span class="p">]</span>
+    <span class="n">have_inverses</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">Equals</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]</span>
+
+<div class="viewcode-block" id="Group.property_latin_square">
+<a class="viewcode-back" href="../../../../pylogic.structures.grouplike.html#pylogic.structures.grouplike.group.Group.property_latin_square">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_latin_square</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">SpecialInfix</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Expr</span><span class="p">,</span> <span class="n">Expr</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span>
+        <span class="n">ForallInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">],</span> <span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">]]]</span>
+    <span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Latin square property states that, for each a and b in Q,</span>
+<span class="sd">        there exist unique elements x and y in Q such that both</span>
+
+<span class="sd">        a * x = b</span>
+
+<span class="sd">        y * a = b</span>
+
+<span class="sd">        Then x = a \ b (left divide) and y = b / a (right divide)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.grouplike.quasigroup</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quasigroup</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Quasigroup</span><span class="o">.</span><span class="n">property_latin_square</span><span class="p">(</span><span class="n">set_</span><span class="p">,</span> <span class="n">operation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Group.property_have_inverses">
+<a class="viewcode-back" href="../../../../pylogic.structures.grouplike.html#pylogic.structures.grouplike.group.Group.property_have_inverses">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_have_inverses</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">SpecialInfix</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Expr</span><span class="p">,</span> <span class="n">Expr</span><span class="p">],</span>
+        <span class="n">identity</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ExistsUniqueInSet</span><span class="p">[</span><span class="n">And</span><span class="p">[</span><span class="n">Equals</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This is a theorem because it is a consequence of the Latin square property</span>
+<span class="sd">        and the identity property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ExistsUniqueInSet</span><span class="p">(</span>
+                <span class="n">x</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Equals</span><span class="p">(</span><span class="n">a</span> <span class="o">|</span> <span class="n">operation</span> <span class="o">|</span> <span class="n">x</span><span class="p">,</span> <span class="n">identity</span><span class="p">)</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span>
+                    <span class="n">Equals</span><span class="p">(</span><span class="n">x</span> <span class="o">|</span> <span class="n">operation</span> <span class="o">|</span> <span class="n">a</span><span class="p">,</span> <span class="n">identity</span><span class="p">)</span>
+                <span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Every element in </span><span class="si">{</span><span class="n">set_</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has an inverse&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">elements</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">containment_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">E</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operation_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operation_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">identity</span><span class="p">:</span> <span class="n">T</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">Monoid</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">,</span>
+            <span class="n">containment_function</span><span class="o">=</span><span class="n">containment_function</span><span class="p">,</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">,</span>
+            <span class="n">operation_name</span><span class="o">=</span><span class="n">operation_name</span><span class="p">,</span>
+            <span class="n">operation_symbol</span><span class="o">=</span><span class="n">operation_symbol</span><span class="p">,</span>
+            <span class="n">identity</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;elements&quot;</span><span class="p">:</span> <span class="n">elements</span><span class="p">,</span>
+            <span class="s2">&quot;containment_function&quot;</span><span class="p">:</span> <span class="n">containment_function</span><span class="p">,</span>
+            <span class="s2">&quot;operation&quot;</span><span class="p">:</span> <span class="n">operation</span><span class="p">,</span>
+            <span class="s2">&quot;operation_name&quot;</span><span class="p">:</span> <span class="n">operation_name</span><span class="p">,</span>
+            <span class="s2">&quot;operation_symbol&quot;</span><span class="p">:</span> <span class="n">operation_symbol</span><span class="p">,</span>
+            <span class="s2">&quot;identity&quot;</span><span class="p">:</span> <span class="n">identity</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">a</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latin_square</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">property_latin_square</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latin_square</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># From the Latin square property, we can deduce that every element in</span>
+        <span class="c1"># the group has a left inverse and a right inverse</span>
+        <span class="n">a_in_self</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">is_in</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">left_and_right_inverses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latin_square</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">identity</span><span class="p">)</span>
+        <span class="n">l_inv</span><span class="p">,</span> <span class="n">r_inv</span> <span class="o">=</span> <span class="n">left_and_right_inverses</span>
+        <span class="n">cx</span><span class="p">,</span> <span class="n">Pxs</span> <span class="o">=</span> <span class="n">l_inv</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+        <span class="n">cx_in_self</span><span class="p">,</span> <span class="n">right_inv_eq</span><span class="p">,</span> <span class="n">cx_unique</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">[</span><span class="n">IsContainedIn</span><span class="p">,</span> <span class="n">Equals</span><span class="p">,</span> <span class="n">Forall</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">Equals</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]],</span>
+            <span class="n">Pxs</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">cy</span><span class="p">,</span> <span class="n">Pys</span> <span class="o">=</span> <span class="n">r_inv</span><span class="o">.</span><span class="n">extract</span><span class="p">()</span>
+        <span class="n">cy_in_self</span><span class="p">,</span> <span class="n">left_inv_eq</span><span class="p">,</span> <span class="n">cy_unique</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span>
+            <span class="nb">tuple</span><span class="p">[</span><span class="n">IsContainedIn</span><span class="p">,</span> <span class="n">Equals</span><span class="p">,</span> <span class="n">Forall</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">Equals</span><span class="p">,</span> <span class="n">Equals</span><span class="p">]]],</span>
+            <span class="n">Pys</span><span class="o">.</span><span class="n">extract</span><span class="p">(),</span>
+        <span class="p">)</span>
+        <span class="n">identity_property</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_identity</span><span class="o">.</span><span class="n">extract</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">transitive_proof</span><span class="p">(</span>
+            <span class="n">left_inv</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span>
+            <span class="n">right_inv</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span>
+            <span class="n">left_inv_eq</span><span class="p">:</span> <span class="n">Equals</span><span class="p">,</span>
+            <span class="n">right_inv_eq</span><span class="p">:</span> <span class="n">Equals</span><span class="p">,</span>
+            <span class="n">left_inv_in_self</span><span class="p">:</span> <span class="n">IsContainedIn</span><span class="p">,</span>
+            <span class="n">right_inv_in_self</span><span class="p">:</span> <span class="n">IsContainedIn</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Equals</span><span class="p">:</span>
+            <span class="c1"># This is a template of a proof that makes some equations</span>
+            <span class="c1"># and uses transitivity to prove the desired equation that the</span>
+            <span class="c1"># left inverse is equal to the right inverse.</span>
+            <span class="c1"># cx is the right inverse of a, cy is the left inverse of a</span>
+            <span class="n">cx_eq_e_op_cx</span> <span class="o">=</span> <span class="n">identity_property</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span>
+                <span class="n">right_inv</span><span class="p">,</span> <span class="n">proof_expr_to_substitute_in_set</span><span class="o">=</span><span class="n">right_inv_in_self</span>
+            <span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">symmetric</span><span class="p">()</span>
+            <span class="n">e_op_cx_eq_cy_op_a__op_cx</span> <span class="o">=</span> <span class="n">left_inv_eq</span><span class="o">.</span><span class="n">symmetric</span><span class="p">()</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">|</span> <span class="n">right_inv</span>
+            <span class="p">)</span>
+            <span class="n">assoc</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">op_is_associative</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">left_inv</span><span class="p">,</span> <span class="n">left_inv_in_self</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a_in_self</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">in_particular</span><span class="p">(</span><span class="n">right_inv</span><span class="p">,</span> <span class="n">right_inv_in_self</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">cy_op__a_op_cx_eq_cy_op_e</span> <span class="o">=</span> <span class="n">right_inv_eq</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">left_inv</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">|</span> <span class="n">t</span>
+            <span class="p">)</span>
+            <span class="n">cy_op_e_eq_cy</span> <span class="o">=</span> <span class="n">identity_property</span><span class="o">.</span><span class="n">in_particular</span><span class="p">(</span>
+                <span class="n">left_inv</span><span class="p">,</span> <span class="n">proof_expr_to_substitute_in_set</span><span class="o">=</span><span class="n">left_inv_in_self</span>
+            <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">cx_eq_cy</span> <span class="o">=</span> <span class="n">cx_eq_e_op_cx</span><span class="o">.</span><span class="n">transitive</span><span class="p">(</span>
+                <span class="n">e_op_cx_eq_cy_op_a__op_cx</span><span class="p">,</span>
+                <span class="n">assoc</span><span class="p">,</span>
+                <span class="n">cy_op__a_op_cx_eq_cy_op_e</span><span class="p">,</span>
+                <span class="n">cy_op_e_eq_cy</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="n">cx_eq_cy</span>
+
+        <span class="c1"># use the left and right inverses to prove that they are equal</span>
+        <span class="n">cx_eq_cy</span> <span class="o">=</span> <span class="n">transitive_proof</span><span class="p">(</span>
+            <span class="n">cy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">left_inv_eq</span><span class="p">,</span> <span class="n">right_inv_eq</span><span class="p">,</span> <span class="n">cy_in_self</span><span class="p">,</span> <span class="n">cx_in_self</span>
+        <span class="p">)</span>
+        <span class="c1"># replace cy with cx in the left inverse equation</span>
+        <span class="n">cx_op_a_eq_e</span> <span class="o">=</span> <span class="n">cx_eq_cy</span><span class="o">.</span><span class="n">p_substitute_into</span><span class="p">(</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">left_inv_eq</span><span class="p">)</span>
+        <span class="n">cx_inv_property</span> <span class="o">=</span> <span class="n">cx_in_self</span><span class="o">.</span><span class="n">p_and</span><span class="p">(</span><span class="n">right_inv_eq</span><span class="p">,</span> <span class="n">cx_op_a_eq_e</span><span class="p">)</span>
+
+        <span class="c1"># Now we prove that the inverse is unique</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">w_in_self</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">is_in</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">w_is_right_inv</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">|</span> <span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">identity</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">w_is_left_inv</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">op</span> <span class="o">|</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">identity</span><span class="p">)</span><span class="o">.</span><span class="n">assume</span><span class="p">(</span><span class="n">_internal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># similar algebraic proof as above</span>
+        <span class="n">w_eq_cx</span> <span class="o">=</span> <span class="n">transitive_proof</span><span class="p">(</span>
+            <span class="n">cx</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">cx_op_a_eq_e</span><span class="p">,</span> <span class="n">w_is_right_inv</span><span class="p">,</span> <span class="n">cx_in_self</span><span class="p">,</span> <span class="n">w_in_self</span>
+        <span class="p">)</span>
+        <span class="n">cx_unique_property</span> <span class="o">=</span> <span class="n">w_eq_cx</span><span class="o">.</span><span class="n">followed_from</span><span class="p">(</span>
+            <span class="n">w_in_self</span><span class="p">,</span> <span class="n">w_is_right_inv</span><span class="p">,</span> <span class="n">w_is_left_inv</span><span class="p">,</span> <span class="n">_internal_tactic</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">have_inverses</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">cx_inv_property</span><span class="o">.</span><span class="n">p_and</span><span class="p">(</span><span class="n">cx_unique_property</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">thus_there_exists</span><span class="p">(</span><span class="s2">&quot;a_inv&quot;</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">latex_name</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;a_{\text</span><span class="si">{inv}</span><span class="s2">}&quot;</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">to_exists_unique_in_set</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">thus_forall</span><span class="p">(</span><span class="n">a_in_self</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># type: ignore</span></div>
+
+
+
+<div class="viewcode-block" id="AbelianGroup">
+<a class="viewcode-back" href="../../../../pylogic.structures.grouplike.html#pylogic.structures.grouplike.group.AbelianGroup">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">AbelianGroup</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
+    <span class="n">op_is_commutative</span><span class="p">:</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">]]</span>
+
+<div class="viewcode-block" id="AbelianGroup.property_op_is_commutative">
+<a class="viewcode-back" href="../../../../pylogic.structures.grouplike.html#pylogic.structures.grouplike.group.AbelianGroup.property_op_is_commutative">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">property_op_is_commutative</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">set_</span><span class="p">:</span> <span class="n">Set</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">SpecialInfix</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Term</span><span class="p">,</span> <span class="n">Expr</span><span class="p">,</span> <span class="n">Expr</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ForallInSet</span><span class="p">[</span><span class="n">ForallInSet</span><span class="p">[</span><span class="n">Equals</span><span class="p">]]:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
+        <span class="n">x_op_y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">|</span> <span class="n">operation</span> <span class="o">|</span> <span class="n">y</span>
+        <span class="k">return</span> <span class="n">ForallInSet</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="n">set_</span><span class="p">,</span>
+            <span class="n">ForallInSet</span><span class="p">(</span>
+                <span class="n">y</span><span class="p">,</span>
+                <span class="n">set_</span><span class="p">,</span>
+                <span class="n">Equals</span><span class="p">(</span><span class="n">x_op_y</span><span class="p">,</span> <span class="n">y</span> <span class="o">|</span> <span class="n">operation</span> <span class="o">|</span> <span class="n">x</span><span class="p">),</span>
+            <span class="p">),</span>
+            <span class="n">description</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">operation</span><span class="o">.</span><span class="n">symbol</span><span class="si">}</span><span class="s2"> is commutative in </span><span class="si">{</span><span class="n">set_</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">elements</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">containment_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operation</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">],</span> <span class="n">E</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operation_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">operation_symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">identity</span><span class="p">:</span> <span class="n">T</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">,</span>
+            <span class="n">containment_function</span><span class="o">=</span><span class="n">containment_function</span><span class="p">,</span>
+            <span class="n">operation</span><span class="o">=</span><span class="n">operation</span><span class="p">,</span>
+            <span class="n">operation_name</span><span class="o">=</span><span class="n">operation_name</span><span class="p">,</span>
+            <span class="n">operation_symbol</span><span class="o">=</span><span class="n">operation_symbol</span><span class="p">,</span>
+            <span class="n">identity</span><span class="o">=</span><span class="n">identity</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op_is_commutative</span> <span class="o">=</span> <span class="n">AbelianGroup</span><span class="o">.</span><span class="n">property_op_is_commutative</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">operation</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">op_is_commutative</span><span class="o">.</span><span class="n">_set_is_axiom</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.proposition.contradiction &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.proposition.contradiction</h1><div class="highlight"><pre>
+<span></span><span class="c1"># pyright: reportInvalidTypeForm=false</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.not_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Not</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.or_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Or</span>
+
+<span class="n">TProposition</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TProposition&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Proposition&quot;</span><span class="p">)</span>
+<span class="n">UProposition</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;UProposition&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Proposition&quot;</span><span class="p">)</span>
+<span class="n">InferenceRule</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;InferenceRule&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]})</span>
+
+
+<div class="viewcode-block" id="Contradiction">
+<a class="viewcode-back" href="../../../pylogic.proposition.html#pylogic.proposition.contradiction.Contradiction">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Contradiction</span><span class="p">(</span><span class="n">Proposition</span><span class="p">):</span>
+    <span class="n">_inference_rules</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InferenceRule</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;thus_assumptions_cannot_all_hold&quot;</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A contradiction can be assumed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="s2">&quot;contradiction&quot;</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="s2">&quot;contradiction&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_init_inferred_attrs</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Contradiction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Contradiction</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">NotImplemented</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Contradiction.deepcopy">
+<a class="viewcode-back" href="../../../pylogic.proposition.html#pylogic.proposition.contradiction.Contradiction.deepcopy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Contradiction.copy">
+<a class="viewcode-back" href="../../../pylogic.proposition.html#pylogic.proposition.contradiction.Contradiction.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">()</span></div>
+</div>
+
+
+    <span class="c1"># def thus_assumptions_cannot_all_hold(</span>
+    <span class="c1">#     self,</span>
+    <span class="c1"># ) -&gt; Or[Proposition, ...] | Not[Proposition]:</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     Logical inference rule. Given a contradiction, return the proposition</span>
+    <span class="c1">#     that not all of the assumptions can hold at the same time.</span>
+
+    <span class="c1">#     In classical logic, this is the same as the disjunction of the negations of the</span>
+    <span class="c1">#     assumptions.</span>
+
+    <span class="c1">#     In intuitionistic logic, this is the negation of the conjunction of the assumptions.</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     from pylogic.enviroment_settings.settings import settings</span>
+    <span class="c1">#     from pylogic.proposition.and_ import And</span>
+    <span class="c1">#     from pylogic.proposition.not_ import Not, neg</span>
+    <span class="c1">#     from pylogic.proposition.or_ import Or</span>
+
+    <span class="c1">#     assert self.is_proven, &quot;This contradiction is not proven&quot;</span>
+    <span class="c1">#     if len(self.from_assumptions) == 1:</span>
+    <span class="c1">#         return neg(</span>
+    <span class="c1">#             self.from_assumptions.pop(),</span>
+    <span class="c1">#             description=&quot;&quot;,</span>
+    <span class="c1">#             _is_proven=True,</span>
+    <span class="c1">#             _assumptions=self.from_assumptions,</span>
+    <span class="c1">#             _inference=Inference(self, rule=&quot;thus_assumptions_cannot_all_hold&quot;),</span>
+    <span class="c1">#         )</span>
+    <span class="c1">#     if settings[&quot;USE_CLASSICAL_LOGIC&quot;]:</span>
+    <span class="c1">#         return Or(</span>
+    <span class="c1">#             *[neg(a) for a in self.from_assumptions],  # type: ignore</span>
+    <span class="c1">#             description=&quot;&quot;,</span>
+    <span class="c1">#             _is_proven=True,</span>
+    <span class="c1">#             _assumptions=self.from_assumptions,</span>
+    <span class="c1">#             _inference=Inference(self, rule=&quot;thus_assumptions_cannot_all_hold&quot;),</span>
+    <span class="c1">#         )</span>
+    <span class="c1">#     return Not(</span>
+    <span class="c1">#         And(*self.from_assumptions),  # type: ignore</span>
+    <span class="c1">#         description=&quot;&quot;,</span>
+    <span class="c1">#         _is_proven=True,</span>
+    <span class="c1">#         _assumptions=self.from_assumptions,</span>
+    <span class="c1">#         _inference=Inference(self, rule=&quot;thus_assumptions_cannot_all_hold&quot;),</span>
+    <span class="c1">#     )</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

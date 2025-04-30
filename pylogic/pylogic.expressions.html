@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pylogic.expressions package &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pylogic.infix package" href="pylogic.infix.html" />
+    <link rel="prev" title="pylogic.enviroment_settings package" href="pylogic.enviroment_settings.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pylogic-expressions-package">
+<h1>pylogic.expressions package<a class="headerlink" href="#pylogic-expressions-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-pylogic.expressions.abs">
+<span id="pylogic-expressions-abs-module"></span><h2>pylogic.expressions.abs module<a class="headerlink" href="#module-pylogic.expressions.abs" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.abs.Abs">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.abs.</span></span><span class="sig-name descname"><span class="pre">Abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/abs.html#Abs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.abs.Abs" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>A nonnegative real number representing the size of some object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.abs.Abs.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.abs.Abs" title="pylogic.expressions.abs.Abs"><span class="pre">Abs</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pylogic.html#pylogic.constant.Constant" title="pylogic.constant.Constant"><span class="pre">Constant</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/abs.html#Abs.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.abs.Abs.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.abs.Abs.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Basic</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/abs.html#Abs.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.abs.Abs.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.abs.Abs.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/abs.html#Abs.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.abs.Abs.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.expr">
+<span id="pylogic-expressions-expr-module"></span><h2>pylogic.expressions.expr module<a class="headerlink" href="#module-pylogic.expressions.expr" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Add">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">Add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Add" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Add.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Add" title="pylogic.expressions.expr.Add"><span class="pre">Add</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Add.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Add.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Add.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Add</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Add.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Add.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Add.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Add.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Add.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.BinaryExpression">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">BinaryExpression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#BinaryExpression"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.BinaryExpression" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.CustomExpr" title="pylogic.expressions.expr.CustomExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">CustomExpr</span></code></a>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>]</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.CustomExpr">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">CustomExpr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#CustomExpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.CustomExpr" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">U</span></code>]</p>
+<p>U is the return type after evaluating the expression,
+unless it is not fully evaluated.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.CustomExpr.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">U</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#CustomExpr.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.CustomExpr.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Calls the evaluation function with the arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.CustomExpr.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#CustomExpr.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.CustomExpr.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">Expr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.atoms">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">atoms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">set</span><span class="p"><span class="pre">[</span></span><span class="pre">Class</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pylogic.html#pylogic.symbol.Symbol" title="pylogic.symbol.Symbol"><span class="pre">Symbol</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.atoms" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.copy" title="Link to this definition">¶</a></dt>
+<dd><p>Create a copy of this expression.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.deepcopy">
+<span class="sig-name descname"><span class="pre">deepcopy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.deepcopy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.deepcopy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.doit">
+<span class="sig-name descname"><span class="pre">doit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Basic</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.doit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.doit" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.equals">
+<span class="sig-name descname"><span class="pre">equals</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.equals.Equals" title="pylogic.proposition.relation.equals.Equals"><span class="pre">Equals</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.equals"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.equals" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.eval_same">
+<span class="sig-name descname"><span class="pre">eval_same</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.eval_same"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.eval_same" title="Link to this definition">¶</a></dt>
+<dd><p>Check if two expressions evaluate to the same value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.evaluate">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_atomic">
+<span class="sig-name descname"><span class="pre">is_atomic</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_atomic" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_even">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_even</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_even" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_finite">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_finite</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_finite" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_in">
+<span class="sig-name descname"><span class="pre">is_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pylogic.html#pylogic.variable.Variable" title="pylogic.variable.Variable"><span class="pre">Variable</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.is_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_in" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_integer">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_integer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_integer" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_list">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_list" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_natural">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_natural</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_natural" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_negative">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_negative</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_negative" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_nonnegative">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_nonnegative</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_nonnegative" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_nonpositive">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_nonpositive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_nonpositive" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_nonzero">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_nonzero</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_nonzero" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_not_in">
+<span class="sig-name descname"><span class="pre">is_not_in</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pylogic.html#pylogic.variable.Variable" title="pylogic.variable.Variable"><span class="pre">Variable</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.not_.Not" title="pylogic.proposition.not_.Not"><span class="pre">Not</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.is_not_in"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_not_in" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_odd">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_odd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_odd" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_positive">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_positive</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_positive" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_rational">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_rational</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_rational" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_real">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_real</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_real" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_sequence">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_sequence</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_sequence" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_set">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_set" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.is_zero">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_zero</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.is_zero" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.kwargs">
+<span class="sig-name descname"><span class="pre">kwargs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[('knowledge_base',</span> <span class="pre">'knowledge_base')]</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.kwargs" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.mutable_attrs_to_copy">
+<span class="sig-name descname"><span class="pre">mutable_attrs_to_copy</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['independent_dependencies',</span> <span class="pre">'_is_real',</span> <span class="pre">'_is_rational',</span> <span class="pre">'_is_integer',</span> <span class="pre">'_is_natural',</span> <span class="pre">'_is_zero',</span> <span class="pre">'_is_nonpositive',</span> <span class="pre">'_is_nonnegative',</span> <span class="pre">'_is_positive',</span> <span class="pre">'_is_negative',</span> <span class="pre">'_is_even',</span> <span class="pre">'_is_sequence',</span> <span class="pre">'_is_set',</span> <span class="pre">'_is_list',</span> <span class="pre">'_is_finite',</span> <span class="pre">'args',</span> <span class="pre">'variables',</span> <span class="pre">'independent_dependencies',</span> <span class="pre">'constants',</span> <span class="pre">'sets',</span> <span class="pre">'class_ns',</span> <span class="pre">'sets_contained_in']</span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.mutable_attrs_to_copy" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">replace_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equal_check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.replace" title="Link to this definition">¶</a></dt>
+<dd><p>For replacing subexpressions in an expression.
+<cite>equal_check</cite> is a function that checks if two
+objects are equal in order to replace.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.symbols">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">symbols</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">set</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pylogic.expressions.expr.Expr.symbols" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Basic</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.unify">
+<span class="sig-name descname"><span class="pre">unify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="k"><span class="pre">True</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.unify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.unify" title="Link to this definition">¶</a></dt>
+<dd><p>Algorithm to unify two expressions.
+If unification succeeds, a dictionary of values to instantiate variables
+to is returned.
+The dictionary never instantiates a variable <cite>y</cite> to variable <cite>y</cite>.
+It may instantiate a variable <cite>y</cite> to variable <cite>x</cite> or a variable
+<cite>y</cite> to a symbol or value <cite>y</cite>.
+If no instantiations need to be made (eg propositions are equal),
+return True.
+Otherwise (unification fails), return None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Expr.update_properties">
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Expr.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Expr.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Mul">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">Mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Mul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Mul" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Mul.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Mul" title="pylogic.expressions.expr.Mul"><span class="pre">Mul</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Mul.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Mul.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Mul.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Mul</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Mul.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Mul.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Mul.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Mul.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Mul.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Pow">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">Pow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Pow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Pow" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Pow.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Pow" title="pylogic.expressions.expr.Pow"><span class="pre">Pow</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Pow.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Pow.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Pow.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Pow</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Pow.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Pow.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.Pow.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#Pow.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.Pow.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.add">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Add" title="pylogic.expressions.expr.Add"><span class="pre">Add</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.add" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.cbrt">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">cbrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Pow" title="pylogic.expressions.expr.Pow"><span class="pre">Pow</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#cbrt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.cbrt" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.distance">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">U</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">U</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Term</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.abs.Abs" title="pylogic.expressions.abs.Abs"><span class="pre">Abs</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.CustomExpr" title="pylogic.expressions.expr.CustomExpr"><span class="pre">CustomExpr</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.distance" title="Link to this definition">¶</a></dt>
+<dd><p>General distance function.</p>
+<p>Returns an expression representing the ‘distance’ between two terms.</p>
+<p>When evaluated, it returns the absolute value of the difference for real numbers,
+or the result of the evaluation function for other types.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.div">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">div</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Mul" title="pylogic.expressions.expr.Mul"><span class="pre">Mul</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#div"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.div" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.max">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.max" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.mul">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Mul" title="pylogic.expressions.expr.Mul"><span class="pre">Mul</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#mul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.mul" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.replace">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">equal_check</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.replace" title="Link to this definition">¶</a></dt>
+<dd><p>For replacing subexpressions in an expression.
+<cite>equal_check</cite> is a function that checks if two
+objects are equal in order to replace.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.sqrt">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">sqrt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Pow" title="pylogic.expressions.expr.Pow"><span class="pre">Pow</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#sqrt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.sqrt" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.sub">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.expr.Add" title="pylogic.expressions.expr.Add"><span class="pre">Add</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#sub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.sub" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.expr.to_sympy">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Integer</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/expr.html#to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.expr.to_sympy" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Float</span></span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Fraction</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Rational</span></span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Basic</span></span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Symbol</span></span></span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.expr.</span></span><span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.set_.Set" title="pylogic.structures.set_.Set"><span class="pre">Set</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Set</span></span></span></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.function">
+<span id="pylogic-expressions-function-module"></span><h2>pylogic.expressions.function module<a class="headerlink" href="#module-pylogic.expressions.function" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.function.CalledFunction">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.function.</span></span><span class="sig-name descname"><span class="pre">CalledFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/function.html#CalledFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.CalledFunction" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.CalledFunction.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#CalledFunction.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.CalledFunction.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.CalledFunction.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Basic</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#CalledFunction.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.CalledFunction.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.CalledFunction.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#CalledFunction.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.CalledFunction.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.function.Function">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.function.</span></span><span class="sig-name descname"><span class="pre">Function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/function.html#Function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.Function" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>the function’s <cite>args</cite> include the domain and codomain.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.Function.define">
+<span class="sig-name descname"><span class="pre">define</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.html#pylogic.variable.Variable" title="pylogic.variable.Variable"><span class="pre">Variable</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">definition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#Function.define"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.Function.define" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.Function.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#Function.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.Function.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.Function.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">UndefinedFunction</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#Function.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.Function.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.Function.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#Function.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.Function.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.function.SelfFunc">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.function.</span></span><span class="sig-name descname"><span class="pre">SelfFunc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/function.html#SelfFunc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.SelfFunc" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.SelfFunc.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#SelfFunc.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.SelfFunc.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.SelfFunc.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">UndefinedFunction</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#SelfFunc.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.SelfFunc.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.function.SelfFunc.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#SelfFunc.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.SelfFunc.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.function.contains_self">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.function.</span></span><span class="sig-name descname"><span class="pre">contains_self</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><span class="pre">Expr</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#contains_self"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.contains_self" title="Link to this definition">¶</a></dt>
+<dd><p>Check if an expression contains a SelfFunc.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.function.replace_self_func">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.function.</span></span><span class="sig-name descname"><span class="pre">replace_self_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pylogic.expressions.function.SelfFunc" title="pylogic.expressions.function.SelfFunc"><span class="pre">SelfFunc</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pylogic.expressions.function.SelfFunc" title="pylogic.expressions.function.SelfFunc"><span class="pre">SelfFunc</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">T</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/function.html#replace_self_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.function.replace_self_func" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.function.</span></span><span class="sig-name descname"><span class="pre">replace_self_func</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">expr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">E</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pylogic.expressions.function.SelfFunc" title="pylogic.expressions.function.SelfFunc"><span class="pre">SelfFunc</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">T</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">E</span></span></span></dt>
+<dd><p>Replace all SelfFuncs in an expression with a Term.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.expressions.function.self">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.function.</span></span><span class="sig-name descname"><span class="pre">self</span></span><a class="headerlink" href="#pylogic.expressions.function.self" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pylogic.expressions.function.SelfFunc" title="pylogic.expressions.function.SelfFunc"><code class="xref py py-class docutils literal notranslate"><span class="pre">SelfFunc</span></code></a></p>
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.gcd">
+<span id="pylogic-expressions-gcd-module"></span><h2>pylogic.expressions.gcd module<a class="headerlink" href="#module-pylogic.expressions.gcd" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.gcd.Gcd">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.gcd.</span></span><span class="sig-name descname"><span class="pre">Gcd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/gcd.html#Gcd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.gcd.Gcd" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>The greatest common divisor of two or more integers.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.gcd.Gcd.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/gcd.html#Gcd.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.gcd.Gcd.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.gcd.Gcd.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/gcd.html#Gcd.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.gcd.Gcd.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.limit">
+<span id="pylogic-expressions-limit-module"></span><h2>pylogic.expressions.limit module<a class="headerlink" href="#module-pylogic.expressions.limit" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.limit.Limit">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.limit.</span></span><span class="sig-name descname"><span class="pre">Limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/limit.html#Limit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.limit.Limit" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.limit.Limit.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.limit.Limit" title="pylogic.expressions.limit.Limit"><span class="pre">Limit</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pylogic.html#pylogic.constant.Constant" title="pylogic.constant.Constant"><span class="pre">Constant</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/limit.html#Limit.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.limit.Limit.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.limit.Limit.make_epsilon_N_definition">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">make_epsilon_N_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pylogic.structures.html#pylogic.structures.sequence.Sequence" title="pylogic.structures.sequence.Sequence"><span class="pre">Sequence</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pylogic.html#pylogic.variable.Variable" title="pylogic.variable.Variable"><span class="pre">Variable</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.quantified.html#pylogic.proposition.quantified.forall.ForallInSet" title="pylogic.proposition.quantified.forall.ForallInSet"><span class="pre">ForallInSet</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/limit.html#Limit.make_epsilon_N_definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.limit.Limit.make_epsilon_N_definition" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.limit.Limit.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/limit.html#Limit.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.limit.Limit.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.max">
+<span id="pylogic-expressions-max-module"></span><h2>pylogic.expressions.max module<a class="headerlink" href="#module-pylogic.expressions.max" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.max.Max">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.max.</span></span><span class="sig-name descname"><span class="pre">Max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/max.html#Max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.max.Max" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.max.Max.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.max.Max" title="pylogic.expressions.max.Max"><span class="pre">Max</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/max.html#Max.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.max.Max.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.max.Max.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/max.html#Max.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.max.Max.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.max.MaxElement">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.max.</span></span><span class="sig-name descname"><span class="pre">MaxElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/max.html#MaxElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.max.MaxElement" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.max.MaxElement.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.max.MaxElement" title="pylogic.expressions.max.MaxElement"><span class="pre">MaxElement</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/max.html#MaxElement.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.max.MaxElement.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.max.MaxElement.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/max.html#MaxElement.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.max.MaxElement.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.min">
+<span id="pylogic-expressions-min-module"></span><h2>pylogic.expressions.min module<a class="headerlink" href="#module-pylogic.expressions.min" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.min.MinElement">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.min.</span></span><span class="sig-name descname"><span class="pre">MinElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/min.html#MinElement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.min.MinElement" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.min.MinElement.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.min.MinElement" title="pylogic.expressions.min.MinElement"><span class="pre">MinElement</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/min.html#MinElement.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.min.MinElement.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.min.MinElement.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/min.html#MinElement.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.min.MinElement.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.mod">
+<span id="pylogic-expressions-mod-module"></span><h2>pylogic.expressions.mod module<a class="headerlink" href="#module-pylogic.expressions.mod" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.mod.Mod">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.mod.</span></span><span class="sig-name descname"><span class="pre">Mod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/mod.html#Mod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.mod.Mod" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<p>The smallest natural number that remains when an integer is divided by another integer.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.mod.Mod.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/mod.html#Mod.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.mod.Mod.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.mod.Mod.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Basic</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/mod.html#Mod.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.mod.Mod.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.mod.Mod.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/mod.html#Mod.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.mod.Mod.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.piecewise">
+<span id="pylogic-expressions-piecewise-module"></span><h2>pylogic.expressions.piecewise module<a class="headerlink" href="#module-pylogic.expressions.piecewise" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.OtherwiseBranch">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.piecewise.</span></span><span class="sig-name descname"><span class="pre">OtherwiseBranch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">then</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#OtherwiseBranch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.OtherwiseBranch" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.OtherwiseBranch.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#OtherwiseBranch.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.OtherwiseBranch.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.OtherwiseBranch.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ExprCondPair</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#OtherwiseBranch.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.OtherwiseBranch.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.OtherwiseBranch.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#OtherwiseBranch.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.OtherwiseBranch.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.Piecewise">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.piecewise.</span></span><span class="sig-name descname"><span class="pre">Piecewise</span></span><a class="headerlink" href="#pylogic.expressions.piecewise.Piecewise" title="Link to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pylogic.expressions.piecewise.PiecewiseExpr" title="pylogic.expressions.piecewise.PiecewiseExpr"><code class="xref py py-class docutils literal notranslate"><span class="pre">PiecewiseExpr</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.PiecewiseBranch">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.piecewise.</span></span><span class="sig-name descname"><span class="pre">PiecewiseBranch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#PiecewiseBranch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.PiecewiseBranch" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">P</span></code>]</p>
+<p>Represents one branch of a piecewise function.
+Technicially, this should not be used in isolation,
+but only as part of a PiecewiseExpr.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.PiecewiseBranch.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#PiecewiseBranch.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.PiecewiseBranch.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.PiecewiseBranch.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Basic</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#PiecewiseBranch.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.PiecewiseBranch.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.PiecewiseBranch.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#PiecewiseBranch.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.PiecewiseBranch.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.PiecewiseExpr">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.piecewise.</span></span><span class="sig-name descname"><span class="pre">PiecewiseExpr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#PiecewiseExpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.PiecewiseExpr" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Unpack</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Ps</span></code>]]</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.PiecewiseExpr.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">knowledge_base</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">set</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pylogic.proposition.html#pylogic.proposition.proposition.Proposition" title="pylogic.proposition.proposition.Proposition"><span class="pre">Proposition</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Term</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#PiecewiseExpr.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.PiecewiseExpr.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>For now, we assume the knowledge base contains only proven propositions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.PiecewiseExpr.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Basic</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#PiecewiseExpr.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.PiecewiseExpr.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.PiecewiseExpr.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#PiecewiseExpr.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.PiecewiseExpr.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pylogic.expressions.piecewise.otherwise">
+<span class="sig-prename descclassname"><span class="pre">pylogic.expressions.piecewise.</span></span><span class="sig-name descname"><span class="pre">otherwise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">then</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.piecewise.OtherwiseBranch" title="pylogic.expressions.piecewise.OtherwiseBranch"><span class="pre">OtherwiseBranch</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/piecewise.html#otherwise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.piecewise.otherwise" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.prod">
+<span id="pylogic-expressions-prod-module"></span><h2>pylogic.expressions.prod module<a class="headerlink" href="#module-pylogic.expressions.prod" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.prod.Prod">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.prod.</span></span><span class="sig-name descname"><span class="pre">Prod</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/prod.html#Prod"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.prod.Prod" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_Aggregate</span></code></p>
+<p>Represents a product of a sequence of non-set terms.
+For products of sets, see <a href="#id1"><span class="problematic" id="id2">pylogic.structures.set_</span></a>.CartesProduct</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.prod.Prod.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Product</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Mul</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/prod.html#Prod.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.prod.Prod.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.prod.Prod.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/prod.html#Prod.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.prod.Prod.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.sequence_term">
+<span id="pylogic-expressions-sequence-term-module"></span><h2>pylogic.expressions.sequence_term module<a class="headerlink" href="#module-pylogic.expressions.sequence_term" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.sequence_term.SequenceTerm">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.sequence_term.</span></span><span class="sig-name descname"><span class="pre">SequenceTerm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/sequence_term.html#SequenceTerm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.sequence_term.SequenceTerm" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pylogic.expressions.expr.Expr" title="pylogic.expressions.expr.Expr"><code class="xref py py-class docutils literal notranslate"><span class="pre">Expr</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">T</span></code>]</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.sequence_term.SequenceTerm.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/sequence_term.html#SequenceTerm.contains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.sequence_term.SequenceTerm.contains" title="Link to this definition">¶</a></dt>
+<dd><p>For sequences of sets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.sequence_term.SequenceTerm.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pylogic.expressions.sequence_term.SequenceTerm" title="pylogic.expressions.sequence_term.SequenceTerm"><span class="pre">SequenceTerm</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">T</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/sequence_term.html#SequenceTerm.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.sequence_term.SequenceTerm.evaluate" title="Link to this definition">¶</a></dt>
+<dd><p>Evaluate the expression.
+Keyword arguments are used for passing additional information to the evaluation function.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.sequence_term.SequenceTerm.predicate">
+<span class="sig-name descname"><span class="pre">predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">term</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Term</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pylogic.proposition.relation.html#pylogic.proposition.relation.contains.IsContainedIn" title="pylogic.proposition.relation.contains.IsContainedIn"><span class="pre">IsContainedIn</span></a></span></span><a class="reference internal" href="_modules/pylogic/expressions/sequence_term.html#SequenceTerm.predicate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.sequence_term.SequenceTerm.predicate" title="Link to this definition">¶</a></dt>
+<dd><p>For sequences of sets.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.sequence_term.SequenceTerm.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/sequence_term.html#SequenceTerm.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.sequence_term.SequenceTerm.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions.sum">
+<span id="pylogic-expressions-sum-module"></span><h2>pylogic.expressions.sum module<a class="headerlink" href="#module-pylogic.expressions.sum" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pylogic.expressions.sum.Sum">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pylogic.expressions.sum.</span></span><span class="sig-name descname"><span class="pre">Sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pylogic/expressions/sum.html#Sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.sum.Sum" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_Aggregate</span></code></p>
+<p>Represents a sum of a sequence of non-set terms.
+For unions of sets, see <a href="#id3"><span class="problematic" id="id4">pylogic.structures.set_</span></a>.Union</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.sum.Sum.to_sympy">
+<span class="sig-name descname"><span class="pre">to_sympy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sum</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Add</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/sum.html#Sum.to_sympy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.sum.Sum.to_sympy" title="Link to this definition">¶</a></dt>
+<dd><p>Convert the expression to a sympy object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pylogic.expressions.sum.Sum.update_properties">
+<span class="sig-name descname"><span class="pre">update_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pylogic/expressions/sum.html#Sum.update_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pylogic.expressions.sum.Sum.update_properties" title="Link to this definition">¶</a></dt>
+<dd><p>Update the properties of the expression.
+Properties include
+is_real, is_rational, is_integer, is_natural, is_zero,
+is_nonpositive, is_nonnegative, is_even.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-pylogic.expressions">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pylogic.expressions" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pylogic.html">pylogic package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pylogic.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.abc">pylogic.abc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.assumptions_context">pylogic.assumptions_context module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.constant">pylogic.constant module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.helpers">pylogic.helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.inference">pylogic.inference module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.symbol">pylogic.symbol module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.sympy_helpers">pylogic.sympy_helpers module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.variable">pylogic.variable module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic.warn">pylogic.warn module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pylogic.html#module-pylogic">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="pylogic.html">pylogic package</a><ul>
+      <li>Previous: <a href="pylogic.enviroment_settings.html" title="previous chapter">pylogic.enviroment_settings package</a></li>
+      <li>Next: <a href="pylogic.infix.html" title="next chapter">pylogic.infix package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/pylogic.expressions.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

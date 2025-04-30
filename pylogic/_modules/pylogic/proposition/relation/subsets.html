@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pylogic.proposition.relation.subsets &#8212; Pylogic 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css?v=27fed22d" />
+    <script src="../../../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for pylogic.proposition.relation.subsets</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Self</span><span class="p">,</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">TypeVar</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_assumptions</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.binaryrelation</span><span class="w"> </span><span class="kn">import</span> <span class="n">BinaryRelation</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.expressions.sequence_term</span><span class="w"> </span><span class="kn">import</span> <span class="n">SequenceTerm</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.implies</span><span class="w"> </span><span class="kn">import</span> <span class="n">Implies</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.proposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">Proposition</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">Forall</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.contains</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsContainedIn</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Class</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">Set</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+    <span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Variable</span> <span class="o">|</span> <span class="n">SequenceTerm</span> <span class="o">|</span> <span class="n">Set</span> <span class="o">|</span> <span class="n">Class</span><span class="p">)</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="n">Variable</span> <span class="o">|</span> <span class="n">SequenceTerm</span> <span class="o">|</span> <span class="n">Set</span> <span class="o">|</span> <span class="n">Class</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">Any</span>
+    <span class="n">U</span> <span class="o">=</span> <span class="n">Any</span>
+<span class="n">TProposition</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;TProposition&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Proposition&quot;</span><span class="p">)</span>
+<span class="n">UProposition</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;UProposition&quot;</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">&quot;Proposition&quot;</span><span class="p">)</span>
+<span class="n">InferenceRule</span> <span class="o">=</span> <span class="n">TypedDict</span><span class="p">(</span><span class="s2">&quot;InferenceRule&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;arguments&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]})</span>
+
+
+<div class="viewcode-block" id="IsSubsetOf">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.subsets.IsSubsetOf">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">IsSubsetOf</span><span class="p">(</span><span class="n">BinaryRelation</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">U</span><span class="p">]):</span>
+    <span class="n">is_transitive</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;IsSubsetOf&quot;</span>
+    <span class="n">infix_symbol</span> <span class="o">=</span> <span class="s2">&quot;issubset&quot;</span>
+    <span class="n">infix_symbol_latex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\subseteq&quot;</span>
+    <span class="n">_inference_rules</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">InferenceRule</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">left</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span>
+        <span class="n">right</span><span class="p">:</span> <span class="n">U</span><span class="p">,</span>
+        <span class="n">is_assumption</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">:</span> <span class="n">U</span> <span class="o">=</span> <span class="n">right</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">:</span> <span class="n">T</span> <span class="o">=</span> <span class="n">left</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s2"> is a subset of </span><span class="si">{</span><span class="n">right</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">left</span><span class="p">,</span>
+            <span class="n">right</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">is_set</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">is_set</span>
+        <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;Both left and right must be sets, left: </span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s2">, left.is_set: </span><span class="si">{</span><span class="n">left</span><span class="o">.</span><span class="n">is_set</span><span class="si">}</span><span class="s2">, </span><span class="se">\</span>
+<span class="s2">right: </span><span class="si">{</span><span class="n">right</span><span class="si">}</span><span class="s2">, right.is_set: </span><span class="si">{</span><span class="n">right</span><span class="o">.</span><span class="n">is_set</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="IsSubsetOf.copy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.subsets.IsSubsetOf.copy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="IsSubsetOf.deepcopy">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.subsets.IsSubsetOf.deepcopy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(),</span>
+            <span class="n">is_assumption</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_assumption</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">from_assumptions</span><span class="p">,</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deduced_from</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_is_inferred</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sets_and_attrs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Naturals&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;is_natural&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;Integers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;is_integer&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;Rationals&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;is_rational&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;Reals&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;is_real&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;AllFiniteSequences&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;is_sequence&quot;</span><span class="p">,</span> <span class="s2">&quot;is_finite&quot;</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="n">assumption_attrs</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;is_natural&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_integer&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_rational&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_real&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_nonnegative&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_nonpositive&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_even&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_zero&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;is_finite&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+            <span class="c1"># TODO: add more here</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">sets_and_attrs</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">sets_and_attrs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">assumption_attrs</span><span class="p">:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">knowledge_base</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">sets_and_attrs</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">sets_and_attrs</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">assumption_attrs</span><span class="p">:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">knowledge_base</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+
+<div class="viewcode-block" id="IsSubsetOf.to_forall">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.subsets.IsSubsetOf.to_forall">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_forall</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Forall</span><span class="p">[</span><span class="n">Implies</span><span class="p">[</span><span class="n">IsContainedIn</span><span class="p">,</span> <span class="n">IsContainedIn</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If self is `A issubset B`, return `forall x: x in A -&gt; x in B`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.quantified.forall</span><span class="w"> </span><span class="kn">import</span> <span class="n">Forall</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">IsContainedIn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="n">IsContainedIn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Forall</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span>
+            <span class="n">left</span><span class="o">.</span><span class="n">implies</span><span class="p">(</span><span class="n">right</span><span class="p">),</span>
+            <span class="n">_is_proven</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_proven</span><span class="p">,</span>
+            <span class="n">_assumptions</span><span class="o">=</span><span class="n">get_assumptions</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="n">_inference</span><span class="o">=</span><span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;to_forall&quot;</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="IsSubsetOf.by_empty">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.subsets.IsSubsetOf.by_empty">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_empty</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logical inference rule.</span>
+<span class="sd">        If self is `EmptySet issubset A`, return self but proven</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.inference</span><span class="w"> </span><span class="kn">import</span> <span class="n">Inference</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.structures.set_</span><span class="w"> </span><span class="kn">import</span> <span class="n">EmptySet</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="n">EmptySet</span><span class="p">,</span> <span class="s2">&quot;left must be EmptySet&quot;</span>
+        <span class="n">new_p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_p</span><span class="o">.</span><span class="n">_set_is_proven</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">new_p</span><span class="o">.</span><span class="n">from_assumptions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">new_p</span><span class="o">.</span><span class="n">deduced_from</span> <span class="o">=</span> <span class="n">Inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s2">&quot;by_empty&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_p</span></div>
+
+
+<div class="viewcode-block" id="IsSubsetOf.by_inspection_check">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.subsets.IsSubsetOf.by_inspection_check">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_inspection_check</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if self is provable by inspection.</span>
+<span class="sd">        Returns True if self is provable by inspection, False if</span>
+<span class="sd">        its negation is provable by inspection, and None if neither is provable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.and_</span><span class="w"> </span><span class="kn">import</span> <span class="n">And</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.proposition.relation.contains</span><span class="w"> </span><span class="kn">import</span> <span class="n">IsContainedIn</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pylogic.variable</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variable</span>
+
+        <span class="n">proven</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># already proven</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">knowledge_base</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># seeing if we can derive x in right from assuming x in left</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="s2">&quot;predicate&quot;</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+            <span class="n">left_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">predicate</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="c1"># left_pred._set_is_assumption(True)</span>
+            <span class="k">match</span> <span class="n">left_pred</span><span class="p">:</span>
+                <span class="k">case</span> <span class="n">IsContainedIn</span><span class="p">(</span>
+                    <span class="n">left</span><span class="o">=</span><span class="n">x1</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">right</span>
+                <span class="p">)</span> <span class="k">if</span> <span class="n">x1</span> <span class="o">==</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">right</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">:</span>
+                    <span class="n">proven</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">case</span> <span class="n">And</span><span class="p">(</span><span class="n">propositions</span><span class="o">=</span><span class="n">props</span><span class="p">)</span> <span class="k">if</span> <span class="n">IsContainedIn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">)</span> <span class="ow">in</span> <span class="n">props</span><span class="p">:</span>
+                    <span class="n">proven</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">proven</span></div>
+
+
+<div class="viewcode-block" id="IsSubsetOf.by_inspection">
+<a class="viewcode-back" href="../../../../pylogic.proposition.relation.html#pylogic.proposition.relation.subsets.IsSubsetOf.by_inspection">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">by_inspection</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Logical inference rule. If self is already proven, self is `A issubset A`,</span>
+<span class="sd">        or the predicate of self.left logically implies that any variable x in self.left is in self.right,</span>
+<span class="sd">        return self but proven.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">by_inspection</span><span class="p">()</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Pylogic</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pylogic.html">pylogic package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Joshua Mark.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
